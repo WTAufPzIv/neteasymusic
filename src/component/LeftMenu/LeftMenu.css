@@ -1,0 +1,124 @@
+.router-link-active {
+    text-decoration: none;
+  }
+  a{
+    text-decoration: none;
+  }
+.leftmeun_body{
+    width: 270px;
+    background-color: rgb(25,27,31);
+    /* display: flex;
+    flex-direction: column; */
+    overflow: scroll;
+    text-decoration: none;
+}
+.Recommend{
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+}
+.Recommend_head{
+    width: 100%;
+    height: 30px;
+  
+    padding-left: 5px;
+    font-size: 15px;
+    color:rgb(124,124,124);
+    line-height: 30px;
+}
+.list_general{
+    user-select:none;
+    cursor:pointer;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: rgb(25,27,31);
+    color:rgb(173,175,178);
+}
+.list_focus{
+    user-select:none;
+    cursor:pointer;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: rgb(25,27,31);
+    color:white;
+}
+.list_selected{
+    user-select:none;
+    cursor:pointer;
+    background-color: rgb(38,40,44);
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: rgb(184,37,37);
+    color:white;
+}
+.list_img{
+    width: 18px;
+    height: 18px;
+}
+.list_span{
+    position: relative;
+    margin-left: 7px;
+    text-decoration: none;
+}
+.Minemusic{
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    /* height: 800px;
+    overflow: hidden; */
+}
+.Minemusic_head{
+    width: 100%;
+    height: 30px;
+    padding-left: 5px;
+    font-size: 15px;
+    color:rgb(124,124,124);
+    line-height: 30px;
+}
+.Likemusic_list{
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+}
+.Likemusic_list_head{
+    width: 100%;
+    height: 30px;
+    padding-left: 5px;
+    font-size: 15px;
+    color:rgb(124,124,124);
+    line-height: 30px;
+}
+.Createmusic_list{
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+}
+.Createmusic_list_head{
+    width: 100%;
+    height: 30px;
+    padding-left: 5px;
+    font-size: 15px;
+    color:rgb(124,124,124);
+    line-height: 30px;
+}

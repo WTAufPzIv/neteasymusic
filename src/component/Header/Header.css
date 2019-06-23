@@ -1,0 +1,78 @@
+.headBox{
+    width: 100%;
+    height: 50px;
+    background-color: rgb(35,35,38);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.close{
+    height: 50px;
+    width: 200px;
+    float: right;
+    background-color: white;
+}
+.head_logo{
+    width: 280px;
+    height: 50px;
+    color:rgb(200,200,200);
+    font-size: 30px;
+    text-align: center;
+    line-height: 50px;
+    -webkit-app-region:drag;
+    user-select:none;
+    font-family:'GoodVibrationsROB';
+}
+.head_search{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.head_search_input{
+    width: 200px;
+    height: 20px;
+    border-radius: 200px;
+    background-color: black;
+    border-width: 0px;
+    outline: none;
+    padding-left: 10px;
+    font-size: 13px;
+    line-height: 20px;
+    color:rgb(208,208,209);
+    padding-right: 25px;
+}
+.head_search > img{
+    position: relative;
+    margin-left: -25px;
+    widows: 18px;
+    height: 18px;
+    cursor:pointer;
+    user-select:none;
+}
+.head_space{
+    flex-grow: 1;
+    height: 50px;
+    -webkit-app-region:drag;
+}
+.head_MinMaxCloseBox{
+    width: 150px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    align-self: flex-ends;
+}
+.head_MinMaxCloseBox > img{
+    width: 20px;
+    height: 20px;
+    user-select:none;
+}
+.Headline{
+    width: 100%;
+    height: 3px;
+    
+    background: radial-gradient(circle, rgb(185,0,0), rgb(102,0,0));
+}
+
