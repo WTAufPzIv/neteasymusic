@@ -1,0 +1,112 @@
+.mv_body{
+    width: 79%;
+    /* background-color: yellow; */
+    overflow: scroll;
+    margin :0 auto;
+}
+.mv_hr{
+    width: 980px;
+    height: 1px;
+    background-color: rgb(150,150,150);
+    margin:0 auto;
+}
+.mv_head{
+    width: 980px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color:rgb(160,160,160);
+    margin:15px auto;
+    position: relative;
+}
+.mv_head_lan{
+    width: 100%;
+    height: 50%;
+    /* background-color: orange; */
+    line-height: 50px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 25px;
+}
+.mv_head_type{
+    width: 100%;
+    height: 25%;
+    /* background-color: darkcyan; */
+    line-height: 50px;
+    display: flex;
+    flex-direction: row;
+}
+.mv_head_letter{
+    width: 100%;
+    height: 25%;
+    /* background-color: khaki; */
+    line-height: 50px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 25px;
+}
+.mv_head_lan > p{
+    cursor: pointer;
+}
+.mv_head_type > p{
+    cursor: pointer;
+}
+.mv_head_letter > p{
+    cursor: pointer;
+}
+.mv_list{
+    width: 980px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin:20px auto;
+}
+.mv_list_item{
+    width: 300px;
+    height: 300px;
+}
+.mv_list_item > img{
+    width: 300px;
+    height: 200px;
+}
+.mv_list_item > p{
+    height: 25px;
+    font-size: 17px;
+    color:white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    margin:0;
+    line-height: 25px;
+}
+.mv_list_item > span{
+    font-size: 12px;
+    color:rgb(150,150,150);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+}
+.mv_page{
+    width: 1070px;
+    height: 50px;
+    /* background-color: tan; */
+    /* margin-bottom: 20px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin:20px auto;
+}
+.mv_page > span{
+    display: block;
+    width: 80px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}

@@ -5,6 +5,7 @@ import './LeftMenu.css'
 import  like_music  from './data'
 import create_music from './data1'
 import { Link,Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 const { ipcRenderer } = window.require('electron');
 class LeftMenu extends Component{
     constructor(props){
@@ -103,17 +104,17 @@ class LeftMenu extends Component{
                 
                 <div className = 'Recommend'>
                     <div className = 'Recommend_head'>推荐</div>
-                    <Link to = '/'><div className = {this.state.list_class[0]} onMouseMove = {this.hover.bind(this,0)} onMouseLeave = {this.unhover.bind(this,0)} onClick = {this.click.bind(this,0)}>
+                    <Link to = '/Recommend'><div className = {this.state.list_class[0]} onMouseMove = {this.hover.bind(this,0)} onMouseLeave = {this.unhover.bind(this,0)} onClick = {this.click.bind(this,0)}>
                         <img src = {require('./img/music_'+this.state.iconColor[0]+'.png')} className = 'list_img'/>
                         <span className = 'list_span'>发现音乐</span>
                     </div></Link>
                     <Link to = '/Fm'><div className = {this.state.list_class[1]} onMouseMove = {this.hover.bind(this,1)} onMouseLeave = {this.unhover.bind(this,1)} onClick = {this.click.bind(this,1)}>
                         <img src = {require('./img/fm_'+this.state.iconColor[1]+'.png')} className = 'list_img'/>
-                        <span className = 'list_span'>FM电台</span>
+                        <span className = 'list_span'>每日推荐</span>
                     </div></Link>
                     <Link to = '/video'><div className = {this.state.list_class[2]} onMouseMove = {this.hover.bind(this,2)} onMouseLeave = {this.unhover.bind(this,2)} onClick = {this.click.bind(this,2)}>
                         <img src = {require('./img/v_'+this.state.iconColor[2]+'.png')} className = 'list_img'/>
-                        <span className = 'list_span'>视频</span>
+                        <span className = 'list_span'>MV</span>
                     </div></Link>
                     <Link to = '/friend'><div className = {this.state.list_class[3]} onMouseMove = {this.hover.bind(this,3)} onMouseLeave = {this.unhover.bind(this,3)} onClick = {this.click.bind(this,3)}>
                         <img src = {require('./img/comment_'+this.state.iconColor[3]+'.png')} className = 'list_img'/>
@@ -142,7 +143,7 @@ class LeftMenu extends Component{
                 </div>
 
 
-                <div className = 'Likemusic_list' style = {{'display':this.state.create_music_list.length > 0 && this.state.islogin  ?'block':'none'}}>
+                <div className = 'Likemusic_list' style = {{'display':this.state.create_music_list.length > 0 && this.props.login_status  ?'block':'none'}}>
                     <div className = 'Likemusic_list_head'>创建的歌单</div>
                     {
                         this.state.create_music_list.map((item,index) => {
@@ -157,7 +158,7 @@ class LeftMenu extends Component{
                 </div>
 
 
-                <div className = 'Createmusic_list' style = {{'display':this.state.like_music_list.length > 0 && this.state.islogin  ?'block':'none'}}>
+                <div className = 'Createmusic_list' style = {{'display':this.state.like_music_list.length > 0 && this.props.login_status  ?'block':'none'}}>
                     <div className = 'Createmusic_list_head'>收藏的歌单</div>
                     {
                         this.state.like_music_list.map((item,index) => {
@@ -174,4 +175,14 @@ class LeftMenu extends Component{
         )
     }
 }
-export default LeftMenu
+const mapstatetoprops = (state) => {
+    return{
+        login_status: state.user.loginstatus
+    }
+  }
+  const mapdistoprops = (dispatch) => {
+    return{
+        
+    }
+  }
+export default connect(mapstatetoprops,mapdistoprops)(LeftMenu)

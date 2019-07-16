@@ -21,8 +21,11 @@
     line-height: 50px;
     -webkit-app-region:drag;
     user-select:none;
-    font-family:'GoodVibrationsROB';
+    /* font-family:'GoodVibrationsROB'; */
+    font-family:'Akzidenz-Grotesk-BQ';
 }
+@font-face {font-family: 'namcoregular';src: url('//cdn.repository.webfont.com/webfonts/nomal/131005/44812/5d26dc26f629d80314ae0c0e.gif?r=111221414747');src: url('//cdn.repository.webfont.com/webfonts/nomal/131005/44812/5d26dc26f629d80314ae0c0e.gif?r=111221414747?#iefix') format('embedded-opentype'),url('//cdn.repository.webfont.com/webfonts/nomal/131005/44812/5d26dc26f629d80314ae0c0e.png?r=111221414747') format('woff2'),url('//cdn.repository.webfont.com/webfonts/nomal/131005/44812/5d26dc26f629d80314ae0c0e.bmp?r=111221414747') format('woff');font-weight: normal;font-style: normal;} 
+@font-face {font-family: 'Akzidenz-Grotesk-BQ';src: url('//cdn.repository.webfont.com/webfonts/nomal/131005/46993/5d26dd03f629d80314ae0c0f.gif?r=111221635433');src: url('//cdn.repository.webfont.com/webfonts/nomal/131005/46993/5d26dd03f629d80314ae0c0f.gif?r=111221635433?#iefix') format('embedded-opentype'),url('//cdn.repository.webfont.com/webfonts/nomal/131005/46993/5d26dd03f629d80314ae0c0f.png?r=111221635433') format('woff2'),url('//cdn.repository.webfont.com/webfonts/nomal/131005/46993/5d26dd03f629d80314ae0c0f.bmp?r=111221635433') format('woff');font-weight: normal;font-style: normal;} 
 .head_search{
     height: 50px;
     display: flex;
@@ -54,6 +57,9 @@
     flex-grow: 1;
     height: 50px;
     -webkit-app-region:drag;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 .head_MinMaxCloseBox{
     width: 150px;
@@ -72,7 +78,64 @@
 .Headline{
     width: 100%;
     height: 3px;
-    
     background: radial-gradient(circle, rgb(185,0,0), rgb(102,0,0));
+}
+.userstatus{
+    align-self: flex-end;
+    justify-self: flex-end;
+    width: 180px;
+    /* background-color: yellow; */
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.userstatus > div{
+    color:rgb(200,200,200);
+    font-size: 12px;
+    position: relative;
+    margin-left: 10px;
+    cursor: pointer;
+    -webkit-app-region:none;
+    user-select: none;
+}
+.avatar{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(100,100,100);
+    border-radius: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-app-region:none;
+    overflow: hidden;
+}
+.avatar > img{
+    width: 30px;
+    height: 30px;
+    -webkit-app-region:none;
+}
+.msg{
+    align-self: flex-end;
+    justify-self: flex-end;
+    width: 80px;
+    /* background-color: pink; */
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor:pointer;
+    -webkit-app-region:none;
+}
+.msg > img{
+    width: 30px;
+    height: 30px;
+    cursor:pointer;
+    -webkit-app-region:none;
+    user-select: none;
 }
 

@@ -1,5 +1,4 @@
 .localmusic_body{
-    flex-group:1;
     height:100%;
     /* background-color:rgb(22,24,28); */
     /* sbackground-color:white; */
@@ -8,7 +7,13 @@
     padding-right:20px; */
     overflow:scroll;
     user-select: none;
+    flex-basis: 0%;
 }
+.localmusic_body::-webkit-scrollbar  
+{  
+    width: 15px;    
+    background-color: #fff;  
+}  
 .localmusic_head{
     width: 100%;
     height: 50px;
@@ -35,6 +40,8 @@
 }
 .localmusic_listbody{
     width: 100%;
+    /* position: relative; */
+    overflow: hidden;
 }
 .localmusic_list_th{
     display: flex;
@@ -57,4 +64,67 @@
 }
 .localmusic_list_th_time{
     width: 10%;
+}
+.localmusic_list-tr{
+    display: flex;
+    flex-direction: row;
+    font-size: 15px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}
+.localmusic_list-tr:hover{
+   background-color: rgb(25,34,43)
+}
+.localmusic_list-td{
+    width:4%;
+    /* background-color: red; */
+    color:rgb(120,120,120);
+    text-align: center;
+}
+.localmusic_list-td1{
+    width:36%;
+    overflow: hidden;
+    color:white;
+}
+.localmusic_list-td2{
+    width:20%;
+    overflow: hidden;
+    
+    color:rgb(120,120,120);
+}
+.localmusic_list-td3{
+    width:30%;
+    overflow: hidden;
+   
+    color:rgb(120,120,120);
+}
+.localmusic_list-td4{
+    width:10%;
+    overflow: hidden;
+    
+    color:rgb(120,120,120);
+}
+.context_menu{
+    width: 250px;
+    height: 150px;
+    background-color: rgb(47,48,51);
+    position: absolute;
+    z-index: 10000;
+   
+    display: flex;
+    flex-direction: column;
+}
+.context_menu > div{
+    width: 92%;
+    height: 50px;
+    color:rgb(209,209,209);
+    /* padding-left: 20px; */
+    line-height: 50px;
+    padding-left: 20px;
+}
+.context_menu > div:hover{
+    color:rgb(209,209,209);
+    background-color: rgb(59,58,61);
 }

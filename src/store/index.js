@@ -1,4 +1,5 @@
-import { createStore } from 'redux'
-import reducer from './index_reducer'
-let store = createStore(reducer)
+import { createStore, applyMiddleware } from 'redux'
+import neteasecloudmusic  from './app'
+import thunk from 'redux-thunk'
+let store = createStore(neteasecloudmusic,applyMiddleware(thunk))
 export default store

@@ -1,11 +1,12 @@
 const {app, BrowserWindow,ipcMain,dialog  } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
-const store = new Store()
 const DataStore = require('./MusicDataStore')//引入自定义的添加音乐封装模块
 const myStore = new DataStore({'name':'MusicData'})
+var jsmediatags = require("jsmediatags");
+const store = new Store()
+//let audio = new Audio()
 //nodemon --watch main.js --exec 'electron .'
-
 class AppWindow extends BrowserWindow{//自定义创建窗口的封装类，继承于BrowserWindow
   constructor(config, fileLocation){
     const basicConfig = {
@@ -13,11 +14,14 @@ class AppWindow extends BrowserWindow{//自定义创建窗口的封装类，继�
       height: 800,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
-        nodeIntegration:true//设置此项以使用nodejs
+        nodeIntegration:true,//设置此项以使用nodejs,
+        webSecurity: false
       },
+      webSecurity:true,
       frame:false,
-      minWidth:1000,
+      minWidth:1300,
       minHeight:800,
+      icon:'./1.jpg'
     }
     const finalConfig1 = Object.assign(basicConfig, config)//将传入的对象和原来的对象合并
     const finalConfig = { ...basicConfig, ...config}//也可以这样写(ES6语法)
@@ -33,6 +37,7 @@ class AppWindow extends BrowserWindow{//自定义创建窗口的封装类，继�
 
 let mainWindow
 function createWindow () {
+  
   mainWindow = new AppWindow({}, './renderer/index.html')
   ipcMain.on('minWindow', (event) => {
     mainWindow.minimize()
@@ -50,21 +55,67 @@ function createWindow () {
     mainWindow.close()
   })
   ipcMain.on('getlocalmusic_msg', () => {
-        const updataedTrack = myStore.getTrack()//链式调用
-        mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
+        let updataedTrack = myStore.getTrack()//链式调用
+          mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
+  })
+  ipcMain.on('savevoice',(event,num) => {
+    store.set('voice',num)
+  })
+  ipcMain.on('getvoice',() => {
+    var flag = store.get('voice')
+    mainWindow.send('getvoiceData',flag)
+  })
+  ipcMain.on('deleteItem', (event,num) => {
+    console.log(num)
+    const updataedTrack = myStore.deleteTrack(num)//链式调用    
+    //mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
   })
   ipcMain.on('addlocalmusic',(event,arg) => {
     dialog.showOpenDialog({
       properties:['openFile', 'multiSelections'],//打开文件，允许多选
-      filters:[{name:'Music', extensions:['mp3','aac','flac','wav','ape','wma']}]//文件类型为音乐，只能打开mp3
+      filters:[{name:'Music', extensions:['mp3','aac','flac','wav','ape','wma']}]//文件类型为音乐
     }, (files) => {
       if(files){
         //event.sender.send('getlocalmusic',files)
-        console.log(files)
-        myStore.addTracks(files)
-        const updataedTrack = myStore.getTrack()//链式调用
-        console.log(updataedTrack)
-        mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
+        if(files.length > 100){
+          dialog.showMessageBox({
+            type:'warning',
+            buttons:['知道了'],
+            title:'添加错误',
+            message:'只能一次性添加100首以内的歌'
+          })
+        }
+        else{
+          let file = []
+          let title = []
+          let artist = []
+          let album = []
+          let type = []
+          for(var i = 0;i < files.length; i++){
+            (function(i){
+            jsmediatags.read(files[i], {
+              onSuccess: function(tag) {
+                console.log(tag.tags.artist)
+                file.push(files[i])
+                title.push(tag.tags.title || '未知')
+                artist.push(tag.tags.artist || '未知')
+                album.push(tag.tags.album || '未知')
+                type.push(tag.type || '未知')
+              },
+              onError: function(error) {
+                console.log(':(', error.type, error.info);
+              }
+            });
+            }(i))
+          }
+          setTimeout(() => {
+            console.log(artist)
+            var num = files.length
+            myStore.addTracks(file,title,artist,album,type,num)
+            const updataedTrack = myStore.getTrack()//链式调用    
+            mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
+          }, files.length*100);
+        }
       }
     })
   })

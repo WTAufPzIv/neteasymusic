@@ -2,6 +2,7 @@ const { app  } = require('electron')
 const Store = require('electron-store')
 const path = require('path')
 const uuid = require('uuid/v4')
+var jsmediatags = require("jsmediatags");
 class DataStore extends Store{
     constructor(settings){
         super(settings)
@@ -15,13 +16,19 @@ class DataStore extends Store{
         console.log(app.getPath('userData'))
         return this.get('tracks') || []
     }
-    addTracks(tracks){//生成数据
-        const tracksWithProps = tracks.map(track => {
-            return {
-                id:uuid(),
-                path:track,
-                filename:path.basename(track)
-            }
+    addTracks(tracks,title,artist,album,type,num){//生成数据
+       console.log(title)
+        const tracksWithProps = tracks.map((track, index) => {
+                return {
+                    id:uuid(),
+                    path:track,
+                    filename:path.basename(track),
+                    title:title[index],
+                    artist:artist[index],
+                    album:album[index],
+                    type:type[index]
+                }
+                
         }).filter(track => {//去重
             const currentTracksPath = this.getTrack().map(track => track.path)
             return currentTracksPath.indexOf(track.path) < 0

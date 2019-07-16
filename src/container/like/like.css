@@ -1,0 +1,56 @@
+.like_body{
+    width: 79%;
+    overflow: scroll;
+    height: 100%;
+}
+.like_nologin{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.like_nologin > img{
+    width: 300px;
+    height: 250px;
+}
+.like_nologin > span{
+    font-size: 15px;
+    color:rgb(150,150,150);
+}
+.like_head{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.like_page{
+    width: 100%;
+}
+.like_head_simple{
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color:rgb(150,150,150);
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+}
+.like_head_simple:hover{
+    background-color:rgb(34,34,34) 
+}
+.like_head_choosed{
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color:white;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    background-color: rgb(63,63,63);
+}

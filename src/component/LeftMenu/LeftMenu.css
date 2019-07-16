@@ -7,8 +7,6 @@
 .leftmeun_body{
     width: 270px;
     background-color: rgb(25,27,31);
-    /* display: flex;
-    flex-direction: column; */
     overflow: scroll;
     text-decoration: none;
 }

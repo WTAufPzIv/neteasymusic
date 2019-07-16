@@ -1,0 +1,163 @@
+.userinfo_body{
+    width: 100%;
+    background-color: rgb(25,25,25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* position: relative; */
+    text-align: center;
+    overflow: scroll;
+}
+.userinfo_close{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    /* background-color: red; */
+    left:96%;
+    top:50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.userinfo_close > img{ 
+    width: 30px;
+    height: 30px;
+}
+.userinfo_vision{
+    width: 60%;
+    /* background-color: yellow; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    /* overflow:scroll; */
+    flex-shrink: 0
+}
+.userinfo_avatar{
+    width: 250px;
+    height: 250px;
+    border-radius: 200px;
+    overflow: hidden;
+    /* background-color: burlywood; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 50px;
+}
+.userinfo_avatar > img{
+    width: 250px;
+    height: 250px;
+    
+}
+.userinfo_nickname{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    /* background-color: aquamarine; */
+    margin-top: 20px;
+    font-size: 35px;
+    color:rgb(200,200,200);
+    /* font-weight: bold; */
+}
+.userinfo_follow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    /* background-color: mediumorchid; */
+    margin-top: 10px;
+}
+.userinfo_follow > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 100px;
+    /* background-color: mediumorchid; */
+    margin-top: 20px;
+    font-size: 25px;
+    color:rgb(200,200,200)
+}
+.userinfo_script{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    /* background-color: rosybrown; */
+    margin-top: 20px;
+    font-size: 18px;
+    color:rgb(200,200,200);
+}
+.userinfo_accuntinfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 520px;
+    /* background-color: palegreen; */
+    margin-top: 25px;
+    color:rgb(200,200,200);
+}
+.userinfo_accuntinfo > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 520px;
+    /* background-color: yellow; */
+}
+.userinfo_accuntinfo > div > p{
+    display: block;
+    color:rgb(200,200,200);
+}
+.userinfo_accuntinfo > div > p > span{
+    color:rgb(140,140,140)
+}
+.userinfo_privideinfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 520px;
+    /* background-color: palegreen; */
+    margin-top: 25px;
+    color:rgb(200,200,200);
+}
+.userinfo_privideinfo > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 520px;
+    /* background-color: yellow; */
+}
+.userinfo_privideinfo > div > p{
+    display: block;
+    color:rgb(200,200,200)
+}
+.userinfo_privideinfo > div > p > span{
+    color:rgb(140,140,140)
+}
+.userinfo_logout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* background-color: yellowgreen; */
+    margin-top: 20px;
+    margin-bottom: 50px;
+    cursor: pointer;
+}
+.userinfo_logout > Button{
+    width: 300px;
+    cursor: pointer;
+}

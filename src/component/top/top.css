@@ -1,0 +1,106 @@
+.top{
+    width: 100%;
+    /* background-color: yellow; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.top_head{
+    width: 95%;
+    height: 50px;
+    /* background-color: greenyellow; */
+    line-height: 50px;
+}
+.top_head > p{
+    font-size: 20px;
+    color:rgb(200,200,200);
+}
+.top_hr{
+    width: 100%;
+    background-color: rgb(150,150,150);
+    height: 1px;
+}
+.top_body{
+    width: 95%;
+    /* height: 500px; */
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.top_item{
+    width: 300px;
+    height: 550px;
+    /* background-color: violet; */
+    margin-top:20px;
+}
+.top_item_img {
+    width: 300px;
+    height: 150px;
+    overflow: hidden;
+    background-position-y: -74px;
+    background-size: 100%;
+}
+.top_item_list{
+    width: 300px;
+    height: 400px;
+    /* background-color: salmon; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.top_item_list_item{
+    width: 300px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+}
+.top_item_list_item_name{
+    width: 70%;
+    height: 40px;
+    /* background-color: forestgreen; */
+    line-height: 40px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    color:white;
+}
+.top_item_list_item_name > span{
+    font-size: 16px;
+    position: relative;
+    margin-left: 10px;
+
+}
+.top_item_list_item_name > p{
+    display: block;
+    width: 200px;
+    font-size: 16px;
+    position: relative;
+    margin-left: 10px;
+    
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    height: 40px;
+    line-height: 40px;
+}
+.top_item_list_item_artist{
+    width: 30%;
+    height: 40px;
+    /* background-color:palevioletred; */
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.top_item_list_item_artist > p{
+    width: 50%;
+    height: 40px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-height: 40px;
+    color:rgb(130,130,130)
+}

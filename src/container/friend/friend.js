@@ -8,8 +8,8 @@ class Friend extends React.Component{
     }
     render(){
         return(
-            <div>
-                朋友页面
+            <div style = {{'color':'rgb(150,150,150)'}}>
+                该页面等待开发中...
             </div>
         )
     }
