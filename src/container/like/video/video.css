@@ -1,0 +1,82 @@
+.like_video_body{
+    /* width: 1030px; */
+    overflow: scroll;
+    /* background-color: yellow; */
+ }
+ .like_video_head{
+     margin-top: 20px;
+     width: 100%;
+     color:white;
+     font-size: 15px;
+     height: 50px;
+     line-height: 50px;
+ }
+ .like_video_hr{
+     width: 100%;
+     height: 1px;
+     background-color: rgb(150,150,150);
+ }
+ .like_video_list{
+     position: relative;
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-start;
+     flex-wrap: wrap;
+     /* background-color: palegreen; */
+ }
+ .like_video_list_item{
+     display: flex;
+     width: 220px;
+     height: 180px;
+     flex-direction: column;
+     cursor: pointer;
+     margin: 10px 16px;
+     /* background-color: blue */
+ }
+ .like_video_list_item > span{
+     display: block;
+     width: 170px;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     height: 20px;
+     line-height: 20px;
+     color:white;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-line-clamp: 1;
+ }
+ .like_video_list_item > img{
+     width: 220px;
+     height: 140px;
+ }
+ .like_video_list_item > p{
+     width: 170px;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     height: 15px;
+     line-height: 15px;
+     color:rgb(150,150,150);
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-line-clamp: 1;
+     margin:0;
+ }
+ .like_video_list_item > div{
+     width: 170px;
+     overflow: hidden;
+     display: flex;
+     flex-direction: row;
+     color:rgb(150,150,150);
+     height: 22px;
+ }
+ .like_video_page{
+     width: 200px;
+     margin:20px auto;
+     
+ }
+ .like_video_page > span{
+     color:rgb(150,150,150);
+     margin:0 10px;
+     cursor: pointer;
+ }

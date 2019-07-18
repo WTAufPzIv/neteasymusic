@@ -55,6 +55,7 @@ class Player extends Component{
     componentDidMount(){
         console.log('组件已渲染')
         var that = this
+        //从缓存中获取用户上一次使用程序时候播放器的播放音量，播放列表，播放索引的数据，并加载对应音频
         ipcRenderer.send('getvoice')
         ipcRenderer.on('getvoiceData',(event,num) => {
             console.log('音量：'+num)
@@ -68,6 +69,21 @@ class Player extends Component{
         audio.addEventListener('timeupdate', () => {
             //更新播放器状态
             this.updataProgressHTML(audio.currentTime)//获取当前播放时间
+        })
+        ipcRenderer.send('getlastplaylist')
+        ipcRenderer.on('lastplaylistdata',(event,data,num) => {
+            that.setState({
+                list:data || [],
+                index:num || 0,
+            })
+            if(data.length > 0){
+                that.setState({
+                    artist:data[num].artist,
+                    title:data[num].title
+                })
+                audio.src = data[num].path
+                audio.load()
+            }
         })
     }
 
@@ -148,55 +164,51 @@ class Player extends Component{
             searchBtn:that.state.searchBtn === './img/search_g.png'?'./img/search_w.png':'./img/search_g.png'
         })
     }
+    componentWillUnmount(){
+        ipcRenderer.send('saveplaylist',this.props.play_local_data,this.state.index)
+    }
     get_play_message = () => {
         setTimeout(() => {
             if(this.props.canchangeplaystatus){
-                console.log(this.props)
-                if(this.props.playtype === 1){ //播放本地音乐
+                if(this.props.play_type === 1){ 
+                   //播放本地音乐
                     var that = this
-                    ipcRenderer.send('getlocalmusic_msg')
-                    ipcRenderer.on('getlocalmusic',(event,files) => {
-                        if(files){
-                            that.setState({
-                                list:files || []
-                            }, () => {
-                                if(this.props.canchangeplaystatus){
-                                    let index = this.props.playlocalIndex
-                                //console.log(that.state.list[index].path)
-                                audio.src = that.state.list[index].path
-                                that.setState({
-                                    index:index
-                                })
-                                audio.load()
-                                audio.oncanplay = () => {
-                                    var thatt = that
-                                    that.setState({
-                                        time:audio.duration,
-                                        title:that.state.list[index].title,
-                                        time_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
-                                        time_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
-                                        status:'pause',
-                                        artist:thatt.state.list[index].artist,
-                                        album:thatt.state.list[index].album,
-                                        albumImg:'./img/album.png'
-                                    })
-                                }
-                                audio.play()
-                                console.log('播放')
-                                const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
-                                store.dispatch(action)
-                                const play = playstatus(true)
-                                store.dispatch(play)
-                                }
-                            })
-                        }
+                    this.setState({
+                        list:that.props.play_local_data
                     })
+                    let index = this.props.play_local_Index
+                    audio.src = that.state.list[index].path
+                    audio.load()
+                    audio.oncanplay = () => {
+                        var thatt = that
+                        that.setState({
+                            time:audio.duration,
+                            title:that.state.list[index].title,
+                            time_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                            time_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                            status:'pause',
+                            artist:thatt.state.list[index].artist,
+                            album:thatt.state.list[index].album,
+                            albumImg:'./img/album.png'
+                        })
+                    }
+                    audio.play()
+                    console.log('播放')
+                    const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
+                    store.dispatch(action)
+                    const play = playstatus(true)
+                    store.dispatch(play)
+                    this.setState({
+                        index:index
+                    })
+                    console.log(this.state)
+                    ipcRenderer.send('saveplaylist',this.props.play_local_data,this.state.index)
                 }
                 else if(this.props.playtype  === 2){
                     //播放在线音乐
                 }
             }
-        },50)
+        },100)
     }
 
     pauseandplay = () => {
@@ -308,6 +320,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -333,6 +346,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -361,6 +375,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -390,6 +405,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -414,6 +430,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -441,6 +458,7 @@ class Player extends Component{
                 this.setState({
                     index:flag
                 })
+                ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list[flag].path
                 audio.load()
                 audio.oncanplay = () => {
@@ -560,8 +578,9 @@ class Player extends Component{
 const mapstatetoprops = (state) => {
     return{
         canchangeplaystatus:state.player.canchangeplaystatus,
-        playtype:state.player.playtype,
-        playlocalIndex:state.player.playlocalIndex,
+        play_type:state.player.playtype,
+        play_local_Index:state.player.playlocalIndex,
+        play_local_data:state.player.playingdata
     }
   }
   const mapdistoprops = (dispatch) => {

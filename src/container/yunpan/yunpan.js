@@ -73,7 +73,7 @@ class Yunpan extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
     //    login_status:false,
        login_status:state.user.loginstatus,

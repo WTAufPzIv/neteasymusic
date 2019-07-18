@@ -58,17 +58,29 @@ function createWindow () {
         let updataedTrack = myStore.getTrack()//链式调用
           mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
   })
+  ipcMain.on('saveplaylist',(event,track,index) => {
+    store.set('playlist',track)
+    store.set('index',index)
+  })
+  ipcMain.on('getlastplaylist',() => {
+    var flag = store.get('playlist') || []
+    var num = store.get('index') || 0
+    mainWindow.send('lastplaylistdata',flag,num)
+  })
   ipcMain.on('savevoice',(event,num) => {
     store.set('voice',num)
   })
   ipcMain.on('getvoice',() => {
-    var flag = store.get('voice')
+    var flag = store.get('voice') || 0
     mainWindow.send('getvoiceData',flag)
   })
   ipcMain.on('deleteItem', (event,num) => {
     console.log(num)
     const updataedTrack = myStore.deleteTrack(num)//链式调用    
     //mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
+  })
+  ipcMain.on('saveindex',(event,num) => {
+    store.set('index',num)
   })
   ipcMain.on('addlocalmusic',(event,arg) => {
     dialog.showOpenDialog({

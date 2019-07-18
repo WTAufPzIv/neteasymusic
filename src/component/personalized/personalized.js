@@ -3,20 +3,38 @@ import './personalized.css'
 import { Carousel } from 'antd';
 import 'antd/dist/antd.css'; 
 import { connect } from 'react-redux'
-import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata } from '../../store/actionCreators'
+import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
+import { NavLink,withRouter } from 'react-router-dom'
 class Personalized extends React.Component{
     constructor(props){
         super(props)
         this.state = {
 
         }
+        
     }
     componentWillMount(){
         this.props.ask_bnner_data()
         this.props.ask_personalized_playlist_data()
         this.props.ask_personalized_newsong_data()
         this.props.ask_personalized_mv_data()
+    }
+    clickbanner = (type,id,url) => {
+        if(type === 1){
+            console.log('播放')
+        }
+        else if(type === 3000){
+            console.log('打开链接')
+        }
+        else if(type === 1005){
+            console.log('内部页面')
+        }
+    }
+    gotoplaylist = (id) => {
+        // console.log(id)
+        this.props.history.push("/musiclist",{id:id});
+        this.props.go_musiclist_detail()
     }
     render(){
         return(
@@ -26,9 +44,9 @@ class Personalized extends React.Component{
                     {
                        this.props.get_banner_data?this.props.banner_data.data.banners.map((item) => {
                            return (
-                               <div>
-                                   <img src = {item.imageUrl+ '?param=612y250'} style = {{'width':'612px','height':'250px'}}></img>
-                               </div>
+                                <div className = 'personalized_banner_item' onClick = {() => this.clickbanner(item.targetType,item.targetId,item.url||'')}>
+                                    <img src = {item.imageUrl+ '?param=612y250'} style = {{'width':'612px','height':'250px'}}></img>
+                                </div>   
                            )
                        }):(
                            <div>
@@ -48,7 +66,7 @@ class Personalized extends React.Component{
                        {
                            this.props.get_personalized_playlist?this.props.personalized_playlist_data.data.result.map((item) => {
                                return (
-                                   <div className = 'personalized_playlist_item'>
+                                   <div className = 'personalized_playlist_item' onClick = {() => this.gotoplaylist(item.id)}>
                                        <img src = {item.picUrl+ '?param=190y190'}></img>
                                        <div>{item.name}</div>
                                    </div>
@@ -140,7 +158,8 @@ const mapstatetoprops = (state) => {
       ask_bnner_data:() => dispatch(askbannerdata()),
       ask_personalized_playlist_data: () => dispatch(askpersonalizedplaylistdata()),
       ask_personalized_newsong_data: () => dispatch(askpersonalizednewsongdata()),
-      ask_personalized_mv_data: () => dispatch(askpersonalizedmvdata())
+      ask_personalized_mv_data: () => dispatch(askpersonalizedmvdata()),
+      go_musiclist_detail:() => dispatch(gomusiclistdeail())
     }
   }
 export default connect( mapstatetoprops, mapdistoprops )(Personalized)

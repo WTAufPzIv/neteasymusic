@@ -20,6 +20,7 @@ import LoginAndRegister from './component/LoginAndRegister/LoginAndRegister'
 import Userinfo from './container/userinfo/userinfo'
 import { connect } from 'react-redux'
 import  Usermsg  from './container/usermsg/usermsg'
+import Artist from './container/artist/artist'
 const { ipcRenderer } = window.require('electron');
 class App extends React.Component {
   constructor(props){
@@ -81,7 +82,6 @@ resize = () => {
             <Usermsg />
           </div>
           <div className = 'user_info' style = {{'display':this.props.open_userinfo?'flex':'none','height':this.state.middleheight+'px'}}>
-            {/* {this.refs.middleDom.offsetHeight} */}
             <Userinfo />
           </div>
           <Header />
@@ -90,7 +90,6 @@ resize = () => {
               <div style = {{'height':'100%','width':'100%','display':this.props.open_play_detail?'none':'flex','flexDirection':'row'}}>
                 <LeftMenu />
                 <Switch>
-                  {/* <Route path = '/' component = { Recommend } exact></Route> */}
                   <Route path = '/Recommend' component = { Recommend }  match='match' exact></Route>
                   <Route path = '/Recommend' component = { Recommend }></Route>
                   <Route path = '/Fm' component = { Fm } exact></Route>
@@ -98,9 +97,13 @@ resize = () => {
                   <Route path = '/friend' component = { Friend } exact ></Route>
                   <Route path = '/localmusic' component = { Localmusic } exact keep-alive></Route>
                   <Route path = '/download' component = { Download } exact></Route>
-                  <Route path = '/yunpan' component = { Yunpan } exact></Route>
-                  <Route path = '/Like' component = { Like } exact></Route>
-                  <Route path = '/musiclist' component = { Musiclist } exact ></Route>
+                  <Route path = '/Like' component = { Like }  match='match' exact></Route>
+                  <Route path = '/Like' component = { Like } ></Route>
+                  <Route path = '/yunpan' component = { Yunpan } ></Route>
+                  <Route path = '/musiclist' component = { Musiclist } ></Route>
+                  <Route path = '/musiclist' component = { Musiclist } match = 'match' exact></Route>
+                  {/* <Route path = '/artist' component = { Artist } match = 'match' exact></Route>
+                  <Route path = '/artist' component = { Artist } ></Route> */}
                   <Redirect to = '/Recommend'></Redirect>
                 </Switch>
               </div>

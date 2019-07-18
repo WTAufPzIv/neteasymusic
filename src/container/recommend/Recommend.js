@@ -16,8 +16,8 @@ class Recommend extends React.Component{
     }
     render(){
         return(
+            
             <div className = 'recommend_body'>
-                {/* <Redirect to = '/video' /> */}
                 <div className = 'recommend_vis'>
                     <div className = 'recommend_nav'>
                         <NavLink to = '/Recommend/personalized' className = 'recommend_nav_link' activeStyle = {{'color':'red'}}><div>个性推荐</div></NavLink>

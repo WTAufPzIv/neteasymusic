@@ -6,6 +6,8 @@ import  like_music  from './data'
 import create_music from './data1'
 import { Link,Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { ProgressCircle } from 'react-desktop/windows';
+import { askuserplaylist,askuserlikemusic,gomusiclistdeail } from '../../store/actionCreators'
 const { ipcRenderer } = window.require('electron');
 class LeftMenu extends Component{
     constructor(props){
@@ -29,7 +31,7 @@ class LeftMenu extends Component{
         }
         var flag1 = this.state.iconColor
         var flag2 = this.state.list_class
-        for(var i = 0; i < this.state.like_music_list.length+this.state.create_music_list.length; i++) {
+        for(var i = 0; i < 100; i++) {
             flag1.push('g')
             flag2.push('list_general')
         }
@@ -37,9 +39,15 @@ class LeftMenu extends Component{
             iconColor:flag1,
             list_class:flag2,
         })
+        // if(this.props.login_status){
+        //     this.props.ask_user_playlist(this.props.user_info.data.profile.userId)
+        // }
        
     }
     componentDidMount(){
+         this.props.ask_user_playlist(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
+         this.props.ask_user_like_music(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
+        // this.props.ask_user_playlist('431437071')
         var that = this
         ipcRenderer.on('windowHeight', (event, height) => {
             //alert(height)
@@ -90,6 +98,7 @@ class LeftMenu extends Component{
         arr = this.state.iconColor
         arr[index] = 'w'
         this.setState({iconColor:arr})
+        this.props.go_musiclist_detail()
     }
     test = (e) => {
         console.log(e)
@@ -142,47 +151,53 @@ class LeftMenu extends Component{
                     </div></Link>
                 </div>
 
+                {
+                    this.props.get_user_playlist&&this.props.login_status?(
+                        <div className = 'Createmusic_list' style = {{'display':this.props.user_playlist_data.data.playlist.length > 0 && this.props.login_status  ?'block':'none'}}>
+                        <div className = 'Createmusic_list_head'>收藏的歌单</div>
+                            {
+                                this.props.user_playlist_data.data.playlist.map((item,index) => {
+                                    return (
+                                        <Link to = {{pathname:'/musiclist',state:{id:item.id}}}>
+                                            <div key = { index } className = {this.state.list_class[index+8]} onMouseMove = {this.hover.bind(this,index+8)} onMouseLeave = {this.unhover.bind(this,index+8)} onClick = { () => this.click(index+8)}>
+                                            <img src = {require('./img/like_music_list_'+this.state.iconColor[index + 8]+'.png')} className = 'list_img'/>
+                                            <span className = 'list_span1' style={{"WebkitBoxOrient": "vertical"}}>{item.name}</span>
+                                            </div>
+                                        </Link>
+                                    )
+                                })
+                            }
+                        </div>
+                    ):(
+                        <div><ProgressCircle
+                                    color='white'
+                                    size={100}
+                                    /></div>
+                    )
+                }
 
-                <div className = 'Likemusic_list' style = {{'display':this.state.create_music_list.length > 0 && this.props.login_status  ?'block':'none'}}>
-                    <div className = 'Likemusic_list_head'>创建的歌单</div>
-                    {
-                        this.state.create_music_list.map((item,index) => {
-                            return (
-                                <Link to = '/musiclist'><div key = {index} className = {this.state.list_class[index+8]} onMouseMove = {this.hover.bind(this,index+8)} onMouseLeave = {this.unhover.bind(this,index+8)} onClick = {this.click.bind(this,index+8)}>
-                                    <img src = {require('./img/like_music_list_'+this.state.iconColor[index + 8]+'.png')} className = 'list_img'/>
-                                    <span className = 'list_span'>{this.state.create_music_list[index]}</span>
-                                </div></Link>
-                            )
-                        })
-                    }
-                </div>
+                
 
 
-                <div className = 'Createmusic_list' style = {{'display':this.state.like_music_list.length > 0 && this.props.login_status  ?'block':'none'}}>
-                    <div className = 'Createmusic_list_head'>收藏的歌单</div>
-                    {
-                        this.state.like_music_list.map((item,index) => {
-                            return (
-                                <Link to = '/musiclist'><div key = {index} className = {this.state.list_class[index+8+this.state.create_music_list.length]} onMouseMove = {this.hover.bind(this,index+8+this.state.create_music_list.length)} onMouseLeave = {this.unhover.bind(this,index+8+this.state.create_music_list.length)} onClick = {this.click.bind(this,index+8+this.state.create_music_list.length)}>
-                                    <img src = {require('./img/like_music_list_'+this.state.iconColor[index + 8 + this.state.create_music_list.length]+'.png')} className = 'list_img'/>
-                                    <span className = 'list_span'>{this.state.like_music_list[index]}</span>
-                                </div></Link>
-                            )
-                        })
-                    }
-                </div>
+
             </div>
         )
     }
 }
 const mapstatetoprops = (state) => {
+    // console.log(state)
     return{
-        login_status: state.user.loginstatus
+        login_status: state.user.loginstatus,
+        user_info:state.user.user,
+        get_user_playlist:state.userplaylist.getuserplaylist,
+        user_playlist_data:state.userplaylist.userplaylistdata,
     }
   }
   const mapdistoprops = (dispatch) => {
     return{
-        
+        ask_user_playlist:(uid) => dispatch(askuserplaylist(uid)),
+        ask_user_like_music: (uid) => dispatch(askuserlikemusic(uid)),
+        go_musiclist_detail:() => dispatch(gomusiclistdeail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(LeftMenu)

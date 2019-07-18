@@ -7,7 +7,6 @@ import { Popconfirm, message,  } from 'antd'
 import { Button } from 'react-desktop/windows';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import moment from 'moment'
-const shell = window.require('electron').shell;
 class Userinfo extends React.Component{
     constructor(props){
         super(props)

@@ -86,11 +86,17 @@
    background-color: rgb(45,45,45);
 }
 .day_list_item > span{
+    display: block;
+    height: 50px;
+    line-height: 50px;
     width: 40%;
-    display: flex;
     flex-direction: row;
     color: white;
     margin:0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
 }
 .day_list_item > div{
     width: 10%;
@@ -111,6 +117,8 @@
 }
 .day_list_item > p{
     width: 25%;
+    height: 50px;
+    line-height: 50px;
     display: flex;
     flex-direction: row;
     color: rgb(150,150,150);

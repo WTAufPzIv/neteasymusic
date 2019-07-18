@@ -1,7 +1,7 @@
 .like_body{
-    width: 79%;
     overflow: scroll;
     height: 100%;
+    flex:1;
 }
 .like_nologin{
     width: 100%;

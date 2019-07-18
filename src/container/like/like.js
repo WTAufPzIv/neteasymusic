@@ -6,6 +6,7 @@ import Album from './album/album'
 import Artist from './artist/artist'
 import Video from './video/video'
 import Buy from './buy/buy'
+import { Link,NavLink } from 'react-router-dom'
 class Like extends React.Component{
     constructor(props){
         super(props)
@@ -16,6 +17,11 @@ class Like extends React.Component{
     componentDidMount(){
 
     }
+    changerouter = (e) => {
+        this.setState({
+            router:e
+        })
+    }
     render(){
         return(
             <div className = 'like_body'>
@@ -23,10 +29,10 @@ class Like extends React.Component{
                     this.props.login_status?(
                         <div>
                             <div className = 'like_head'>
-                                <div className = {this.state.router === 'likealbum'?'like_head_choosed':'like_head_simple'}>专辑</div>
-                                <div className = {this.state.router === 'likeartist'?'like_head_choosed':'like_head_simple'}>歌手</div>
-                                <div className = {this.state.router === 'likemv'?'like_head_choosed':'like_head_simple'}>MV</div>
-                                <div className = {this.state.router === 'buy'?'like_head_choosed':'like_head_simple'}>已购买</div>
+                                <NavLink to = '/Like/likealbum'><div className = {this.state.router === 'likealbum'?'like_head_choosed':'like_head_simple'} onClick = {() => this.changerouter('likealbum')}>专辑</div></NavLink>
+                                <NavLink to = '/Like/likeartist'><div className = {this.state.router === 'likeartist'?'like_head_choosed':'like_head_simple'} onClick = {() => this.changerouter('likeartist')}>歌手</div></NavLink>
+                                <NavLink to = '/Like/likemv'><div className = {this.state.router === 'likemv'?'like_head_choosed':'like_head_simple'} onClick = {() => this.changerouter('likemv')}>MV</div></NavLink>
+                                <NavLink to = '/Like/buy'><div className = {this.state.router === 'buy'?'like_head_choosed':'like_head_simple'} onClick = {() => this.changerouter('buy')}>已购买</div></NavLink>
                             </div>
                             <div className = 'like_page'>
                                 <Switch>
@@ -51,7 +57,7 @@ class Like extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
     //    login_status:false,
        login_status:state.user.loginstatus,

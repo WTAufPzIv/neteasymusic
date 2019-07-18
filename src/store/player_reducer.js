@@ -13,6 +13,7 @@ export default function player(state = defaultState, action) {
         var flag = JSON.parse(JSON.stringify(state))//深拷贝
         flag.playlocalIndex = action.index
         flag.playtype = action.play_type
+        flag.playingdata = action.play_file
         return flag
     }
     else if(action.type === CAN_CHANGE_PLAY_STATUS ){

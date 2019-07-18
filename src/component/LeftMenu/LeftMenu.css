@@ -9,6 +9,8 @@
     background-color: rgb(25,27,31);
     overflow: scroll;
     text-decoration: none;
+    overflow: scroll;
+    user-select: none;
 }
 .Recommend{
     width: 100%;
@@ -18,7 +20,6 @@
 .Recommend_head{
     width: 100%;
     height: 30px;
-  
     padding-left: 5px;
     font-size: 15px;
     color:rgb(124,124,124);
@@ -38,6 +39,7 @@
     border-left-width: 5px;
     border-left-color: rgb(25,27,31);
     color:rgb(173,175,178);
+    flex-wrap: nowrap;
 }
 .list_focus{
     user-select:none;
@@ -64,6 +66,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: nowrap;
     padding-left: 20px;
     border-left-style: solid;
     border-left-width: 5px;
@@ -74,10 +77,23 @@
     width: 18px;
     height: 18px;
 }
+.list_span1{
+    height: 40px;
+    display: block;
+    position: relative;
+    margin-left: 7px;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+   
+}
 .list_span{
     position: relative;
     margin-left: 7px;
     text-decoration: none;
+    margin:0;
 }
 .Minemusic{
     position: relative;

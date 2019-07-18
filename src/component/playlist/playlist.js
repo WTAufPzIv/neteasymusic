@@ -2,7 +2,9 @@ import React from 'react';
 import './playlist.css'
 import { Select,Pagination } from 'antd';
 import { connect } from 'react-redux'
-import { askplaylist } from '../../store/actionCreators'
+import { askplaylist,gomusiclistdeail } from '../../store/actionCreators'
+import "antd/lib/style/themes/default.less"
+import './index.less'
 import { ProgressCircle } from 'react-desktop/windows';
 const { Option, OptGroup } = Select;
 class Playlist extends React.Component{
@@ -26,6 +28,10 @@ class Playlist extends React.Component{
     changepage = (e) => {
         console.log(e)
         this.props.ask_playlist(this.state.classname,e,30)
+    }
+    gotoplaylist = (id) => {
+        this.props.history.push("/musiclist",{id:id});
+        this.props.go_musiclist_detail()
     }
     render(){
         return(
@@ -119,7 +125,7 @@ class Playlist extends React.Component{
                        {
                            this.props.get_playlist?this.props.playlist_data.data.playlists.map((item) => {
                                return (
-                                   <div className = 'playlist_item'>
+                                   <div className = 'playlist_item' onClick = { () => this.gotoplaylist(item.id)}>
                                        <img src = {item.coverImgUrl+ '?param=180y180'}></img>
                                        <div>{item.name}</div>
                                    </div>
@@ -141,7 +147,7 @@ class Playlist extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
       get_playlist:state.playlist.getplaylist,
       playlist_data:state.playlist.playlistdata,
@@ -149,7 +155,8 @@ const mapstatetoprops = (state) => {
   }
   const mapdistoprops = (dispatch) => {
     return{
-        ask_playlist : (classname,page,num) => dispatch(askplaylist(classname,page,num))
+        ask_playlist : (classname,page,num) => dispatch(askplaylist(classname,page,num)),
+        go_musiclist_detail:() => dispatch(gomusiclistdeail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Playlist)

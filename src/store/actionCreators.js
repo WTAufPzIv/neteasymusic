@@ -31,15 +31,24 @@ import {
     GET_LIKE_ALBUM,
     GET_LIKE_ARTIST,
     GET_LIKE_VIDEO,
-    GET_BUY_ALBUM
+    GET_BUY_ALBUM,
+    GET_USER_PLAYLIST,
+    GET_PLAYLIST_DETAIL,
+    ADD_PLAYLIST_MUSIC_DETAIL,
+    GET_USER_LIKE_MUSIC,
+    GO_MUSICLIST_DETAIL,
+    GO_ARTIST_DETAIL,
+    GET_MUSICLIST_COMMENT,
+    DELETE_DATA
 } from "./actionType";
-import moment from 'moment'
 import axios from 'axios'
 import { message  } from 'antd'
-export const play_localmusic = (index,play_type) => ({
+import moment from 'moment'
+export const play_localmusic = (index,play_type,files) => ({
     type:PLAY_LOCALMUSIC,
     index:index,
-    play_type:play_type
+    play_type:play_type,
+    play_file:files
 })
 export const canchangeplaystatus = () => ({
     type:CAN_CHANGE_PLAY_STATUS,
@@ -512,6 +521,128 @@ export const askbuyalbum = (page) =>{
                 get_buy_album:true,
                 buy_album_data:res
             })
+        })
+    }
+}
+export const askuserplaylist = (uid) => {
+    return dispatch => {
+       
+        axios.post('http://localhost:9093/user/playlist?uid='+uid)
+        .then(res => {
+       
+            dispatch({
+                type:GET_USER_PLAYLIST,
+                get_user_playlist:true,
+                user_playlist_data:res
+            })
+        })
+    }
+}
+export const askplaylistdetail = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/playlist/detail?id='+id)
+        .then(res => {
+            dispatch({
+                type:GET_PLAYLIST_DETAIL,
+                get_play_list_detail:true,
+                play_list_detail_data:res
+            })
+            dispatch({
+                type:ADD_PLAYLIST_MUSIC_DETAIL,
+                get_playlist_music_detail:false,
+                playlist_music_detail_data:[]
+            })
+            console.log(res.data.playlist.trackIds)
+            let arr = []
+            if(res.data.playlist.trackIds.length > 1000){
+                res.data.playlist.trackIds.map((item,index) => {
+                    let s = res
+                    let d= dispatch
+                    axios.post('http://localhost:9093/song/detail?ids='+item.id)
+                    .then(ress => {
+                        // console.log(ress)
+                        arr.push(ress.data.songs[0])
+                        if(index >= s.data.playlist.trackIds.length - 1){
+                            d({
+                                type:ADD_PLAYLIST_MUSIC_DETAIL,
+                                get_playlist_music_detail:true,
+                                playlist_music_detail_data:arr
+                            })
+                        }
+                    })
+                    return 0
+                })
+            }
+            else{
+                dispatch({
+                    type:ADD_PLAYLIST_MUSIC_DETAIL,
+                    get_playlist_music_detail:true,
+                    playlist_music_detail_data:res.data.playlist.tracks
+                })
+            }
+        })
+    }
+}
+export const askuserlikemusic = (uid) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/likelist?uid=' + uid)
+        .then(res => {
+            dispatch({
+                type:GET_USER_LIKE_MUSIC,
+                get_user_like_music:true,
+                user_like_music_data:res
+            })
+        })
+    }
+}
+export const gomusiclistdeail = () => {
+    return {
+        type:GO_MUSICLIST_DETAIL
+    }
+} 
+export const goartistdetail = () => {
+    return {
+        type:GO_ARTIST_DETAIL
+    }
+}
+export const askplaylistcomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MUSICLIST_COMMENT,
+                get_musiclist_comment:true,
+                musiclist_comment_data:res,
+                musiclist_comment_data_hot:res.data.hotComments,
+                musiclist_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const askmoreplaylistcomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page+'&limit=20')
+        .then(res => {
+            dispatch({
+                type:GET_MUSICLIST_COMMENT,
+                get_musiclist_comment:true,
+                musiclist_comment_data:res,
+                musiclist_comment_data_hot:[],
+                musiclist_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const deletedata = () => {
+    return {
+        type:DELETE_DATA
+    }
+}
+export const releascomment = (e,id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment?t=1&type=2&id='+id+'&content='+e)
+        .then(res => {
+            message.success('评论成功')
         })
     }
 }

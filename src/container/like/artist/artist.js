@@ -7,22 +7,81 @@ class Artist extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-
+            page:0
         }
     }
     componentDidMount(){
-
+        this.props.ask_like_atist(0)
+    }
+    pre = () => {
+        var that = this
+        if(this.state.page === 0){
+            alert('已经是第一页')
+        }
+        else{
+            this.setState({
+                page:that.state.page-1
+            },() => {
+                this.props.ask_like_atist(that.state.page)
+            })
+            
+        }
+    }
+    next = () => {
+        var that=  this
+        if(this.props.get_like_artist){
+            if(this.props.like_artist_data.data.hasMore){
+                this.setState({
+                    page:that.state.page + 1
+                },() => {
+                    this.props.ask_like_atist(that.state.page)
+                })
+            }
+            else{
+                alert('已经是最后一页')
+            }
+        }
     }
     render = () => {
         return(
-            <div className = 'like_album_body'>
-
+            <div className = 'like_artist_body'>
+                <div className = 'like_artist_head'>收藏的歌手</div>
+                <div className = 'like_artist_list'>
+                    {
+                        this.props.get_like_artist?this.props.like_artist_data.data.data.map((item,index) => {
+                            return (
+                                <div className = 'like_artist_item' style = {{'backgroundColor':index%2===0?'rgb(28,28,28)':''}}>
+                                    <img  src = {item.picUrl+'?param=50y50'}/>
+                                    <p>{item.name}</p>
+                                    <span>专辑：{item.albumSize}</span>
+                                    <div>MV：{item.mvSize}</div>
+                                </div>
+                            )
+                        }):(
+                            <div><ProgressCircle
+                                    color='white'
+                                    size={100}
+                                    /></div>
+                        )
+                    }
+                    {
+                        this.props.get_like_artist?(
+                            <div className = 'like_artist_page'>
+                                <span style = {{'color':this.state.page === 0?'rgb(150,150,150)':'white'}} onClick = {() => this.pre()}>上一页</span>
+                                <span>{this.state.page+1}</span>
+                                <span style = {{'color':this.props.like_artist_data.data.hasMore !== true?'rgb(150,150,150)':'white'}} onClick = {() => this.next()}>下一页</span>
+                            </div>
+                        ):(
+                            <div></div>
+                        )
+                }
+                </div>
             </div>
         )
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    
     return{
         get_like_artist:state.like.getlikeartist,
         like_artist_data:state.like.likeartistdata,

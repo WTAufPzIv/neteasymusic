@@ -13,6 +13,9 @@
     width: 60%;
     height: 250px;
 }
+.personalized_banner_item{
+    cursor: pointer;
+}
 .ant-carousel .slick-slide {
     text-align: center;
     height: 100%;

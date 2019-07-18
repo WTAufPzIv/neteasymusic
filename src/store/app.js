@@ -10,6 +10,8 @@ import day from './day_reducer'
 import mv from './mv_reducer'
 import yunpan from './yunpan_reducer'
 import like from './like_reducer'
+import userplaylist from './userplaylist_reducer'
+import router from './router_reducer'
 const neteasecloudmusic = combineReducers({
     player,
     user,
@@ -21,6 +23,8 @@ const neteasecloudmusic = combineReducers({
     day,
     mv,
     yunpan,
-    like
+    like,
+    userplaylist,
+    router
 })
 export default neteasecloudmusic;

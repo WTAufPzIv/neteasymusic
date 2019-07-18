@@ -82,13 +82,13 @@ class Album extends React.Component{
                         ):(
                             <div></div>
                         )
-                    }
+                }
             </div>
         )
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+
     return{
        get_like_album:state.like.getlikealbum,
        like_album_data:state.like.likealbumdata,

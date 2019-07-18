@@ -39,7 +39,7 @@ class Fm extends React.Component{
                                                      <img src = {require('./img/like.png')}></img>
                                                      <span>{index+1}</span>
                                                  </div>
-                                                 <span>{item.name}</span>
+                                                 <span style={{"WebkitBoxOrient": "vertical"}}>{item.name}</span>
                                                  <p>{item.artists.slice(0,2).map((itemm) => {
                                                      return (
                                                          <span>{itemm.name}{'\u00a0'}</span>

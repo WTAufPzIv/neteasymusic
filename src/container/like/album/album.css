@@ -1,12 +1,15 @@
 .like_album_body{
-    width: 95%;
-    margin:0 auto;
-    user-select: none;
+   /* width: 1030px; */
+   overflow: scroll;
+   /* background-color: yellow; */
 }
 .like_album_head{
+    margin-top: 20px;
     width: 100%;
     color:white;
     font-size: 15px;
+    height: 50px;
+    line-height: 50px;
 }
 .like_album_hr{
     width: 100%;
@@ -14,12 +17,13 @@
     background-color: rgb(150,150,150);
 }
 .like_album_list{
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
+    /* background-color: palegreen; */
 }
 .like_album_list_item{
     display: flex;
@@ -27,6 +31,8 @@
     height: 245px;
     flex-direction: column;
     cursor: pointer;
+    margin: 10px 16px;
+    /* background-color: blue */
 }
 .like_album_list_item > span{
     display: block;
@@ -46,11 +52,12 @@
 }
 .like_album_list_item > p{
     width: 170px;
-    overflow: hidden;
+    
     text-overflow: ellipsis;
     height: 15px;
     line-height: 15px;
     color:rgb(150,150,150);
+    overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
