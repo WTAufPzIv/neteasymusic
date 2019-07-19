@@ -1,0 +1,70 @@
+.artist_album_body{
+    width: 100%;
+    overflow: scroll;
+    /* background-color: yellow; */
+ }
+ .artist_album_list{
+     position: relative;
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-start;
+     flex-wrap: wrap;
+     /* background-color: palegreen; */
+ }
+ .artist_album_list_item{
+     display: flex;
+     width: 200px;
+     height: 245px;
+     flex-direction: column;
+     cursor: pointer;
+     margin: 10px 16px;
+     /* background-color: blue */
+ }
+ .artist_album_list_item > span{
+     display: block;
+     width: 170px;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     height: 20px;
+     line-height: 20px;
+     color:white;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-line-clamp: 1;
+ }
+ .artist_album_list_item > img{
+     width: 200px;
+     height: 200px;
+ }
+ .artist_album_list_item > p{
+     width: 170px;
+     
+     text-overflow: ellipsis;
+     height: 15px;
+     line-height: 15px;
+     color:rgb(150,150,150);
+     overflow: hidden;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-line-clamp: 1;
+     margin:0;
+ }
+ .artist_album_list_item > div{
+     width: 170px;
+     overflow: hidden;
+     display: flex;
+     flex-direction: row;
+     color:rgb(150,150,150);
+     height: 22px;
+ }
+ .artist_album_page{
+     width: 200px;
+     margin:20px auto;
+     
+ }
+ .artist_album_page > span{
+     color:rgb(150,150,150);
+     margin:0 10px;
+     cursor: pointer;
+ }

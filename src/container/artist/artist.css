@@ -1,0 +1,117 @@
+.artist_detail_body{
+    height: 100%;
+    /* background-color: yellow; */
+    flex:1;
+    overflow: scroll;
+    user-select: none;
+}
+.artist_detail_back{
+    cursor: pointer;
+    width: 50px;
+    font-size: 15px;
+    color :rgb(150,150,150);
+    margin-left: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.artist_detail_body::-webkit-scrollbar  
+{  
+    width: 15px;    
+    background-color: #fff;  
+}  
+.artist_detail_head{
+    width: 95%;
+    /* height: 260px; */
+    margin:0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+}
+.artist_detail_head > img{
+   width: 250px;
+   height: 250px;
+}
+.artist_detail_head_simInfo{
+    height: 250px;
+    flex:1;
+    margin-left: 15px;
+}
+.artist_detail_head_simInfo > div{
+    height: 65px;
+    width: 100%;
+    line-height: 65px;
+    font-size: 30px;
+    color:white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.artist_detail_head_simInfo > div > p{
+    margin:0;
+}
+.artist_detail_head_simInfo > div > div{
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    color:rgb(150,150,150);
+    font-size: 15px;
+}
+.artist_detail_head_simInfo > p{
+    /* height: 35px; */
+    line-height: 35px;
+    margin:0;
+    font-size: 15px;
+    color:rgb(200,200,200);
+}
+.artist_detail_head_simInfo > span{
+    font-size: 15px;
+    color:rgb(200,200,200);
+}
+.artist_detail_nav{
+    margin-top: 10px;
+    height: 45px;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    
+}
+.artist_detail_hr{
+    width: 95%;
+    height: 1px;
+    background-color: rgb(40,40,40);
+    margin-top: 3px;
+}
+.artist_detail_nav_selected{
+    width: 150px;
+    height: 43px;
+    line-height: 43px;
+    font-size: 15px;
+    color:red;
+    border-bottom-style: solid;
+    border-bottom-color: red;
+    border-bottom-width: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+.artist_detail_nav_normal{
+    width: 150px;
+    height: 43px;
+    line-height: 43px;
+    font-size: 15px;
+    color:rgb(200,200,200);
+    border-bottom-style: solid;
+    border-bottom-color: rgb(25,25,25);
+    border-bottom-width: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+.artist_detail_page{
+    width: 95%;
+    margin:0 auto;
+}

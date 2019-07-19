@@ -40,7 +40,19 @@ import {
     GO_ARTIST_DETAIL,
     GET_MUSICLIST_COMMENT,
     DELETE_DATA,
-    REFRESH_PLAYLIST
+    DELETE_ARTIST_DATA,
+    GET_ARTIST_MUSIC,
+    GET_ARTIST_MV,
+    GET_ARTIST_ALBUM,
+    GET_ARTIST_DES,
+    GO_ALBUM_DETAIL,
+    GET_ALBUM_DETAIL,
+    GET_ALBUM_COMMENT,
+    GET_ALBUM_DYNAMIC,
+    DELETE_ALBUM_DATA,
+    NEW_TOP,
+    PUSH_STACK,
+    POP_STACK 
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
@@ -266,6 +278,7 @@ export const askbannerdata = () => {
 }
 export const askpersonalizedplaylistdata = () => {
     return dispatch => {
+        // axios.post('http://localhost:9093/personalized?timestamp='+moment(Date().now).valueOf())
         axios.post('http://localhost:9093/personalized')
         .then(res => {
             dispatch({
@@ -578,6 +591,11 @@ export const goartistdetail = () => {
         type:GO_ARTIST_DETAIL
     }
 }
+export const goalbumdetail = () => {
+    return {
+        type:GO_ALBUM_DETAIL
+    }
+}
 export const askplaylistcomment = (id,page) => {
     return dispatch => {
         axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page+'&timestamp='+moment(Date().now).valueOf())
@@ -607,6 +625,7 @@ export const askmoreplaylistcomment = (id,page) => {
     }
 }
 export const deletedata = () => {
+    console.log('删除缓存')
     return {
         type:DELETE_DATA
     }
@@ -638,16 +657,6 @@ export const votecomment = (id,cid,type) => {
         axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=2')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
-            // axios.post('http://localhost:9093/comment/playlist?id='+id+'&timestamp='+moment(Date().now).valueOf())
-            // .then(ress => {
-            //     dispatch({
-            //         type:GET_MUSICLIST_COMMENT,
-            //         get_musiclist_comment:true,
-            //         musiclist_comment_data:ress,
-            //         musiclist_comment_data_hot:ress.data.hotComments,
-            //         musiclist_comment_data_all:ress.data.comments
-            //     })
-            // })
         })
     }
 }
@@ -678,5 +687,184 @@ export const sharemusiclist = (id) => {
         .then(res => {
             message.success('操作成功')
         })
+    }
+}
+export const clearoldartistdata = () => {
+    return {
+        type:DELETE_ARTIST_DATA 
+    }
+}
+export const askartistmusic = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/artists?id='+id)
+        .then(res => {
+            dispatch({
+                type:GET_ARTIST_MUSIC,
+                get_artist_music:true,
+                artist_music_data:res.data
+            })
+        })
+    }
+}
+export const askartistmv = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/artist/mv?limit=30&id='+id+'&offset='+page*30)
+        .then(res => {
+            dispatch({
+                type:GET_ARTIST_MV,
+                get_artist_mv:true,
+                artist_mv_data:res.data
+            })
+        })
+    }
+}
+export const askartistalbum = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/artist/album?id='+id+'&offset=' + page*50)
+        .then(res => {
+            dispatch({
+                type:GET_ARTIST_ALBUM,
+                get_artist_album:true,
+                artist_album_data:res.data,
+            })
+        })
+    }
+}
+export const askartistdescribe = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/artist/desc?id=' + id)
+        .then(res => {
+            dispatch({
+                type:GET_ARTIST_DES,
+                get_artist_des:true,
+                artist_des_data:res.data,
+            })
+        })
+    }
+}
+export const askalbumdetail = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/album?id=' +id)
+        .then(res => {
+            dispatch({
+                type:GET_ALBUM_DETAIL,
+                get_album_detail:true,
+                album_detail_data:res.data
+            })
+        })
+    }
+}
+export const askalbumdynamic = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/album/detail/dynamic?id=' +id)
+        .then(res => {
+            console.log(res)
+            dispatch({
+                type:GET_ALBUM_DYNAMIC,
+                get_album_dynamic:true,
+                album_dynamic_data:res.data
+            })
+        })
+    }
+
+}
+export const askalbumcomment = (id, page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30&timestamp='+moment(Date().now).valueOf())
+        .then(res => {
+            console.log(res.data)
+            dispatch({
+                type:GET_ALBUM_COMMENT,
+                get_album_comment:true,
+                album_comment_data:res.data,
+                album_comment_data_hot:res.data.hotComments,
+                album_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const askmorealbumcomment = (id, page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30&timestamp='+moment(Date().now).valueOf())
+        .then(res => {
+            dispatch({
+                type:GET_ALBUM_COMMENT,
+                get_album_comment:true,
+                album_comment_data:res.data,
+                album_comment_data_hot:[],
+                album_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const deletalbumedata = () => {
+    return {
+        type:DELETE_ALBUM_DATA
+    }
+}
+export const collalbum = (id,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/album/sub?t='+type+'&id='+id+'&timestamp='+moment(Date().now).valueOf())
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+            dispatch({
+                type:GET_ALBUM_DYNAMIC,
+                get_album_dynamic:false,
+                album_dynamic_data:{}
+            })
+            axios.post('http://localhost:9093/album/detail/dynamic?id='+id+'&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_ALBUM_DYNAMIC,
+                    get_album_dynamic:true,
+                    album_dynamic_data:ress.data
+                })
+            })
+        })
+    }
+}
+
+export const releascommentalbum = (e,id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment?t=1&type=3&id='+id+'&content='+e)
+        .then(res => {
+            message.success("评论成功")
+            dispatch({
+                type:DELETE_ALBUM_DATA
+            })
+            axios.post('http://localhost:9093/comment/album?id='+id+'&before=0&limit=30&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_ALBUM_COMMENT,
+                    get_album_comment:true,
+                    album_comment_data:ress.data,
+                    album_comment_data_hot:ress.data.hotComments,
+                    album_comment_data_all:ress.data.comments
+                })
+            })
+        })
+    }
+}
+export const votecommentalbum = (id,cid,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=3')
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+        })
+    }
+}
+export const newtop = () => {
+    return {
+        type:NEW_TOP
+    }
+}
+export const pushstack = () => {
+    return {
+        type:PUSH_STACK
+    }
+}
+export const popstack = () => {
+    return{
+        type:POP_STACK
     }
 }

@@ -44,11 +44,11 @@ class Video extends React.Component{
         setTimeout(() => {
             this.props.ask_mv(this.state.type,this.state.page*30,this.state.order)
         })
-        window.scrollTo(0,0);
+        this.refs.mv_body.scrollTo(0,0);
     }
     render(){
         return(
-            <div className = 'mv_body'>
+            <div className = 'mv_body' ref = 'mv_body'>
                 <div className = 'mv_head'>
                    <div className = 'mv_head_lan'>
                        <p>地区：{'\u00a0'}</p>
@@ -87,7 +87,7 @@ class Video extends React.Component{
                {
                    this.props.get_mv?(
                         <div className = 'mv_page'>
-                            <span style = {{'color':this.state.page === 0?'rgb(150,150,150)':'white'}} onClick = {this.state.page === 0?() => this.chagepage(1):()=>{alert('已是第一页')}}>上一页</span>
+                            <span style = {{'color':this.state.page === 0?'rgb(150,150,150)':'white'}} onClick = {this.state.page === 0?()=>{alert('已是第一页')}:() => this.chagepage(1)}>上一页</span>
                             <span style = {{'color':'rgb(150,150,150)'}}>{this.state.page+1}</span>
                             <span style = {{'color':this.props.mv_data.data.hasMore === true?'white':'rgb(150,150,150)'}} onClick = {this.props.mv_data.data.hasMore === true?() => this.chagepage(2):()=>{alert('已是最后一页')}}>下一页</span>
                         </div>

@@ -1,0 +1,20 @@
+.artist_des_body{
+    width: 95%;
+    margin:0 auto;
+}
+.artist_des_brie{
+    font-size: 15px;
+    color:rgb(200,200,200);
+    margin:15px 0;
+}
+.artist_des_item{
+    margin:20px 0;
+}
+.artist_des_item > span{
+    font-size: 15px;
+    color:rgb(200,200,200);
+}
+.artist_des_item > p{
+    font-size: 15px;
+    color:rgb(150,150,150);
+}

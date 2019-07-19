@@ -1,0 +1,55 @@
+.artist_mv_list{
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin:20px auto;
+}
+.artist_mv_list_item{
+    width: 300px;
+    height: 300px;
+}
+.artist_mv_list_item > img{
+    width: 300px;
+    height: 200px;
+}
+.artist_mv_list_item > p{
+    height: 25px;
+    font-size: 17px;
+    color:white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    margin:0;
+    line-height: 25px;
+}
+.artist_mv_list_item > span{
+    font-size: 12px;
+    color:rgb(150,150,150);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+}
+.artist_mv_page{
+    width: 1070px;
+    height: 50px;
+    /* background-color: tan; */
+    /* margin-bottom: 20px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin:20px auto;
+}
+.artist_mv_page > span{
+    display: block;
+    width: 80px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}

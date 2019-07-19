@@ -1,18 +1,18 @@
 import React from 'react'
 import './album.css'
 import { connect } from 'react-redux'
+import { askartistalbum,goalbumdetail } from '../../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
-import { asklikealbum,goalbumdetail } from '../../../store/actionCreators'
-import './album.css'
 class Album extends React.Component{
     constructor(props){
         super(props)
         this.state = {
             page:0
         }
+
     }
-    componentDidMount(){
-        this.props.ask_like_album(0)
+    componentWillMount(){
+
     }
     pre = () => {
         var that = this
@@ -23,19 +23,19 @@ class Album extends React.Component{
             this.setState({
                 page:that.state.page-1
             },() => {
-                this.props.ask_like_album(that.state.page)
+                this.props.ask_artist_album(that.state.page)
             })
             
         }
     }
     next = () => {
         var that=  this
-        if(this.props.get_like_album){
-            if(this.props.like_album_data.data.hasMore){
+        if(this.props.get_artist_album){
+            if(this.props.artist_album_data.hasMore){
                 this.setState({
                     page:that.state.page + 1
                 },() => {
-                    this.props.ask_like_album(that.state.page)
+                    this.props.ask_artist_album(that.state.page)
                 })
             }
             else{
@@ -45,18 +45,16 @@ class Album extends React.Component{
     }
     gotoalbumdetail = (id) => {
         this.props.history.push('/album', {id:id})
-        this.props.go_album()
+        this.props.go_album(id)
     }
-    render = () => {
-        return(
-            <div className = 'like_album_body'>
-                <div className = 'like_album_head'>收藏的专辑</div>
-                <div className = 'like_album_hr'></div>
-                <div className = 'like_album_list'>
+    render(){
+        return (
+            <div className = 'artist_album_body'>
+                <div className = 'artist_album_list'>
                     {
-                        this.props.get_like_album?this.props.like_album_data.data.data.map((item) => {
+                        this.props.get_artist_album?this.props.artist_album_data.hotAlbums.map((item) => {
                             return (
-                                <div className = 'like_album_list_item' onClick = { () => this.gotoalbumdetail(item.id)}>
+                                <div className = 'artist_album_list_item' onClick = {() => this.gotoalbumdetail(item.id)}>
                                     <img src = {item.picUrl+'?param=175y175'}></img>
                                     <span style={{"WebkitBoxOrient": "vertical"}}>{item.name}</span>
                                     <div>{item.artists.slice(0.2).map((itemm) => {
@@ -77,11 +75,11 @@ class Album extends React.Component{
                     }
                 </div>
                 {
-                        this.props.get_like_album?(
-                            <div className = 'like_album_page'>
+                        this.props.get_artist_album?(
+                            <div className = 'artist_album_page'>
                                 <span style = {{'color':this.state.page === 0?'rgb(150,150,150)':'white'}} onClick = {() => this.pre()}>上一页</span>
                                 <span>{this.state.page+1}</span>
-                                <span style = {{'color':this.props.like_album_data.data.hasMore !== true?'rgb(150,150,150)':'white'}} onClick = {() => this.next()}>下一页</span>
+                                <span style = {{'color':this.props.artist_album_data.hasMore !== true?'rgb(150,150,150)':'white'}} onClick = {() => this.next()}>下一页</span>
                             </div>
                         ):(
                             <div></div>
@@ -92,16 +90,17 @@ class Album extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-
-    return{
-       get_like_album:state.like.getlikealbum,
-       like_album_data:state.like.likealbumdata,
+    console.log(state)
+    return {
+        artist_music_data:state.artist.artistmusicdata,   
+        get_artist_album:state.artist.getartistalbum,
+        artist_album_data:state.artist.artistalbumdata,
     }
-  }
-  const mapdistoprops = (dispatch) => {
-    return{
-        ask_like_album:(page) => dispatch(asklikealbum(page)),
-        go_album : () => dispatch(goalbumdetail())
+}
+const mapdistoprops = (dispatch) =>{
+    return {  
+        ask_artist_album: (id,page) => dispatch(askartistalbum(id,page)) ,
+        go_album :(id) => dispatch(goalbumdetail(id)),
     }
-  }
+}
 export default connect(mapstatetoprops,mapdistoprops)(Album)

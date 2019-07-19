@@ -38,7 +38,7 @@ class Artist extends React.Component{
     }
     goartist = (data) => {
         this.props.go_artist_detail()
-        this.props.history.push('/artist',{artist:data})
+        this.props.history.push('/artist',{id:data})
     }
     render(){
         return(
@@ -106,7 +106,7 @@ class Artist extends React.Component{
                    {
                        this.props.get_artist?this.props.artist_data.data.artists.map((item) => {
                            return (
-                               <div onClick = { () => this.goartist(item)}>
+                               <div onClick = { () => this.goartist(item.id)}>
                                     <img src = {item.picUrl+ '?param=150y150'}></img>
                                     <div>{item.name}</div>
                                </div>

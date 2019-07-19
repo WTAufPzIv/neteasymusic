@@ -1,0 +1,197 @@
+.album_body{
+    /* width: 100%; */
+    overflow: scroll;
+    flex:1;
+    user-select: none;
+    height: 100%;
+}
+.album_body::-webkit-scrollbar  
+{  
+    width: 15px;    
+    background-color: #fff;  
+}  
+.album_back{
+    width: 55px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 13px;
+    color:rgb(150,150,150);
+    text-align: center;
+    /* border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: rgb(150,150,150); */
+    cursor: pointer;
+    margin:0px 10px;
+    margin-top: 10px;
+}
+.album_head{
+    width: 98%;
+    height: 250px;
+    /* background-color: greenyellow; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin:0 auto;
+}
+.album_info{
+    flex:1;
+    height: 200px;
+    /* background-color: palevioletred; */
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.album_title{
+    width:100%;
+    height: 60px;
+    /* background-color: aquamarine; */
+    line-height: 60px;
+}
+.album_title > span{
+    font-size: 20px;
+    color:white;
+}
+.album_count{
+    float: right;
+    /* width: 150px; */
+    height: 60px;
+    line-height: 60px;
+    color:rgb(150,150,150);
+    font-size: 15px;
+}
+.album_create{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    /* background-color: gold; */
+    align-items: center;
+}
+.album_create > div{
+    width: 30px;
+    height: 30px;
+    border-radius: 200px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+.album_create > div >img{
+    height: 30px;
+    width: 30px;
+}
+.album_create > p {
+    height: 36px;
+    color:rgb(150,150,150);
+    font-size: 15px;
+    line-height: 36px;
+    margin:0;
+    margin-left: 20px;
+}
+.album_create > span {
+    height: 36px;
+    color:rgb(180,180,180);
+    font-size: 15px;
+    line-height: 36px;
+    margin-left: 10px;
+}
+.album_action{
+    width:100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.album_action_play{
+    width: 120px;
+    background-color: red;
+    height: 30px;
+    border-radius: 10px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color:white;
+    font-size: 15px;
+}
+.album_action_collect{
+    /* width: 120px; */
+    background-color: rgb(40,40,40);
+    height: 30px;
+    border-radius: 10px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color:rgb(220,220,200);
+    font-size: 15px;
+    margin-left: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.album_action_share{
+    /* width: 120px; */
+    background-color: rgb(40,40,40);
+    height: 30px;
+    border-radius: 10px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color:rgb(220,220,200);
+    font-size: 15px;
+    margin-left: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.album_action_download{
+    width: 120px;
+    background-color: rgb(40,40,40);
+    height: 30px;
+    border-radius: 10px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color:rgb(220,220,200);
+    font-size: 15px;
+    margin-left: 20px;
+}
+.album_nav{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+}
+.album_action_description{
+    width: 100%;
+    height: 50px;
+    font-size: 15px;
+    line-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    color:white;
+}
+.album_nav_activity{
+    width: 90px;
+    height: 40px;
+    font-size: 15px;
+    color:red;
+    line-height: 40px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-color: red;
+}
+.album_nav_normal{
+    width: 90px;
+    height: 40px;
+    font-size: 15px;
+    color:white;
+    line-height: 40px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-color: rgb(23,23,23);
+}
+.album_page{
+    width: 100%;
+}
