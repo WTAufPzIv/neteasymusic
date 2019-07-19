@@ -1,4 +1,4 @@
-import { GET_PLAYLIST,GET_PLAYLIST_DETAIL,ADD_PLAYLIST_MUSIC_DETAIL,GET_USER_LIKE_MUSIC,GET_MUSICLIST_COMMENT,DELETE_DATA } from './actionType'
+import { GET_PLAYLIST,GET_PLAYLIST_DETAIL,ADD_PLAYLIST_MUSIC_DETAIL,GET_USER_LIKE_MUSIC,GET_MUSICLIST_COMMENT,DELETE_DATA,REFRESH_PLAYLIST } from './actionType'
 const defaultState = {
     getplaylist:false,
     playlistdata:{},
@@ -57,6 +57,11 @@ export default function playlist(state = defaultState, action){
         flag.musiclistcommentdataall = []
         flag.musiclistcommentdatahot = []
         return flag
+    }
+    else if(action.type === REFRESH_PLAYLIST){
+        flag = JSON.parse(JSON.stringify(state))//深拷贝
+        // flag.getplaylistdetail = false
+        // flag.playlistdetaildata = 
     }
     return state
 }

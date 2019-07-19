@@ -1,11 +1,11 @@
 import React from 'react';
 import './artist.css'
 import { connect } from 'react-redux'
-import { askartistdata } from '../../store/actionCreators'
+import { askartistdata,goartistdetail } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import { Pagination } from 'antd';
 import { Alert } from 'antd';
-
+import { NavLink,withRouter } from 'react-router-dom'
 class Artist extends React.Component{
     constructor(props){
         super(props)
@@ -35,6 +35,10 @@ class Artist extends React.Component{
             letter:letter
         })
         this.props.ask_artist_data(this.state.type,100,0,letter)
+    }
+    goartist = (data) => {
+        this.props.go_artist_detail()
+        this.props.history.push('/artist',{artist:data})
     }
     render(){
         return(
@@ -102,7 +106,7 @@ class Artist extends React.Component{
                    {
                        this.props.get_artist?this.props.artist_data.data.artists.map((item) => {
                            return (
-                               <div>
+                               <div onClick = { () => this.goartist(item)}>
                                     <img src = {item.picUrl+ '?param=150y150'}></img>
                                     <div>{item.name}</div>
                                </div>
@@ -130,7 +134,8 @@ const mapstatetoprops = (state) => {
   }
   const mapdistoprops = (dispatch) => {
     return{
-        ask_artist_data: (type,num,page,letter) => dispatch(askartistdata(type,num,page,letter))
+        ask_artist_data: (type,num,page,letter) => dispatch(askartistdata(type,num,page,letter)),
+        go_artist_detail:() => dispatch(goartistdetail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Artist)

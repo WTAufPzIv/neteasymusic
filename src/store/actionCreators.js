@@ -39,7 +39,8 @@ import {
     GO_MUSICLIST_DETAIL,
     GO_ARTIST_DETAIL,
     GET_MUSICLIST_COMMENT,
-    DELETE_DATA
+    DELETE_DATA,
+    REFRESH_PLAYLIST
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
@@ -540,46 +541,18 @@ export const askuserplaylist = (uid) => {
 }
 export const askplaylistdetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/playlist/detail?id='+id)
+        axios.post('http://localhost:9093/playlist/detail?id='+id+'&timestamp='+moment(Date().now).valueOf())
         .then(res => {
             dispatch({
                 type:GET_PLAYLIST_DETAIL,
                 get_play_list_detail:true,
                 play_list_detail_data:res
             })
-            dispatch({
-                type:ADD_PLAYLIST_MUSIC_DETAIL,
-                get_playlist_music_detail:false,
-                playlist_music_detail_data:[]
-            })
-            console.log(res.data.playlist.trackIds)
-            let arr = []
-            if(res.data.playlist.trackIds.length > 1000){
-                res.data.playlist.trackIds.map((item,index) => {
-                    let s = res
-                    let d= dispatch
-                    axios.post('http://localhost:9093/song/detail?ids='+item.id)
-                    .then(ress => {
-                        // console.log(ress)
-                        arr.push(ress.data.songs[0])
-                        if(index >= s.data.playlist.trackIds.length - 1){
-                            d({
-                                type:ADD_PLAYLIST_MUSIC_DETAIL,
-                                get_playlist_music_detail:true,
-                                playlist_music_detail_data:arr
-                            })
-                        }
-                    })
-                    return 0
-                })
-            }
-            else{
                 dispatch({
                     type:ADD_PLAYLIST_MUSIC_DETAIL,
                     get_playlist_music_detail:true,
                     playlist_music_detail_data:res.data.playlist.tracks
                 })
-            }
         })
     }
 }
@@ -607,7 +580,7 @@ export const goartistdetail = () => {
 }
 export const askplaylistcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page)
+        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page+'&timestamp='+moment(Date().now).valueOf())
         .then(res => {
             dispatch({
                 type:GET_MUSICLIST_COMMENT,
@@ -643,6 +616,67 @@ export const releascomment = (e,id) => {
         axios.post('http://localhost:9093/comment?t=1&type=2&id='+id+'&content='+e)
         .then(res => {
             message.success('评论成功')
+            dispatch({
+                type:DELETE_DATA
+            })
+            let d = dispatch
+            axios.post('http://localhost:9093/comment/playlist?id='+id+'&before=0&limit=20&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_MUSICLIST_COMMENT,
+                    get_musiclist_comment:true,
+                    musiclist_comment_data:ress,
+                    musiclist_comment_data_hot:ress.data.hotComments,
+                    musiclist_comment_data_all:ress.data.comments
+                })
+            })
+        })
+    }
+}
+export const votecomment = (id,cid,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=2')
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+            // axios.post('http://localhost:9093/comment/playlist?id='+id+'&timestamp='+moment(Date().now).valueOf())
+            // .then(ress => {
+            //     dispatch({
+            //         type:GET_MUSICLIST_COMMENT,
+            //         get_musiclist_comment:true,
+            //         musiclist_comment_data:ress,
+            //         musiclist_comment_data_hot:ress.data.hotComments,
+            //         musiclist_comment_data_all:ress.data.comments
+            //     })
+            // })
+        })
+    }
+}
+export const coll = (id,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/playlist/subscribe?t='+type+'&id='+id)
+        .then(res => {
+            message.success('操作成功')
+            axios.post('http://localhost:9093/playlist/detail?id='+id+'&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_PLAYLIST_DETAIL,
+                    get_play_list_detail:true,
+                    play_list_detail_data:ress
+                })
+                    dispatch({
+                        type:ADD_PLAYLIST_MUSIC_DETAIL,
+                        get_playlist_music_detail:true,
+                        playlist_music_detail_data:ress.data.playlist.tracks
+                    })
+            })
+        })
+    }
+}
+export const sharemusiclist = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/share/resource?id='+id+'&type=playlist')
+        .then(res => {
+            message.success('操作成功')
         })
     }
 }

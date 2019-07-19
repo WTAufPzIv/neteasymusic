@@ -102,8 +102,8 @@ resize = () => {
                   <Route path = '/yunpan' component = { Yunpan } ></Route>
                   <Route path = '/musiclist' component = { Musiclist } ></Route>
                   <Route path = '/musiclist' component = { Musiclist } match = 'match' exact></Route>
-                  {/* <Route path = '/artist' component = { Artist } match = 'match' exact></Route>
-                  <Route path = '/artist' component = { Artist } ></Route> */}
+                  <Route path = '/artist' component = { Artist } ></Route>
+                  <Route path = '/artist' component = { Artist } match = 'match' exact></Route>
                   <Redirect to = '/Recommend'></Redirect>
                 </Switch>
               </div>

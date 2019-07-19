@@ -158,7 +158,7 @@ class LeftMenu extends Component{
                             {
                                 this.props.user_playlist_data.data.playlist.map((item,index) => {
                                     return (
-                                        <Link to = {{pathname:'/musiclist',state:{id:item.id}}}>
+                                        <Link to = {{pathname:'/musiclist',state:{id:item.id,type:item.subscribed?'other':'mine',position:'left'}}}>
                                             <div key = { index } className = {this.state.list_class[index+8]} onMouseMove = {this.hover.bind(this,index+8)} onMouseLeave = {this.unhover.bind(this,index+8)} onClick = { () => this.click(index+8)}>
                                             <img src = {require('./img/like_music_list_'+this.state.iconColor[index + 8]+'.png')} className = 'list_img'/>
                                             <span className = 'list_span1' style={{"WebkitBoxOrient": "vertical"}}>{item.name}</span>

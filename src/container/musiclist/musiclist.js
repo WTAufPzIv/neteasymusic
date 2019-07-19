@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata } from '../../store/actionCreators'
+import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import moment from 'moment'
 import './musiclist.css'
@@ -18,13 +18,15 @@ class Musiclist extends React.Component{
             deep:-1,
             commentdata:[],
             id:0,
+            type:'mine',
+            position:'left'
         }
+        
         this.props.history.listen(() => this.next())
     }
     next = () => {
-       
-        console.log(this.state)
         if(this.props.location.state && this.props.Path === 'musiclist'){
+            console.log(this.props.location.state)
             this.props.delete_data()
             console.log(this.props.location.state.id)
             this.props.ask_playlist_detail(this.props.location.state.id)
@@ -32,7 +34,9 @@ class Musiclist extends React.Component{
             var that = this
             this.setState({
                 page:0,
-                id:that.props.location.state.id
+                id:that.props.location.state.id,
+                type:this.props.location.state.type,
+                position:this.props.location.state.position,
             })
         }
     }
@@ -68,10 +72,16 @@ class Musiclist extends React.Component{
             }
         }
     }
+    collect = (bool) => {
+        this.props.collect(this.state.id,bool?2:1)
+    }
+    share = () => {
+        this.props.share(this.state.id)
+    }
     render(){
         return(
             <div className = 'musiclist_body' onScroll = { () => this.scrool()} ref = 'musiclist_body'>
-                <div className = 'musiclist_back' onClick = { () => this.goback()}>返回</div>
+                <div className = 'musiclist_back' onClick = { () => this.goback()} style = {{'display':this.state.position==='left'?'none':'block'}}>返回</div>
                 {
                     this.props.get_play_list_detail?(
                         <div className = 'musiclist_head'>
@@ -91,8 +101,8 @@ class Musiclist extends React.Component{
                                 </div>
                                 <div className = 'musiclist_action'>
                                     <div className = 'musiclist_action_play'>播放全部</div>
-                                    <div className = 'musiclist_action_collect'>收藏:({this.props.play_list_detail_data.data.playlist.subscribedCount})</div>
-                                    <div className = 'musiclist_action_share'>分享到动态({this.props.play_list_detail_data.data.playlist.shareCount})</div>
+                                    <div className = 'musiclist_action_collect' style = {{'display':this.state.type === 'mine'?'none':'block'}} onClick = {() => this.collect(this.props.play_list_detail_data.data.playlist.subscribed)}>{this.props.play_list_detail_data.data.playlist.subscribed?('已收藏:'+this.props.play_list_detail_data.data.playlist.subscribedCount):('收藏:'+this.props.play_list_detail_data.data.playlist.subscribedCount)}</div>
+                                    <div className = 'musiclist_action_share' onClick = {() => this.share()}>分享到动态({this.props.play_list_detail_data.data.playlist.shareCount})</div>
                                     <div className = 'musiclist_action_download'>下载全部</div>
                                 </div>
                                 <div className = 'musiclist_action_description' style={{"WebkitBoxOrient": "vertical"}}>
@@ -138,7 +148,9 @@ const mapdistoprops = (dispatch) => {
       ask_playlist_detail:(id) => dispatch(askplaylistdetail(id)),
       ask_playlist_comment:(id,page) => dispatch(askplaylistcomment(id,page)) ,
       ask_more_playlist_comment: (id,page) => dispatch(askmoreplaylistcomment(id,page)),
-      delete_data:() => dispatch(deletedata())
+      delete_data:() => dispatch(deletedata()),
+      collect: (id,type) => dispatch(coll(id,type)),
+      share: (id) => dispatch(sharemusiclist(id))
     }
 }
 export default connect( mapstatetoprops, mapdistoprops )(Musiclist)

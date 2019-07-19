@@ -6,12 +6,13 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { ProgressCircle } from 'react-desktop/windows';
 import {  message } from 'antd'
-import { releascomment } from '../../../store/actionCreators'
+import { releascomment,votecomment } from '../../../store/actionCreators'
 class Comments extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            text:''
+            text:'',
+            voteid:0
         }
     }
     input = (e) => {
@@ -28,17 +29,37 @@ class Comments extends React.Component{
             if(this.props.login_status){
                 this.props.releas_comment(this.state.text,this.props.id)
                 // console.log(this.props.id)
+                this.setState({
+                    text:''
+                })
             }
             else{
                 message.error('您还没有登录')
             }
         }
     }
+    vote = (cid,doo) => {
+    
+        // console.log(this.state.text)
+        if(this.props.login_status){
+            console.log(doo)
+             this.setState({
+                 voteid:doo===true?0:cid
+             })
+             this.props.vote_comment(this.props.id,cid,doo===true?0:1)
+             //console.log(this.props.id)
+             //  console.log(cid)
+        }
+        else{
+            message.error('您还没有登录')
+        }
+        
+    }
     render(){
         return(
             <div className = 'musiclist_comment_body'>
                 <div className = 'musiclist_comment_head'>
-                    <textarea onChange = {(e) => this.input(e)}></textarea>
+                    <textarea onChange = {(e) => this.input(e)} value = {this.state.text}></textarea>
                     <div onClick = { () => this.release()}>发布</div>
                 </div>
                 <div className = 'musiclist_comment_list'>
@@ -62,8 +83,7 @@ class Comments extends React.Component{
                                             <p>{item.content}</p>
                                             <div>
                                                 <span>({item.likedCount})</span>
-                                                <img src = {item.liked?require('./img/点赞 (1).png'):require('./img/点赞.png')}></img>
-                                                
+                                                <img src = {(item.liked || item.commentId === this.state.voteid)?require('./img/点赞 (1).png'):require('./img/点赞.png')} onClick = {() => this.vote(item.commentId,item.liked)}></img>
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +114,9 @@ class Comments extends React.Component{
                                             <div className = 'musiclist_comment_list_item_content'>
                                                 <p>{item.content}</p>
                                                 <div>
-                                                    <img src = {item.liked?require('./img/点赞 (1).png'):require('./img/点赞.png')}></img>
                                                     <span>({item.likedCount})</span>
+                                                    <img src = {(item.liked ||this.state.voteid === item.commentId)?require('./img/点赞 (1).png'):require('./img/点赞.png')} onClick = {() => this.vote(item.commentId,item.liked)}></img>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -122,7 +143,8 @@ const mapstatetoprops = (state) => {
 }
 const mapdistoprops = (dispatch) => {
     return{
-        releas_comment:(e,id) => dispatch(releascomment(e,id)) 
+        releas_comment:(e,id) => dispatch(releascomment(e,id)) ,
+        vote_comment:(id,cid,type) => dispatch(votecomment(id,cid,type))
     }
 }
 export default connect( mapstatetoprops, mapdistoprops )(Comments)

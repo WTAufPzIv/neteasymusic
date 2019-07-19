@@ -30,7 +30,7 @@ class Playlist extends React.Component{
         this.props.ask_playlist(this.state.classname,e,30)
     }
     gotoplaylist = (id) => {
-        this.props.history.push("/musiclist",{id:id});
+        this.props.history.push("/musiclist",{id:id,type:'other',position:'right'});
         this.props.go_musiclist_detail()
     }
     render(){

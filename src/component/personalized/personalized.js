@@ -33,7 +33,7 @@ class Personalized extends React.Component{
     }
     gotoplaylist = (id) => {
         // console.log(id)
-        this.props.history.push("/musiclist",{id:id});
+        this.props.history.push("/musiclist",{id:id,type:'other',position:'right'});
         this.props.go_musiclist_detail()
     }
     render(){
