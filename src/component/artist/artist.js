@@ -1,7 +1,7 @@
 import React from 'react';
 import './artist.css'
 import { connect } from 'react-redux'
-import { askartistdata,goartistdetail } from '../../store/actionCreators'
+import { askartistdata,goartistdetail,pushstack } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import { Pagination } from 'antd';
 import { Alert } from 'antd';
@@ -37,6 +37,7 @@ class Artist extends React.Component{
         this.props.ask_artist_data(this.state.type,100,0,letter)
     }
     goartist = (data) => {
+        this.props.push_stack()
         this.props.go_artist_detail()
         this.props.history.push('/artist',{id:data})
     }
@@ -135,7 +136,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_artist_data: (type,num,page,letter) => dispatch(askartistdata(type,num,page,letter)),
-        go_artist_detail:() => dispatch(goartistdetail())
+        go_artist_detail:() => dispatch(goartistdetail()),
+        push_stack:() => dispatch(pushstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Artist)

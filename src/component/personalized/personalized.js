@@ -3,7 +3,7 @@ import './personalized.css'
 import { Carousel } from 'antd';
 import 'antd/dist/antd.css'; 
 import { connect } from 'react-redux'
-import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail } from '../../store/actionCreators'
+import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail, pushstack } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import { NavLink,withRouter } from 'react-router-dom'
 class Personalized extends React.Component{
@@ -33,6 +33,7 @@ class Personalized extends React.Component{
     }
     gotoplaylist = (id) => {
         // console.log(id)
+        this.props.push_stack()
         this.props.history.push("/musiclist",{id:id,type:'other',position:'right'});
         this.props.go_musiclist_detail()
     }
@@ -159,7 +160,8 @@ const mapstatetoprops = (state) => {
       ask_personalized_playlist_data: () => dispatch(askpersonalizedplaylistdata()),
       ask_personalized_newsong_data: () => dispatch(askpersonalizednewsongdata()),
       ask_personalized_mv_data: () => dispatch(askpersonalizedmvdata()),
-      go_musiclist_detail:() => dispatch(gomusiclistdeail())
+      go_musiclist_detail:() => dispatch(gomusiclistdeail()),
+      push_stack:() => dispatch(pushstack())
     }
   }
 export default connect( mapstatetoprops, mapdistoprops )(Personalized)

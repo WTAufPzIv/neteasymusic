@@ -52,7 +52,11 @@ import {
     DELETE_ALBUM_DATA,
     NEW_TOP,
     PUSH_STACK,
-    POP_STACK 
+    POP_STACK ,
+    CLEAR_STACK,
+    GET_MV_DETAIL,
+    GET_MV_URL,
+    GO_MV_DETAIL
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
@@ -554,7 +558,7 @@ export const askuserplaylist = (uid) => {
 }
 export const askplaylistdetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/playlist/detail?id='+id+'&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://localhost:9093/playlist/detail?id='+id)
         .then(res => {
             dispatch({
                 type:GET_PLAYLIST_DETAIL,
@@ -596,9 +600,14 @@ export const goalbumdetail = () => {
         type:GO_ALBUM_DETAIL
     }
 }
+export const gomvdetail = () => {
+    return {
+        type:GO_MV_DETAIL
+    }
+}
 export const askplaylistcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page+'&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MUSICLIST_COMMENT,
@@ -770,7 +779,7 @@ export const askalbumdynamic = (id) => {
 }
 export const askalbumcomment = (id, page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30')
         .then(res => {
             console.log(res.data)
             dispatch({
@@ -785,7 +794,7 @@ export const askalbumcomment = (id, page) => {
 }
 export const askmorealbumcomment = (id, page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30')
         .then(res => {
             dispatch({
                 type:GET_ALBUM_COMMENT,
@@ -826,7 +835,7 @@ export const collalbum = (id,type) => {
 
 export const releascommentalbum = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=3&id='+id+'&content='+e)
+        axios.post('http://localhost:9093/comment?t=1&type=3&id='+id+'&content='+e+'&timestamp='+moment(Date().now).valueOf())
         .then(res => {
             message.success("评论成功")
             dispatch({
@@ -866,5 +875,48 @@ export const pushstack = () => {
 export const popstack = () => {
     return{
         type:POP_STACK
+    }
+}
+export const clearstack = () => {
+    return {
+        type:CLEAR_STACK
+    }
+}
+export const askmvdetail = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/mv/detail?mvid='+id)
+        .then(res => {
+            dispatch({
+                type:GET_MV_DETAIL,
+                get_mv_detail:true,
+                mv_detail_data:res.data
+            })
+        })
+    }
+}
+export const askmvurl = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/mv/url?id='+id)
+        .then(res => {
+            dispatch({
+                type:GET_MV_URL,
+                get_mv_url:true,
+                mv_url_data:res.data
+            })
+        })
+    }
+}
+export const deletemvdata = () => {
+    return dispatch => {
+        dispatch({
+            type:GET_MV_DETAIL,
+            get_mv_detail:false,
+            mv_detail_data:{}
+        })
+        dispatch({
+            type:GET_MV_URL,
+            get_mv_url:false,
+            mv_url_data:''
+        })
     }
 }

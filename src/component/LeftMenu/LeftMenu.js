@@ -7,7 +7,7 @@ import create_music from './data1'
 import { Link,Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { askuserplaylist,askuserlikemusic,gomusiclistdeail } from '../../store/actionCreators'
+import { askuserplaylist,askuserlikemusic,gomusiclistdeail, clearstack } from '../../store/actionCreators'
 const { ipcRenderer } = window.require('electron');
 class LeftMenu extends Component{
     constructor(props){
@@ -103,12 +103,16 @@ class LeftMenu extends Component{
     test = (e) => {
         console.log(e)
     }
-    
+    clickleft = () => {
+        this.props.clear_stack()
+        console.log('点击了左边')
+    }
     render(){
         return(
             <div className = 'leftmeun_body' 
             // style = {{'height':''+this.state.height+'px'}}
             style = {{'height':'100%'}}
+            onClick = {() =>this.clickleft()}
             >
                 
                 <div className = 'Recommend'>
@@ -197,7 +201,8 @@ const mapstatetoprops = (state) => {
     return{
         ask_user_playlist:(uid) => dispatch(askuserplaylist(uid)),
         ask_user_like_music: (uid) => dispatch(askuserlikemusic(uid)),
-        go_musiclist_detail:() => dispatch(gomusiclistdeail())
+        go_musiclist_detail:() => dispatch(gomusiclistdeail()),
+        clear_stack:() => dispatch(clearstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(LeftMenu)

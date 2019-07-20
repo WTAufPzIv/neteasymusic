@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
 import {  message } from 'antd'
-import { askalbumdetail,askalbumcomment,askmorealbumcomment,deletalbumedata,collalbum,sharealbum,askalbumdynamic } from '../../store/actionCreators'
+import { askalbumdetail,askalbumcomment,askmorealbumcomment,deletalbumedata,collalbum,newtop,askalbumdynamic,popstack } from '../../store/actionCreators'
 import { NavLink,withRouter,Route,Switch, Redirect } from 'react-router-dom'
 import List from './list/list'
 import Comments from './comment/comment'
@@ -39,8 +39,10 @@ class Album extends React.Component{
         this.refs.album_body.onScroll = () => this.scrool()
     }
     goback = () => {
+        var i = this.props.pop_data
+        this.props.pop_stack()
         this.props.delete_album_data()
-        this.props.history.go(this.state.deep)
+        this.props.history.go(i)
     }
     changerouter = (e) => {
         var that = this
@@ -48,6 +50,7 @@ class Album extends React.Component{
             router:e,
             deep:that.state.deep - 1
         })
+        this.props.new_top()
     }
     scrool = () => {
         console.log(document.body.clientHeight+' '+(this.refs.album_body.scrollTop+315)+' '+this.refs.album_body.scrollHeight+' '+this.refs.album_page.offsetHeight) 
@@ -137,7 +140,8 @@ const mapstatetoprops = (state) => {
         album_comment_data:state.album.albumcommentdata,
         album_comment_data_all:state.album.albumcommentdataall,
         get_album_dynamic:state.album.getalbumdynamic,
-        album_dynamic_data:state.album.albumdynamicdata
+        album_dynamic_data:state.album.albumdynamicdata,
+        pop_data:state.router.stack
     }
 }
 const mapdistoprops = (dispatch) => {
@@ -148,6 +152,8 @@ const mapdistoprops = (dispatch) => {
       ask_more_album_comment: (id,page) => dispatch(askmorealbumcomment(id,page)),
       delete_album_data:() => dispatch(deletalbumedata()),
       collect: (id,type) => dispatch(collalbum(id,type)),
+      new_top:() => dispatch(newtop()),
+      pop_stack:() => dispatch(popstack())
     }
 }
 export default connect(mapstatetoprops,mapdistoprops)(Album)

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { askmv } from '../../store/actionCreators'
+import { askmv,gomvdetail, pushstack } from '../../store/actionCreators'
 import './video.css'
 import { ProgressCircle } from 'react-desktop/windows';
+import { Redirect } from 'react-router-dom'
 class Video extends React.Component{
     constructor(props){
         super(props)
@@ -46,7 +47,13 @@ class Video extends React.Component{
         })
         this.refs.mv_body.scrollTo(0,0);
     }
+    gomvdetail = (id) => {
+        this.props.push_stack()
+        this.props.go_mv_detail()
+        this.props.history.push("/mv",{id:id});
+    }
     render(){
+        
         return(
             <div className = 'mv_body' ref = 'mv_body'>
                 <div className = 'mv_head'>
@@ -70,7 +77,7 @@ class Video extends React.Component{
                    {
                        this.props.get_mv?this.props.mv_data.data.data.map((item) => {
                            return (
-                               <div className = 'mv_list_item'>
+                               <div className = 'mv_list_item' onClick = { () => this.gomvdetail(item.id)}>
                                    <img src = {item.cover+'?param=300y200'}/>
                                    <p  style={{"WebkitBoxOrient": "vertical"}}>{item.name}</p>
                                    <span  style={{"WebkitBoxOrient": "vertical"}}>{item.artistName}</span>
@@ -109,7 +116,9 @@ const mapstatetoprops = (state) => {
   }
   const mapdistoprops = (dispatch) => {
     return{
-        ask_mv : (type,page,order) => dispatch(askmv(type,page,order))
+        ask_mv : (type,page,order) => dispatch(askmv(type,page,order)),
+        go_mv_detail:() => dispatch(gomvdetail()),
+        push_stack:() => dispatch(pushstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Video)

@@ -2,7 +2,7 @@ import React from 'react'
 import './album.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { asklikealbum,goalbumdetail } from '../../../store/actionCreators'
+import { asklikealbum,goalbumdetail, pushstack } from '../../../store/actionCreators'
 import './album.css'
 class Album extends React.Component{
     constructor(props){
@@ -44,6 +44,7 @@ class Album extends React.Component{
         }
     }
     gotoalbumdetail = (id) => {
+        this.props.push_stack()
         this.props.history.push('/album', {id:id})
         this.props.go_album()
     }
@@ -101,7 +102,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_like_album:(page) => dispatch(asklikealbum(page)),
-        go_album : () => dispatch(goalbumdetail())
+        go_album : () => dispatch(goalbumdetail()),
+        push_stack:() => dispatch(pushstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Album)

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist } from '../../store/actionCreators'
+import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist,newtop,popstack } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import moment from 'moment'
 import './musiclist.css'
@@ -45,8 +45,10 @@ class Musiclist extends React.Component{
         this.refs.musiclist_body.onScroll = () => this.scrool()
     }
     goback = () => {
+        var i = this.props.pop_data
+        this.props.stack_pop()
         this.props.delete_data()
-        this.props.history.go(this.state.deep)
+        this.props.history.go(i)
     }
     changerouter = (e) => {
         var that = this
@@ -54,6 +56,7 @@ class Musiclist extends React.Component{
             router:e,
             deep:that.state.deep - 1
         })
+        this.props.new_top()
     }
     scrool = () => {
         console.log(document.body.clientHeight+' '+(this.refs.musiclist_body.scrollTop+315)+' '+this.refs.musiclist_body.scrollHeight+' '+this.refs.musiclist_page.offsetHeight) 
@@ -140,7 +143,8 @@ const mapstatetoprops = (state) => {
         Path:state.router.path,
         get_musiclist_comment:state.playlist.getmusiclistcomment,
         musiclist_comment_data:state.playlist.musiclistcommentdata,
-        musiclist_comment_data_all:state.playlist.musiclistcommentdataall
+        musiclist_comment_data_all:state.playlist.musiclistcommentdataall,
+        pop_data:state.router.stack
     }
 }
 const mapdistoprops = (dispatch) => {
@@ -150,7 +154,9 @@ const mapdistoprops = (dispatch) => {
       ask_more_playlist_comment: (id,page) => dispatch(askmoreplaylistcomment(id,page)),
       delete_data:() => dispatch(deletedata()),
       collect: (id,type) => dispatch(coll(id,type)),
-      share: (id) => dispatch(sharemusiclist(id))
+      share: (id) => dispatch(sharemusiclist(id)),
+      new_top:() => dispatch(newtop()),
+      stack_pop: () => dispatch(popstack())
     }
 }
 export default connect( mapstatetoprops, mapdistoprops )(Musiclist)

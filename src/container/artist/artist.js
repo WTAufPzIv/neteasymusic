@@ -6,8 +6,9 @@ import Music from './music/music'
 import Mv from './mv/mv'
 import Describe from './describe/describe'
 import Album from './album/album'
-import { clearoldartistdata,askartistmusic,askartistmv,askartistalbum,askartistdescribe } from '../../store/actionCreators'
+import { clearoldartistdata,askartistmusic,askartistmv,askartistalbum,askartistdescribe,newtop,popstack } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
+
 class Artist extends React.Component{
     constructor(props){
         super(props)
@@ -42,23 +43,23 @@ class Artist extends React.Component{
         }
     }
     goback = () => {
-        // this.props.clear_old_artistdata()
-        // this.props.history.go(this.props.deep - 1)
-        // this.props.init_deep()
+        var i = this.props.pop_data
+        this.props.pop_stack()
+        this.props.clear_old_artistdata()
+        this.props.history.go(i)
     }
     componentDidMount(){
         var that =  this
         this.setState({
             dom:that.refs.artist_detail_body
         })
+
     }
     changerouter = (e) => {
-        // var that = this
-        // this.setState({
-        //     router:e,
-        //     deep:that.state.deep-1
-        // })
-        // this.props.go_inter()
+        this.setState({
+            router:e,
+        })
+        this.props.new_top()
     }
     render = () => {
         return (
@@ -115,6 +116,7 @@ const mapstatetoprops = (state) => {
         artist_album_data:state.artist.artistalbumdata,
         get_artist_des:state.artist.getartistdes,
         artist_des_data:state.artist.artistdesdata,
+        pop_data:state.router.stack
     }
 }
 const mapdistoprops = (dispatch) =>{
@@ -124,6 +126,8 @@ const mapdistoprops = (dispatch) =>{
         ask_artist_mv:(id,page) => dispatch(askartistmv(id,page)),
         ask_artist_album: (id,page) => dispatch(askartistalbum(id,page)) ,
         ask_artist_describe: (id) => dispatch(askartistdescribe(id)),
+        new_top:() => dispatch(newtop()),
+        pop_stack:() => dispatch(popstack())
     }
 }
 export default connect(mapstatetoprops,mapdistoprops)(Artist)

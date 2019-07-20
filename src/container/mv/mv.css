@@ -1,0 +1,53 @@
+.mv_detail_body{
+    flex: 1;
+    height: 100%;
+}
+.mv_detail_back{
+    height: 50px;
+    font-size: 12px;
+    color:rgb(150,150,150);
+    line-height: 50px;
+    margin-left: 30px;
+}
+.mv_detail_head{
+    width: 95%;
+    height: 50px;
+    background-color: firebrick;
+    font-size: 20px;
+    align-items: 50px;
+    color:rgb(200,200,200);
+    margin:0 auto;
+    line-height: 50px;
+}
+.mv_detail_head > span{
+    font-size: 12px;
+    color:rgb(100,100,100);
+}
+.mv_detail_head > div > span{
+    font-size: 14px;
+    align-items: 50px;
+    color:rgb(100,100,100);
+    float: right;
+}
+.mv_detail_head > div > p{
+    float: left;
+    font-size: 20px;
+    align-items: 50px;
+    color:rgb(200,200,200);
+    margin:0;
+}
+.mv_detail_play{
+    width: 95%;
+    background-color: yellow;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
+}
+.mv_detail_play > video{
+    position: relative;
+    width: 80%;
+    margin:0 auto;
+    background-color: yellow;
+}

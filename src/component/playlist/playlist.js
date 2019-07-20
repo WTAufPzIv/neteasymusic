@@ -2,7 +2,7 @@ import React from 'react';
 import './playlist.css'
 import { Select,Pagination } from 'antd';
 import { connect } from 'react-redux'
-import { askplaylist,gomusiclistdeail } from '../../store/actionCreators'
+import { askplaylist,gomusiclistdeail, pushstack } from '../../store/actionCreators'
 import "antd/lib/style/themes/default.less"
 import './index.less'
 import { ProgressCircle } from 'react-desktop/windows';
@@ -30,6 +30,7 @@ class Playlist extends React.Component{
         this.props.ask_playlist(this.state.classname,e,30)
     }
     gotoplaylist = (id) => {
+        this.props.push_stack()
         this.props.history.push("/musiclist",{id:id,type:'other',position:'right'});
         this.props.go_musiclist_detail()
     }
@@ -156,7 +157,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_playlist : (classname,page,num) => dispatch(askplaylist(classname,page,num)),
-        go_musiclist_detail:() => dispatch(gomusiclistdeail())
+        go_musiclist_detail:() => dispatch(gomusiclistdeail()),
+        push_stack: () => dispatch(pushstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Playlist)

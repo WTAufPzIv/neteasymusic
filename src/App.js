@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import  Usermsg  from './container/usermsg/usermsg'
 import Artist from './container/artist/artist'
 import Album from './container/album/album'
+import Mv from './container/mv/mv'
 const { ipcRenderer } = window.require('electron');
 class App extends React.Component {
   constructor(props){
@@ -107,6 +108,8 @@ resize = () => {
                   <Route path = '/artist' component = { Artist } match = 'match' exact></Route>
                   <Route path = '/album' component = { Album } ></Route>
                   <Route path = '/album' component = { Album } match = 'match' exact></Route>
+                  <Route path = '/mv' component = { Mv }></Route>
+                  <Route path = '/mv' component = { Mv } match = 'match' exact></Route>
                   <Redirect to = '/Recommend'></Redirect>
                 </Switch>
               </div>
