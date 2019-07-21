@@ -56,15 +56,32 @@ import {
     CLEAR_STACK,
     GET_MV_DETAIL,
     GET_MV_URL,
-    GO_MV_DETAIL
+    GO_MV_DETAIL,
+    GET_MV_COMMENT,
+    DELETE_MV_COMMENT,
+    OPEN_SEARCH_TIP,
+    GET_HOT_SEARCH,
+    INPUT_SEARCH,
+    GET_SEARCH_SUGGEST,
+    GO_SEARCH,
+    GET_SEARCH_RES_MUSIC,
+    GET_SEARCH_RES_ARTIST,
+    GET_SEARCH_RES_VEDIO ,
+    GET_SEARCH_RES_MUSICLIST,
+    GET_SEARCH_RES_ALBUM  ,
+    GET_SEARCH_RES_LRC ,
+    GET_SEARCH_RES_MV,
+    ADD_SEARCH_TIME,
+    DELETE_SEARCH_TIME,
+    CLEAR_SEARCH_TIME
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
 import moment from 'moment'
-export const play_localmusic = (index,play_type,files) => ({
+export const play_localmusic = (index,playtype,files) => ({
     type:PLAY_LOCALMUSIC,
     index:index,
-    play_type:play_type,
+    play_type:playtype,
     play_file:files
 })
 export const canchangeplaystatus = () => ({
@@ -605,6 +622,11 @@ export const gomvdetail = () => {
         type:GO_MV_DETAIL
     }
 }
+export const gosearch = () => {
+    return {
+        type:GO_SEARCH
+    }
+}
 export const askplaylistcomment = (id,page) => {
     return dispatch => {
         axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page)
@@ -705,6 +727,11 @@ export const clearoldartistdata = () => {
 }
 export const askartistmusic = (id) => {
     return dispatch => {
+        dispatch({
+            type:GET_ARTIST_MUSIC,
+            get_artist_music:false,
+            artist_music_data:{}
+        })
         axios.post('http://localhost:9093/artists?id='+id)
         .then(res => {
             dispatch({
@@ -908,6 +935,7 @@ export const askmvurl = (id) => {
 }
 export const deletemvdata = () => {
     return dispatch => {
+        console.log('删除mv页面数据')
         dispatch({
             type:GET_MV_DETAIL,
             get_mv_detail:false,
@@ -918,5 +946,271 @@ export const deletemvdata = () => {
             get_mv_url:false,
             mv_url_data:''
         })
+        dispatch({
+            type:DELETE_MV_COMMENT
+        })
     }
 }
+export const askvediodetail = (id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/video/detail?id='+id)
+        .then(res => {
+            dispatch({
+                type:GET_MV_DETAIL,
+                get_mv_detail:true,
+                mv_detail_data:res.data
+            })
+        })
+    }
+}
+export const askvediourl = (id) => {
+    return dispatch =>{
+        axios.post('http://localhost:9093/video/url?id='+id)
+        .then(res => {
+            dispatch({
+                type:GET_MV_URL,
+                get_mv_url:true,
+                mv_url_data:res.data
+            })
+        })
+    }
+}
+export const askvediocomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MV_COMMENT,
+                get_mv_comment:true,
+                mv_comment_data:res.data,
+                mv_comment_data_hot:res.data.hotComments,
+                mv_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const askmvcomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MV_COMMENT,
+                get_mv_comment:true,
+                mv_comment_data:res.data,
+                mv_comment_data_hot:res.data.hotComments,
+                mv_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const askmorevediocomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MV_COMMENT,
+                get_mv_comment:true,
+                mv_comment_data:res.data,
+                mv_comment_data_hot:[],
+                mv_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const askmroemvcomment = (id,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MV_COMMENT,
+                get_mv_comment:true,
+                mv_comment_data:res.data,
+                mv_comment_data_hot:[],
+                mv_comment_data_all:res.data.comments
+            })
+        })
+    }
+}
+export const releascommentmv = (e,id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment?t=1&type=1&id='+id+'&content='+e)
+        .then(res => {
+            message.success('评论成功')
+            dispatch({
+                type:DELETE_MV_COMMENT
+            })
+            axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_MV_COMMENT,
+                    get_mv_comment:true,
+                    mv_comment_data:ress.data,
+                    mv_comment_data_hot:ress.data.hotComments,
+                    mv_comment_data_all:ress.data.comments
+                })
+            })
+        })
+    }
+}
+export const releascommentvedio = (e,id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment?t=1&type=5&id='+id+'&content='+e)
+        .then(res => {
+            message.success('评论成功')
+            dispatch({
+                type:DELETE_MV_COMMENT
+            })
+            axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_MV_COMMENT,
+                    get_mv_comment:true,
+                    mv_comment_data:ress.data,
+                    mv_comment_data_hot:ress.data.hotComments,
+                    mv_comment_data_all:ress.data.comments
+                })
+            })
+        })
+    }
+}
+export const votecommentmv = (id,cid,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=1')
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+        })
+    }
+}
+
+export const votecommentvedio = (id,cid,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=5')
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+        })
+    }
+}
+export const actsearchtip = (bool) => {
+    return {
+        type:OPEN_SEARCH_TIP,
+        act:bool
+    }
+}
+export const askhotsearch = () => {
+    return dispatch => {
+        axios.post('http://localhost:9093/search/hot/detail')
+        .then(res => {
+            dispatch({
+                type:GET_HOT_SEARCH,
+                get_hot_search:true,
+                hot_search_data:res.data
+            })
+        })
+    }
+}
+export const inputsearch = (e) => {
+    return dispatch => {
+        dispatch({
+            type:INPUT_SEARCH,
+            text:e
+        })
+        dispatch({
+            type:GET_SEARCH_SUGGEST,
+            get_search_suggest:false,
+            search_suggest_data:{}
+        })
+        if(e !== ''){
+            axios.post('http://localhost:9093/search/suggest?keywords='+ e)
+            .then(res => {
+                dispatch({
+                    type:GET_SEARCH_SUGGEST,
+                    get_search_suggest:true,
+                    search_suggest_data:res.data
+                })
+            })
+        }
+        else{
+            dispatch({
+                type:GET_SEARCH_SUGGEST,
+                get_search_suggest:false,
+                search_suggest_data:{}
+            })
+        }
+    }
+}
+export const asksearchres = (e,type,page) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/search?keywords='+e+'&type='+type+'&limit=50&offset='+page*50)
+        .then(res => {
+            if(type === 1){
+                dispatch({
+                    type:GET_SEARCH_RES_MUSIC,
+                    get_search_res_music:true,
+                    search_res_music_data:res.data
+                })
+            }
+            else if(type === 10){
+                dispatch({
+                    type:GET_SEARCH_RES_ALBUM,
+                    get_search_res_album:true,
+                    search_res_album_data:res.data
+                })
+            }
+            else if(type === 100){
+                dispatch({
+                    type:GET_SEARCH_RES_ARTIST,
+                    get_search_res_artist:true,
+                    search_res_artist_data:res.data
+                })
+            }
+            else if(type === 1000){
+                dispatch({
+                    type:GET_SEARCH_RES_MUSICLIST,
+                    get_search_res_musiclist:true,
+                    search_res_musiclist_data:res.data
+                })
+            }
+            else if(type === 1004){
+                dispatch({
+                    type:GET_SEARCH_RES_MV,
+                    get_search_res_mv:true,
+                    search_res_mv_data:res.data
+                })
+            }
+            else if(type === 1006){
+                dispatch({
+                    type:GET_SEARCH_RES_LRC,
+                    get_search_res_lrc:true,
+                    search_res_lrc_data:res.data
+                })
+            }
+            else if(type === 1014){
+                dispatch({
+                    type:GET_SEARCH_RES_VEDIO,
+                    get_search_res_vedio:true,
+                    search_res_vedio_data:res.data
+                })
+            }
+        })
+    }
+}
+export const addsearchtime = () => {
+    return {
+        type:ADD_SEARCH_TIME
+    }
+}
+export const deletesearchtime = () => {
+    return {
+        type:DELETE_SEARCH_TIME
+    }
+}
+export const clearsearchtime = () => {
+    return {
+        type:CLEAR_SEARCH_TIME
+    }
+}
+// export const playmusiclist = (indx,type,data) => {
+//     return {
+//         type:
+//     }
+// }

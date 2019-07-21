@@ -23,6 +23,8 @@ import  Usermsg  from './container/usermsg/usermsg'
 import Artist from './container/artist/artist'
 import Album from './container/album/album'
 import Mv from './container/mv/mv'
+import Searchtip from './component/searchtip/searchtip'
+import Search from './container/search/search'
 const { ipcRenderer } = window.require('electron');
 class App extends React.Component {
   constructor(props){
@@ -90,6 +92,9 @@ resize = () => {
           <div className = 'middle' ref = 'middleDom'>
             <BrowserRouter>
               <div style = {{'height':'100%','width':'100%','display':this.props.open_play_detail?'none':'flex','flexDirection':'row'}}>
+              <div className = 'search_tip' style = {{'display':this.props.open_search_tip?'flex':'none'}}>
+                <Searchtip />
+              </div>
                 <LeftMenu />
                 <Switch>
                   <Route path = '/Recommend' component = { Recommend }  match='match' exact></Route>
@@ -110,6 +115,8 @@ resize = () => {
                   <Route path = '/album' component = { Album } match = 'match' exact></Route>
                   <Route path = '/mv' component = { Mv }></Route>
                   <Route path = '/mv' component = { Mv } match = 'match' exact></Route>
+                  <Route path = '/search' component = { Search }></Route>
+                  <Route path = '/search' component = { Search } match = 'match' exact></Route>
                   <Redirect to = '/Recommend'></Redirect>
                 </Switch>
               </div>
@@ -129,7 +136,8 @@ const mapstatetoprops = (state) => {
     open_loginandregister:state.user.openloginandregister,
     open_msg:state.user.openmsg,
     open_userinfo:state.user.openuserdetail,
-    open_msg_container:state.user.openmsgcontainer
+    open_msg_container:state.user.openmsgcontainer,
+    open_search_tip:state.search.opensearchtip
   }
 }
 const mapdistoprops = (state) => {

@@ -53,8 +53,8 @@ class Album extends React.Component{
         this.props.new_top()
     }
     scrool = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.album_body.scrollTop+315)+' '+this.refs.album_body.scrollHeight+' '+this.refs.album_page.offsetHeight) 
-        if(this.refs.album_page.offsetHeight === (this.refs.album_body.scrollTop+315+27) && this.state.router === 'comment'){   
+        console.log(document.body.clientHeight+' '+(this.refs.album_body.scrollTop)+' '+this.refs.album_body.scrollHeight+' '+this.refs.album_body.offsetHeight) 
+        if(this.refs.album_body.scrollHeight === (this.refs.album_body.scrollTop+this.refs.album_body.offsetHeight) && this.state.router === 'comment'){   
             if(this.props.get_album_comment){
                 if(this.props.album_comment_data.more){
                     console.log('加载')

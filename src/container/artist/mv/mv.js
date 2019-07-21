@@ -2,7 +2,7 @@ import React from 'react'
 import './mv.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { askartistmv } from '../../../store/actionCreators'
+import { askartistmv, pushstack, gomvdetail } from '../../../store/actionCreators'
 class artist_mv extends React.Component{
     constructor(props){
         super(props)
@@ -33,6 +33,11 @@ class artist_mv extends React.Component{
             })
         }
     }
+    gomvdetil = (id) => {
+        this.props.push_stack()
+        this.props.go_mv_detail()
+        this.props.history.push("/mv",{id:id,type:0});
+    }
     render(){
         return (
             <div className = 'artist_mv_body' ref = 'artist_mv_body'>
@@ -40,7 +45,7 @@ class artist_mv extends React.Component{
                    {
                        this.props.get_artist_mv?this.props.artist_mv_data.mvs.map((item) => {
                            return (
-                               <div className = 'artist_mv_list_item'>
+                               <div className = 'artist_mv_list_item' onClick = {() => this.gomvdetil(item.id)}>
                                    <img src = {item.imgurl+'?param=300y200'}/>
                                    <p  style={{"WebkitBoxOrient": "vertical"}}>{item.name}</p>
                                    <span  style={{"WebkitBoxOrient": "vertical"}}>{item.artistName}</span>
@@ -81,6 +86,8 @@ const mapstatetoprops = (state) => {
 const mapdistoprops = (dispatch) =>{
     return {
         ask_artist_mv:(id,page) => dispatch(askartistmv(id,page)),
+        push_stack:() => dispatch(pushstack()),
+        go_mv_detail:() => dispatch(gomvdetail())
     }
 }
 export default connect(mapstatetoprops,mapdistoprops)(artist_mv)

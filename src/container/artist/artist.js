@@ -45,7 +45,7 @@ class Artist extends React.Component{
     goback = () => {
         var i = this.props.pop_data
         this.props.pop_stack()
-        this.props.clear_old_artistdata()
+        // this.props.clear_old_artistdata()
         this.props.history.go(i)
     }
     componentDidMount(){

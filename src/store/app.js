@@ -13,6 +13,7 @@ import like from './like_reducer'
 import userplaylist from './userplaylist_reducer'
 import router from './router_reducer'
 import album from './album_reducer'
+import search from './search_reducer'
 const neteasecloudmusic = combineReducers({
     player,
     user,
@@ -27,6 +28,7 @@ const neteasecloudmusic = combineReducers({
     like,
     userplaylist,
     router,
-    album
+    album,
+    search
 })
 export default neteasecloudmusic;

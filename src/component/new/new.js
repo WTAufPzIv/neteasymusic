@@ -1,7 +1,7 @@
 import React from 'react';
 import './new.css'
 import { connect } from 'react-redux'
-import { asknewmusic,asknewalbum } from '../../store/actionCreators'
+import { asknewmusic,asknewalbum, pushstack, goalbumdetail } from '../../store/actionCreators'
 import { Radio } from 'antd';
 import { ProgressCircle } from 'react-desktop/windows';
 class New extends React.Component{
@@ -20,6 +20,11 @@ class New extends React.Component{
     componentWillMount(){
         this.props.ask_newmusic()
         this.props.ask_newalbum()
+    }
+    goalbumdetail = (id) => {
+        this.props.push_stack()
+        this.props.history.push('/album', {id:id})
+        this.props.go_album()
     }
     render(){
         return(
@@ -63,7 +68,7 @@ class New extends React.Component{
                    {
                         this.props.get_newalbum === true?this.props.newalbum_data.data.albums.map((item) => {
                             return (
-                                <div className = 'newalbum_list_item_body'>
+                                <div className = 'newalbum_list_item_body' onClick = {() => this.goalbumdetail(item.id)}>
                                     <img src = {item.blurPicUrl+ '?param=175y175'}></img>
                                     <p style={{"WebkitBoxOrient": "vertical"}}>{item.name}</p>
                                     <div>{
@@ -101,7 +106,9 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_newmusic: () => dispatch(asknewmusic()),
-        ask_newalbum: () => dispatch(asknewalbum())
+        ask_newalbum: () => dispatch(asknewalbum()),
+        push_stack:() => dispatch(pushstack()),
+        go_album:() => dispatch(goalbumdetail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(New)

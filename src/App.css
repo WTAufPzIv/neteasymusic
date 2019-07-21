@@ -45,7 +45,7 @@
 .msg_container{
   width: 400px;
   height: 86%;
-  background-color: palegoldenrod;
+  /* background-color: palegoldenrod; */
   position: absolute;
   left:70%;
   top:55px;
@@ -56,6 +56,14 @@
   width: 100%;
   height: 88%;
   top:53px;
-  background-color: orchid;
+  /* background-color: orchid; */
   z-index: 10000;
+}
+.search_tip{
+  position: absolute;
+  height: auto;
+  width:250px;
+  top:53px;
+  left:264px;
+  z-index: 1000000;
 }

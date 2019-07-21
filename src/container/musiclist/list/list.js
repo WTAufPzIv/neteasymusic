@@ -4,12 +4,23 @@ import { BrowserRouter,Route,Switch, Redirect } from 'react-router-dom'
 import { Link,NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
+import { goartistdetail, pushstack, goalbumdetail } from '../../../store/actionCreators';
 class List extends React.Component{
     constructor(props){
         super(props)
         this.state = {
 
         }
+    }
+    goartist = (id) => {
+        this.props.push_stack()
+        this.props.go_artist_detail()
+        this.props.history.push('/artist',{id:id})
+    }
+    goalbumdetail = (id) => {
+        this.props.push_stack()
+        this.props.history.push('/album', {id:id})
+        this.props.go_album()
     }
     render(){
         return(
@@ -31,10 +42,10 @@ class List extends React.Component{
                                 <div className = 'musiclist_list__item_name'>{item.name}</div>
                                 <div className = 'musiclist_list__item_artist'>{item.ar.slice(0,2).map((itemm) => {
                                     return (
-                                        <p style={{"WebkitBoxOrient": "vertical"}}>{itemm.name}{'\u00a0'}</p>
+                                        <p style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goartist(itemm.id)}>{itemm.name}{'\u00a0'}</p>
                                     )
                                 })}</div>
-                                <div className = 'musiclist_list__item_album' style={{"WebkitBoxOrient": "vertical"}}>{item.al.name}</div>
+                                <div className = 'musiclist_list__item_album' style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goalbumdetail(item.al.id)}>{item.al.name}</div>
                                 
                             </div>
                         )
@@ -62,7 +73,9 @@ const mapstatetoprops = (state) => {
 }
 const mapdistoprops = (dispatch) => {
     return{
-      
+      go_artist_detail:() => dispatch(goartistdetail()),
+      push_stack:() => dispatch(pushstack()),
+      go_album:() => dispatch(goalbumdetail())
     }
 }
 export default connect( mapstatetoprops, mapdistoprops )(List)

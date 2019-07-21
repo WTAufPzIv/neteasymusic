@@ -2,7 +2,7 @@ import React from 'react'
 import './video.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { asklikevideo } from '../../../store/actionCreators'
+import { asklikevideo, pushstack,gomvdetail } from '../../../store/actionCreators'
 class Video extends React.Component{
     constructor(props){
         super(props)
@@ -42,6 +42,11 @@ class Video extends React.Component{
             }
         }
     }
+    gomvdetail = (id,type) => {
+        this.props.push_stack()
+        this.props.go_mv_detail()
+        this.props.history.push("/mv",{id:id,type:type});
+    }
     render = () => {
         return(
             <div className = 'like_video_body'>
@@ -51,7 +56,7 @@ class Video extends React.Component{
                     {
                         this.props.get_like_video?this.props.like_video_data.data.data.map((item) => {
                             return (
-                                <div className = 'like_video_list_item'>
+                                <div className = 'like_video_list_item' onClick = { () => this.gomvdetail(item.vid,item.type)}>
                                     <img src = {item.coverUrl+'?param=180y120'}></img>
                                     <span style={{"WebkitBoxOrient": "vertical"}}>{item.title}</span>
                                     <p>{item.creator[0].userName}</p>
@@ -81,7 +86,7 @@ class Video extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-   
+   console.log(state)
     return{
         get_like_video:state.like.getlikevideo,
         like_video_data:state.like.likevideodata,
@@ -90,6 +95,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_like_video:(page) => dispatch(asklikevideo(page)),
+        push_stack : () => dispatch(pushstack()),
+        go_mv_detail: () => dispatch(gomvdetail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Video)

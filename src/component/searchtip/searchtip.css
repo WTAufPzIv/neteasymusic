@@ -1,0 +1,78 @@
+.searchtip_body{
+    width: 100%;
+    background-color: rgb(50,50,50);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 10px 10px 5px black;
+    display: flex;
+    flex-direction: column;
+}
+.searchtip_hr{
+    width: 100%;
+    height: 1px;
+    background-color: rgb(70,70,70)
+}
+.searchtip_head{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    color:rgb(100,100,100);
+}
+.searchtip_hot{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.searchtip_res{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.searchtip_hot_item{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    color:rgb(150,150,150);
+    /* margin-left: 20px; */
+    cursor: pointer;
+    padding-left: 20px;
+}
+.searchtip_hot_item:hover{
+    color:rgb(200,200,200);
+    background-color: rgb(30,30,30);
+}
+.searchtip_suggest_item{
+    width: 100%;
+}
+.searchtip_suggest_head{
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    font-size: 12px;
+    color:rgb(200,200,200);
+    background-color: rgb(70,70,70);
+}
+.searchtip_suggest_list{
+    width: 100%;
+    overflow: hidden;
+    margin:0;
+}
+.searchtip_suggest_list> a{
+    display: block;
+    text-decoration: none;
+    font-size: 12px;
+    color:rgb(150,150,150);
+    width: 100%;
+    margin:0;
+    height: 25px;
+    padding-left: 25px;
+    line-height: 25px;
+}
+
+.searchtip_suggest_list > p:hover{
+    background-color: rgb(70,70,70);
+}

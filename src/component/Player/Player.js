@@ -5,6 +5,8 @@ import store from '../../store/index'
 import { canntchangeplaystatus,openplaydetail,playstatus } from '../../store/actionCreators'
 import { connect } from 'react-redux'
 import { PLAY_LOCALMUSIC,CAN_CHANGE_PLAY_STATUS,CANNT_CHANGE_PLAY_STATUS,OPEN_PLAY_DETAIL,PLAY_STATUS } from "../../store/actionType";
+import axios from 'axios';
+import { message } from 'antd';
 const audio = new Audio()
 audio.autoplay = false
 const { ipcRenderer } = window.require('electron');
@@ -70,21 +72,21 @@ class Player extends Component{
             //更新播放器状态
             this.updataProgressHTML(audio.currentTime)//获取当前播放时间
         })
-        ipcRenderer.send('getlastplaylist')
-        ipcRenderer.on('lastplaylistdata',(event,data,num) => {
-            that.setState({
-                list:data || [],
-                index:num || 0,
-            })
-            if(data.length > 0){
-                that.setState({
-                    artist:data[num].artist,
-                    title:data[num].title
-                })
-                audio.src = data[num].path
-                audio.load()
-            }
-        })
+        // ipcRenderer.send('getlastplaylist')
+        // ipcRenderer.on('lastplaylistdata',(event,data,num) => {
+        //     that.setState({
+        //         list:data || [],
+        //         index:num || 0,
+        //     })
+        //     if(data.length > 0){
+        //         that.setState({
+        //             artist:data[num].artist,
+        //             title:data[num].title
+        //         })
+        //         audio.src = data[num].path
+        //         audio.load()
+        //     }
+        // })
     }
 
     updataProgressHTML = (currentTime) => {
@@ -169,10 +171,11 @@ class Player extends Component{
     }
     get_play_message = () => {
         setTimeout(() => {
-            if(this.props.canchangeplaystatus){
+            if(this.props.canchangeplaystatus){//监测播放状态是否锁定
                 if(this.props.play_type === 1){ 
                    //播放本地音乐
-                    var that = this
+                   console.log('播放本地')
+                    let that = this
                     this.setState({
                         list:that.props.play_local_data
                     })
@@ -201,11 +204,86 @@ class Player extends Component{
                     this.setState({
                         index:index
                     })
-                    console.log(this.state)
+                    // console.log(this.state)
                     ipcRenderer.send('saveplaylist',this.props.play_local_data,this.state.index)
                 }
-                else if(this.props.playtype  === 2){
-                    //播放在线音乐
+                else if(this.props.play_type  === 2){
+                    //播放在线歌单音乐
+                    let that = this
+                    this.setState({
+                        list:that.props.play_local_data,
+                        play_type:2
+                    })
+                    let index = this.props.play_local_Index
+                    console.log(that.props.play_local_data)
+                    console.log('播放在线歌单')
+                    axios.post('http://localhost:9093/check/music?id='+that.props.play_local_data[this.props.play_local_Index].id)
+                    .then(res => {
+                        console.log(res.data)
+                        if(res.data.success === true){
+                            var thatt = that
+                            let flag
+                            axios.post('http://localhost:9093/song/url?id=19292800')
+                            .then(ress => {
+                                    axios.post('http://localhost:9093/song/detail?ids=19292800')
+                                    .then(resss => {
+                                        audio.src = ress.data.data[0].url
+                                        audio.load()
+                                        audio.oncanplay = () => {
+                                            thatt.setState({
+                                                time:audio.duration,
+                                                time_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                                                time_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                                                status:'pause',
+                                                title:resss.data.songs[0].name,
+                                                album:resss.data.songs[0].al.name,
+                                                albumImg:resss.data.songs[0].al.picUrl,
+                                                artist:resss.data.songs[0].ar[0].name,
+                                            })
+                                        }
+                                        audio.play()
+                                        console.log('播放')
+                                        const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
+                                        store.dispatch(action)
+                                        const play = playstatus(true)
+                                        store.dispatch(play)
+                                        thatt.setState({
+                                            index:index
+                                        })
+                                        })
+                                    // var thattt = thatt
+                            })
+                        }
+                        else{
+                            message.error('您不是会员或网易没有版权')
+                        }
+                    })
+                    // audio.src = that.state.list[index].path
+                    // audio.load()
+                    // audio.oncanplay = () => {
+                    //     var thatt = that
+                    //     that.setState({
+                    //         time:audio.duration,
+                    //         title:that.state.list[index].title,
+                    //         time_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                    //         time_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                    //         status:'pause',
+                    //         artist:thatt.state.list[index].artist,
+                    //         album:thatt.state.list[index].album,
+                    //         albumImg:'./img/album.png'
+                    //     })
+                    // }
+                    // audio.play()
+                    // console.log('播放')
+                    // const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
+                    // store.dispatch(action)
+                    // const play = playstatus(true)
+                    // store.dispatch(play)
+                    // this.setState({
+                    //     index:index
+                    // })
+                    // console.log(this.state)
+                    ipcRenderer.send('saveplaylist',this.props.play_local_data,this.state.index)
                 }
             }
         },100)
@@ -529,7 +607,7 @@ class Player extends Component{
                 
                 <div className = 'play_body'>
                     <div className = 'play_img' onClick = {() => this.props.open_play_detail(this.state.list[this.state.index])}>
-                        <img src = {require(this.state.albumImg+'')} />
+                        <img src = {this.state.play_type === 1?require(this.state.albumImg+''):this.state.albumImg} />
                     </div>
                     <div className = 'base_Btn'>
                         <div className = 'base_Btn_left'  onClick = { () => this.pre_music()}><img src = {require('./img/左播放.png')} /></div>

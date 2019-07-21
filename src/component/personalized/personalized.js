@@ -3,7 +3,7 @@ import './personalized.css'
 import { Carousel } from 'antd';
 import 'antd/dist/antd.css'; 
 import { connect } from 'react-redux'
-import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail, pushstack } from '../../store/actionCreators'
+import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail, pushstack,gomvdetail } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import { NavLink,withRouter } from 'react-router-dom'
 class Personalized extends React.Component{
@@ -36,6 +36,11 @@ class Personalized extends React.Component{
         this.props.push_stack()
         this.props.history.push("/musiclist",{id:id,type:'other',position:'right'});
         this.props.go_musiclist_detail()
+    }
+    gomvdetail = (id) => {
+        this.props.go_mv_detail()
+        this.props.push_stack()
+        this.props.history.push('/mv', {id:id,type:0})
     }
     render(){
         return(
@@ -116,7 +121,7 @@ class Personalized extends React.Component{
                        {
                            this.props.get_personalized_mv?this.props.personalized_mv_data.data.result.map((item) => {
                                return (
-                                   <div className = 'personalized_mv_item'>
+                                   <div className = 'personalized_mv_item' onClick = {() => this.gomvdetail(item.id)}>
                                        <img src = {item.picUrl+ '?param=400y230'}></img>
                                        <div>
                                            <p>{item.name}</p>
@@ -161,7 +166,8 @@ const mapstatetoprops = (state) => {
       ask_personalized_newsong_data: () => dispatch(askpersonalizednewsongdata()),
       ask_personalized_mv_data: () => dispatch(askpersonalizedmvdata()),
       go_musiclist_detail:() => dispatch(gomusiclistdeail()),
-      push_stack:() => dispatch(pushstack())
+      push_stack:() => dispatch(pushstack()),
+      go_mv_detail: () => dispatch(gomvdetail())
     }
   }
 export default connect( mapstatetoprops, mapdistoprops )(Personalized)

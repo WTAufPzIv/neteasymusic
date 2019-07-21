@@ -2,7 +2,7 @@ import { PLAY_LOCALMUSIC,CAN_CHANGE_PLAY_STATUS,CANNT_CHANGE_PLAY_STATUS,OPEN_PL
 
 const defaultState = {
     playlocalIndex:0,
-    playtype:1,//播放类型：1本地音乐   2在线播放
+    playtype:1,//播放类型：1本地音乐   其他:在线播放
     canchangeplaystatus:false,
     open_play_detail:false,
     play_status:false,

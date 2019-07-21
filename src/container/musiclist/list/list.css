@@ -80,6 +80,7 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    cursor: pointer;
 }
 .musiclist_list__item_album{
     width: 25%;
@@ -89,6 +90,7 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    cursor: pointer;
 }
 /* .musiclist_list__item_size{
     width: 10%;

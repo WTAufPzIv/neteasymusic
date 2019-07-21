@@ -2,7 +2,7 @@ import React from 'react'
 import './buy.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { askbuyalbum, pushstack } from '../../../store/actionCreators'
+import { askbuyalbum, pushstack,goalbumdetail } from '../../../store/actionCreators'
 import moment from 'moment'
 class Buy extends React.Component{
     constructor(props){
@@ -57,7 +57,7 @@ class Buy extends React.Component{
                     {
                         this.props.get_buy_album?this.props.buy_album_data.data.paidAlbums.map((item) => {
                             return (
-                                <div className = 'buy_album_list_item' onClick = {() => this.goalbumdetail(item.id)}>
+                                <div className = 'buy_album_list_item' onClick = {() => this.goalbumdetail(item.albumId)}>
                                     <img src = {item.cover+'?param=175y175'}></img>
                                     <span style={{"WebkitBoxOrient": "vertical"}}>{item.albumName}</span>
                                     <div>{item.artists.slice(0.2).map((itemm) => {
@@ -102,7 +102,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_buy_album:(page) => dispatch(askbuyalbum(page)),
-        push_stack:() => dispatch(pushstack())
+        push_stack:() => dispatch(pushstack()),
+        go_album:() => dispatch(goalbumdetail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Buy)

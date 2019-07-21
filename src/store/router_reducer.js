@@ -1,4 +1,4 @@
-import { GO_MUSICLIST_DETAIL,GO_ARTIST_DETAIL,GO_ALBUM_DETAIL,NEW_TOP,PUSH_STACK,POP_STACK,CLEAR_STACK,GO_MV_DETAIL } from './actionType'
+import { GO_MUSICLIST_DETAIL,GO_ARTIST_DETAIL,GO_ALBUM_DETAIL,NEW_TOP,PUSH_STACK,POP_STACK,CLEAR_STACK,GO_MV_DETAIL,GO_SEARCH } from './actionType'
 function ArrayStack(){  
     this.arr = [];  
          //压栈操作  
@@ -49,6 +49,11 @@ export default function router(state = defaultState, action) {
      flag = JSON.parse(JSON.stringify(state))//深拷贝
      flag.path = 'album'
      return flag
+   }
+   else if(action.type === GO_SEARCH){
+      flag = JSON.parse(JSON.stringify(state))//深拷贝
+      flag.path = 'search'
+      return flag
    }
    else if(action.type === NEW_TOP){//更新栈顶元素
      flag = JSON.parse(JSON.stringify(state))//深拷贝

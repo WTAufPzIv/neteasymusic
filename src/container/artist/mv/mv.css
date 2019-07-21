@@ -10,6 +10,7 @@
 .artist_mv_list_item{
     width: 300px;
     height: 300px;
+    cursor: pointer;
 }
 .artist_mv_list_item > img{
     width: 300px;

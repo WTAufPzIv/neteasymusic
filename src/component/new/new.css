@@ -138,6 +138,7 @@
     flex-direction: column;
     margin-top:10px;
     margin-left: 23px;
+    cursor: pointer;
 }
 .newalbum_list_item_body > img{
     width: 170px;

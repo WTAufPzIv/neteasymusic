@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist,newtop,popstack } from '../../store/actionCreators'
+import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist,newtop,popstack, playmusiclist } from '../../store/actionCreators'
+import { play_localmusic,canchangeplaystatus,canntchangeplaystatus} from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import moment from 'moment'
 import './musiclist.css'
@@ -8,7 +9,7 @@ import { NavLink,withRouter,Route,Switch, Redirect } from 'react-router-dom'
 import  List  from './list/list'
 import  Comments  from '../../container/musiclist/comment/comment'
 import {  message } from 'antd'
-
+import store from '../../store/index'
 class Musiclist extends React.Component{
     constructor(props){
         super(props)
@@ -59,8 +60,8 @@ class Musiclist extends React.Component{
         this.props.new_top()
     }
     scrool = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.musiclist_body.scrollTop+315)+' '+this.refs.musiclist_body.scrollHeight+' '+this.refs.musiclist_page.offsetHeight) 
-        if(this.refs.musiclist_page.offsetHeight === (this.refs.musiclist_body.scrollTop+315+27) && this.state.router === 'comment'){   
+        console.log(document.body.clientHeight+' '+(this.refs.musiclist_body.scrollTop)+' '+this.refs.musiclist_body.scrollHeight+' '+this.refs.musiclist_body.offsetHeight) 
+        if(this.refs.musiclist_body.scrollHeight === (this.refs.musiclist_body.scrollTop+this.refs.musiclist_body.offsetHeight) && this.state.router === 'comment'){   
             if(this.props.get_musiclist_comment){
                 if(this.props.musiclist_comment_data.data.more){
                     console.log('加载')
@@ -80,6 +81,13 @@ class Musiclist extends React.Component{
     }
     share = () => {
         this.props.share(this.state.id)
+    }
+    play_all_musiclist = () => {
+        // this.props.play_musiclist(0,2,this.props.playlistdetaildata.data.playlist.trackIds)
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_localmusic(0,2,this.props.play_list_detail_data.data.playlist.trackIds)
+        store.dispatch(action)
     }
     render(){
         return(
@@ -103,7 +111,7 @@ class Musiclist extends React.Component{
                                     <p>{moment(parseInt(this.props.play_list_detail_data.data.playlist.createTime)).format("YYYY年MM月DD日")}创建</p>
                                 </div>
                                 <div className = 'musiclist_action'>
-                                    <div className = 'musiclist_action_play'>播放全部</div>
+                                    <div className = 'musiclist_action_play' onClick = {() => this.play_all_musiclist()}>播放全部</div>
                                     <div className = 'musiclist_action_collect' style = {{'display':this.state.type === 'mine'?'none':'block'}} onClick = {() => this.collect(this.props.play_list_detail_data.data.playlist.subscribed)}>{this.props.play_list_detail_data.data.playlist.subscribed?('已收藏:'+this.props.play_list_detail_data.data.playlist.subscribedCount):('收藏:'+this.props.play_list_detail_data.data.playlist.subscribedCount)}</div>
                                     <div className = 'musiclist_action_share' onClick = {() => this.share()}>分享到动态({this.props.play_list_detail_data.data.playlist.shareCount})</div>
                                     <div className = 'musiclist_action_download'>下载全部</div>

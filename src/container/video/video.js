@@ -46,11 +46,11 @@ class Video extends React.Component{
             this.props.ask_mv(this.state.type,this.state.page*30,this.state.order)
         })
         this.refs.mv_body.scrollTo(0,0);
-    }
+ }
     gomvdetail = (id) => {
         this.props.push_stack()
         this.props.go_mv_detail()
-        this.props.history.push("/mv",{id:id});
+        this.props.history.push("/mv",{id:id,type:0});
     }
     render(){
         

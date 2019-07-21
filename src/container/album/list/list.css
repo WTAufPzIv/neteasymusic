@@ -80,6 +80,7 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    cursor: pointer;
 }
 .album_list__item_album{
     width: 25%;

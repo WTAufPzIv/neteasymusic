@@ -2,7 +2,7 @@ import React from 'react'
 import './artist.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
-import { asklikeartist } from '../../../store/actionCreators'
+import { asklikeartist, goartistdetail, pushstack } from '../../../store/actionCreators'
 class Artist extends React.Component{
     constructor(props){
         super(props)
@@ -42,6 +42,11 @@ class Artist extends React.Component{
             }
         }
     }
+    goartistdetail = (id) => {
+        this.props.push_stack()
+        this.props.go_artist_detail()
+        this.props.history.push('/artist',{id:id})
+    }
     render = () => {
         return(
             <div className = 'like_artist_body'>
@@ -50,7 +55,7 @@ class Artist extends React.Component{
                     {
                         this.props.get_like_artist?this.props.like_artist_data.data.data.map((item,index) => {
                             return (
-                                <div className = 'like_artist_item' style = {{'backgroundColor':index%2===0?'rgb(28,28,28)':''}}>
+                                <div className = 'like_artist_item' style = {{'backgroundColor':index%2===0?'rgb(28,28,28)':''}} onClick = {() => this.goartistdetail(item.id)}>
                                     <img  src = {item.picUrl+'?param=50y50'}/>
                                     <p>{item.name}</p>
                                     <span>专辑：{item.albumSize}</span>
@@ -90,6 +95,8 @@ const mapstatetoprops = (state) => {
   const mapdistoprops = (dispatch) => {
     return{
         ask_like_atist:(page) => dispatch(asklikeartist(page)),
+        go_artist_detail:() => dispatch(goartistdetail()),
+        push_stack:() => dispatch(pushstack())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Artist)

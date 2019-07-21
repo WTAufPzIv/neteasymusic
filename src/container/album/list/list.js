@@ -2,12 +2,18 @@ import React from 'react'
 import './list.css'
 import { ProgressCircle } from 'react-desktop/windows';
 import { connect } from 'react-redux'
+import { pushstack, goartistdetail } from '../../../store/actionCreators';
 class List extends React.Component{
     constructor(props){
         super(props)
         this.state = {
 
         }
+    }
+    goartistdetail = (id) => {
+        this.props.push_stack()
+        this.props.go_artist_detail()
+        this.props.history.push('/artist',{id:id})
     }
     render = () => {
         return (
@@ -29,7 +35,7 @@ class List extends React.Component{
                                 <div className = 'album_list__item_name'>{item.name}</div>
                                 <div className = 'album_list__item_artist'>{item.ar.slice(0,2).map((itemm) => {
                                     return (
-                                        <p style={{"WebkitBoxOrient": "vertical"}}>{itemm.name}{'\u00a0'}</p>
+                                        <p style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goartistdetail(itemm.id)}>{itemm.name}{'\u00a0'}</p>
                                     )
                                 })}</div>
                                 <div className = 'album_list__item_album' style={{"WebkitBoxOrient": "vertical"}}>{item.al.name}</div>
@@ -58,7 +64,8 @@ const mapstatetoprops = (state) => {
 }
 const mapdistoprops = (dispatch) => {
     return{
-     
+        push_stack:() => dispatch(pushstack()),
+        go_artist_detail: () => dispatch(goartistdetail())
     }
 }
 export default connect(mapstatetoprops,mapdistoprops)(List)

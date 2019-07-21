@@ -3,7 +3,7 @@ import { Component } from 'react'
 import ReactDom from 'react-dom';
 import './Header.css'
 import { connect } from 'react-redux'
-import { getloginstatus,openuser,openuserdetail,openmascontainer } from '../../store/actionCreators'
+import { getloginstatus,openuser,openuserdetail,openmascontainer, actsearchtip, inputsearch } from '../../store/actionCreators'
 import { message } from 'antd'
 import 'antd/dist/antd.css';
 const { ipcRenderer } = window.require('electron');
@@ -136,16 +136,33 @@ class Header extends Component{
             message.warning('还没有登录');
         }
     }
+    opensearchtip = () => {
+        console.log('打开搜索提示')
+        this.props.open_search_tip(true)
+    }
+    closesearch = () => {
+        console.log('关闭搜索提示')
+        var that = this
+        setTimeout(() => {
+            that.props.open_search_tip(false)
+        },200)
+        
+    }
+    inputtext = (e) => {
+        // console.log(e.target.value)
+        // if(e.target.value.replace(/\s*/g,"") !== '')
+            this.props.input_search(e.target.value)
+    }
     render(){
         return(
             <div>
             <div className = 'headBox'>
                 <div className = 'head_logo'>NetEasyCloud Music</div>
                 <div className = 'head_search'>
-                    <input className = 'head_search_input' placeholder = '搜索音乐，视频，歌词，电台'>
-                        
+                    <input className = 'head_search_input' placeholder = '搜索音乐，视频，歌词' onFocus = {() => this.opensearchtip()} onBlur = {() => this.closesearch()} onChange = {(e) => this.inputtext(e)}>
                     </input>
                     <img src = {require(''+this.state.searchBtn)} onMouseOver = {this.changeSearchBtn} onMouseLeave = {this.changeSearchBtn}></img>
+                    {/* <div></div> */}
                 </div>
                 <div className = 'head_space'>
                     <div className = 'userstatus'>
@@ -180,7 +197,9 @@ const mapstatetoprops = (state) => {
         loginstatus:() => dispatch(getloginstatus()),
         open_user: (bool) => dispatch(openuser(bool)),
         open_userdetail: (bool) => dispatch(openuserdetail(bool)),
-        open_msg_container: (bool) => dispatch(openmascontainer(bool))
+        open_msg_container: (bool) => dispatch(openmascontainer(bool)),
+        open_search_tip:(bool) => dispatch(actsearchtip(bool)),
+        input_search : (e) => dispatch(inputsearch(e))
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Header)
