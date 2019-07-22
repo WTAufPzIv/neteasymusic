@@ -1,5 +1,5 @@
 import { 
-    PLAY_LOCALMUSIC,
+    DBCLICK_PLAY_LOCALMUSIC,
     CAN_CHANGE_PLAY_STATUS,
     CANNT_CHANGE_PLAY_STATUS,
     OPEN_PLAY_DETAIL,
@@ -73,16 +73,21 @@ import {
     GET_SEARCH_RES_MV,
     ADD_SEARCH_TIME,
     DELETE_SEARCH_TIME,
-    CLEAR_SEARCH_TIME
+    CLEAR_SEARCH_TIME,
+    DBCLICK_PLAY_NETMUSIC
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
 import moment from 'moment'
-export const play_localmusic = (index,playtype,files) => ({
-    type:PLAY_LOCALMUSIC,
+export const play_localmusic = (index,files) => ({
+    type:DBCLICK_PLAY_LOCALMUSIC,
     index:index,
-    play_type:playtype,
     play_file:files
+})
+export const play_netmusic = (index,trackids) => ({
+    type:DBCLICK_PLAY_NETMUSIC,
+    index:index,
+    ids:trackids
 })
 export const canchangeplaystatus = () => ({
     type:CAN_CHANGE_PLAY_STATUS,

@@ -58,14 +58,16 @@ function createWindow () {
         let updataedTrack = myStore.getTrack()//链式调用
           mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
   })
-  ipcMain.on('saveplaylist',(event,track,index) => {
+  ipcMain.on('saveplaylist',(event,track,index,type) => {
     store.set('playlist',track)
     store.set('index',index)
+    store.set('play_type',type)
   })
   ipcMain.on('getlastplaylist',() => {
     var flag = store.get('playlist') || []
     var num = store.get('index') || 0
-    mainWindow.send('lastplaylistdata',flag,num)
+    var type = store.get('play_type') || 0
+    mainWindow.send('lastplaylistdata',flag,num,type)
   })
   ipcMain.on('savevoice',(event,num) => {
     store.set('voice',num)

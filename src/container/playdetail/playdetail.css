@@ -6,6 +6,22 @@
     justify-content: center;
     overflow: scroll;
     user-select: none;
+    position: relative;
+}
+.playdetail_body_bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    /* background-position-x: center;
+    background-clip: content-box;
+    padding: 50%; */
+    background-size: 70% 20%;
+    background-repeat: no-repeat;
+    /* -webkit-filter: blur(20px); */
+    filter: blur(100px);
+    background-position-y: 150px;
+    background-position-x: center; 
 }
 .playdetail_view{
     height: 100%;
@@ -21,7 +37,7 @@
 }
 .playdetail_view_comment{
     width: 100%;
-    height: 900px;
+    /* height: 900px; */
     /* background-color: blue; */
 }
 .play_detail_title_albumImg_contanier{
@@ -33,6 +49,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    border:200px;
 }
 @keyframes haha1{
  
@@ -59,11 +77,11 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    animation:haha1 5s linear infinite;
-    
+    animation:haha1 10s linear infinite;
+    overflow: hidden;
 }
 .play_detail_title_albumImg > img{
-    
+    border-radius: 200px;
     width: 68%;
     height: 68%;
     
@@ -76,7 +94,7 @@
     height: 180px;
     z-index: 10000;
     transform-origin: top left;
-    transition: all 0.8s;
+    transition: all 5s;
 }
 .play_detail_title_musicinfo_container{
     width: 50%;

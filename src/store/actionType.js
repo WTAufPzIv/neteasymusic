@@ -1,4 +1,5 @@
-export const PLAY_LOCALMUSIC = 'play_localmusic'
+export const DBCLICK_PLAY_LOCALMUSIC = 'dbclick_play_localmusic'
+export const DBCLICK_PLAY_NETMUSIC = 'declick_play_netmusic'
 export const CAN_CHANGE_PLAY_STATUS = 'can_change_play_status'
 export const CANNT_CHANGE_PLAY_STATUS = 'canntchangeplaystatus'
 export const OPEN_PLAY_DETAIL = 'open_play_detail'

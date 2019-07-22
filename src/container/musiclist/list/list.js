@@ -5,6 +5,8 @@ import { Link,NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
 import { goartistdetail, pushstack, goalbumdetail } from '../../../store/actionCreators';
+import store from '../../../store/index'
+import { play_netmusic ,canchangeplaystatus } from '../../../store/actionCreators'
 class List extends React.Component{
     constructor(props){
         super(props)
@@ -22,6 +24,13 @@ class List extends React.Component{
         this.props.history.push('/album', {id:id})
         this.props.go_album()
     }
+    play = (index) => {
+        // this.props.play_musiclist(0,2,this.props.playlistdetaildata.data.playlist.trackIds)
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,this.props.play_list_detail_data.data.playlist.trackIds)
+        store.dispatch(action)
+    }
     render(){
         return(
             <div className = 'musiclist_list_body'>
@@ -35,7 +44,7 @@ class List extends React.Component{
                 {
                     this.props.get_playlist_music_detail === true && this.props.get_user_like_music === true?this.props.playlist_music_detail_data.map((item,index) => {
                         return (
-                            <div className = 'musiclist_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}}>
+                            <div className = 'musiclist_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(index)}>
                                 <div className = 'musiclist_list__item_index'>{index+1}</div>
                                 <div className = 'musiclist_list__item_index'><img src = {this.props.user_like_music_data.data.ids.indexOf(item.id) === -1?require('./img/喜欢.png'):require('./img/喜欢 (1).png')}></img></div>
                                 <div className = 'musiclist_list__item_index'><img src = {require('./img/下载.png')}></img></div>

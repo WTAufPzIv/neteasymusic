@@ -54,7 +54,7 @@ class Localmusic extends React.Component{
         console.log('点')
         const action1 = canchangeplaystatus()
         store.dispatch(action1)
-        const action = play_localmusic(index,1,this.state.files)
+        const action = play_localmusic(index,this.state.files)
         store.dispatch(action)//发送播放信息,代号为1，表示播放本地音乐
     }
     contextmenu = (event) => {

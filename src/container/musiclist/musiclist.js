@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { askplaylistdetail,askplaylistcomment,askmoreplaylistcomment,deletedata,coll,sharemusiclist,newtop,popstack, playmusiclist } from '../../store/actionCreators'
-import { play_localmusic,canchangeplaystatus,canntchangeplaystatus} from '../../store/actionCreators'
+import { play_netmusic ,canchangeplaystatus } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import moment from 'moment'
 import './musiclist.css'
@@ -86,7 +86,7 @@ class Musiclist extends React.Component{
         // this.props.play_musiclist(0,2,this.props.playlistdetaildata.data.playlist.trackIds)
         const action1 = canchangeplaystatus()
         store.dispatch(action1)
-        const action = play_localmusic(0,2,this.props.play_list_detail_data.data.playlist.trackIds)
+        const action = play_netmusic(0,this.props.play_list_detail_data.data.playlist.trackIds)
         store.dispatch(action)
     }
     render(){

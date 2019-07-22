@@ -81,13 +81,14 @@ class PlayDetail extends React.Component{
     render(){
         return(
              <div className = 'playdetail_body' style = {{'height':this.state.height+'%','width':this.state.width+'%','display':this.state.vis}}>
+                 <div className = 'playdetail_body_bg' style = {{'backgroundImage':this.props.play_type !== 1?'url('+this.props.playingdata.albumImg+'?param=300y300'+')' :'none'}}></div>
              {/* <div className = 'playdetail_body' style = {{'height':this.props.open_play_detail?'100%':'0','width':this.props.open_play_detail?'100%':'0'}}> */}
                 <div className = 'playdetail_view'>
                     <div className = 'playdetail_view_title'>
                         <div className = 'play_detail_title_albumImg_contanier'>
                             <img src = {require('./img/stick_bg.png')} style = {{'transform':this.state.sticktrans}}></img>
                             <div className = 'play_detail_title_albumImg' style = {{'animation':this.state.cdtransform}}>
-                                <img src = {require('./img/placeholder_disk_play_program.png')} style = {{'width':'68%','height':'68%'}} ></img>
+                                <img src = {this.props.play_type === 1 ? require('./img/placeholder_disk_play_program.png') : this.props.playingdata.albumImg+'?param=200y200'} style = {{'width':'68%','height':'68%'}} ></img>
                             </div>
                         </div>
                         <div className = 'play_detail_title_musicinfo_container'>
@@ -115,11 +116,11 @@ const mapstatetoprops = (state) => {
     return{
         play_status:state.player.play_status,
         open_play_detail:state.player.open_play_detail,
-        playingdata:state.player.playingdata || {
+        playingdata:state.player.playingdetaildata || {
             album:'',
             artist:'',
         },
-        playtype:state.player.playtype
+        play_type:state.player.playtype
     }
   }
   const mapdistoprops = (dispatch) => {
