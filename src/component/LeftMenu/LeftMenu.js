@@ -173,10 +173,11 @@ class LeftMenu extends Component{
                             }
                         </div>
                     ):(
-                        <div><ProgressCircle
-                                    color='white'
-                                    size={100}
-                                    /></div>
+                        // <div><ProgressCircle
+                        //             color='white'
+                        //             size={100}
+                        //             /></div>
+                        <div></div>
                     )
                 }
 

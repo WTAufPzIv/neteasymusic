@@ -3,6 +3,8 @@ import {
     CAN_CHANGE_PLAY_STATUS,
     CANNT_CHANGE_PLAY_STATUS,
     OPEN_PLAY_DETAIL,
+    CLOSE_PLAY_DETAIL,
+    SEND_PLAY_DETAIL,
     PLAY_STATUS,
     LOGIN_STATUS,
     OPEN_USER,
@@ -74,7 +76,9 @@ import {
     ADD_SEARCH_TIME,
     DELETE_SEARCH_TIME,
     CLEAR_SEARCH_TIME,
-    DBCLICK_PLAY_NETMUSIC
+    DBCLICK_PLAY_NETMUSIC,
+    LOCK_PLAYDETAIL,
+    UNLOCK_PLAYDETAIL
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
@@ -84,10 +88,11 @@ export const play_localmusic = (index,files) => ({
     index:index,
     play_file:files
 })
-export const play_netmusic = (index,trackids) => ({
+export const play_netmusic = (index,trackids,bool) => ({
     type:DBCLICK_PLAY_NETMUSIC,
     index:index,
-    ids:trackids
+    ids:trackids,
+    auto_play:bool
 })
 export const canchangeplaystatus = () => ({
     type:CAN_CHANGE_PLAY_STATUS,
@@ -95,18 +100,37 @@ export const canchangeplaystatus = () => ({
 export const canntchangeplaystatus = () => ({
     type:CANNT_CHANGE_PLAY_STATUS,
 })
-export const openplaydetail = (Bool,musicdata) => {
+export const sendplaydetail = (musicdata) => {
+    return (dispatch) => {
+        dispatch({
+            type:SEND_PLAY_DETAIL,
+            playing_data:musicdata
+        })
+    }
+}
+export const openplaydetail = () => {
     return (dispatch) => {
         dispatch({
             type:OPEN_PLAY_DETAIL,
-            playdetail_status:Bool,
-            playing_data:musicdata
-        })
-        dispatch({
-            type:OPEN_USER_DETAIL,
-            open_user_detail:false
         })
     }
+}
+export const closeplaydetail = () => {
+    return (dispatch) => {
+        dispatch({
+            type:CLOSE_PLAY_DETAIL,
+        })
+    }
+}
+export const lockplatdetail = () => {
+    return({
+        type:LOCK_PLAYDETAIL,
+    })
+}
+export const unlockplatdetail = () => {
+    return({
+        type:UNLOCK_PLAYDETAIL,
+    })
 }
 export const playstatus = (Bool) => ({
     type:PLAY_STATUS,
@@ -225,9 +249,7 @@ export const openuserdetail = (Bool) => {
             open_user_detail:Bool
         })
         dispatch({
-            type:OPEN_PLAY_DETAIL,
-            playdetail_status:false,
-            playing_data:{}
+            type:CLOSE_PLAY_DETAIL
         })
     }
 }
@@ -249,9 +271,7 @@ export const openmascontainer = (Bool) => {
             open_msg_container:Bool
         })
         dispatch({
-            type:OPEN_PLAY_DETAIL,
-            playdetail_status:false,
-            playing_data:{}
+            type:CLOSE_PLAY_DETAIL,
         })
     }
 }

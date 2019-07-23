@@ -1,8 +1,11 @@
 import   React  from 'react'
 import './playdetail.css'
 import store from '../../store/index'
-import { openplaydetail } from '../../store/actionCreators'
+import { closeplaydetail, lockplatdetail } from '../../store/actionCreators'
 import { connect } from 'react-redux'
+import Lyric from 'lyric-parser'
+
+
 class PlayDetail extends React.Component{
     constructor(props){
         super(props);
@@ -19,6 +22,7 @@ class PlayDetail extends React.Component{
             }
         }
         store.subscribe(this.get_store_msg);
+        
     }
     componentDidMount(){
         if(this.props.play_status){
@@ -34,8 +38,17 @@ class PlayDetail extends React.Component{
             })
         }
     }
+    componentWillMount(){
+        // if(this.props.play_type === 2){
+        //     this.props.ask_lrc(this.props.playingdata.id)
+        // }
+       
+    }
     componentWillUnmount(){
         console.log('卸载')
+    }
+    componentDidMount(){
+        console.log('播放详情页加载')
     }
     get_store_msg = () => {
         setTimeout(() => {
@@ -61,12 +74,20 @@ class PlayDetail extends React.Component{
                 })
             }
 
-            if(this.props.playingdata){
+            if( this.props.playingdata && !this.props.lock_playdetail){
+                const action2 = lockplatdetail()
+                store.dispatch(action2)
+                console.log(this.props.playingdata)
                 this.setState({
                     musicinfo:this.props.playingdata
                 })
+                // var lyric = new Lyric(this.props.playingdata.lrc, ({lineNum, txt}) => this.hand({lineNum, txt}))
+                // lyric.play()
             }
         },50)   
+    }
+    hand = ({lineNum, txt}) => {
+        console.log(lineNum, txt)
     }
     play = () => {
         
@@ -101,9 +122,21 @@ class PlayDetail extends React.Component{
                             <div className = 'play_detail_title_musicinfo_otherinfo'>
                                 <div  style={{"WebkitBoxOrient": "vertical"}}><span>专辑：</span>{this.props.playingdata.album || '未知'}</div>
                                 <div  style={{"WebkitBoxOrient": "vertical"}}><span>歌手：</span>{this.props.playingdata.artist ? this.props.playingdata.artist : '未知'}</div>
-                                <div  style={{"WebkitBoxOrient": "vertical"}}><span>来源：</span>{this.props.playtype === 1 ? '本地音乐' : '在线播放'}</div>
+                                <div  style={{"WebkitBoxOrient": "vertical"}}><span>来源：</span>{this.props.play_type === 1 ? '本地音乐' : '在线播放'}</div>
                             </div>
-                            <div className = 'play_detail_title_musicinfo_lrc'></div>
+                            <div className = 'play_detail_title_musicinfo_lrc'>
+                                {
+                                    this.play_type === 1?(
+                                        <div>暂无歌词</div>
+                                    ):(
+                                        this.props.get_lrc?(
+                                            <div>{this.props.lrc_data}</div>
+                                        ):(
+                                            <div></div>
+                                        )
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
                     <div className = 'playdetail_view_comment'></div>
@@ -113,6 +146,7 @@ class PlayDetail extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
+    console.log(state)
     return{
         play_status:state.player.play_status,
         open_play_detail:state.player.open_play_detail,
@@ -120,15 +154,15 @@ const mapstatetoprops = (state) => {
             album:'',
             artist:'',
         },
-        play_type:state.player.playtype
+        play_type:state.player.playtype,
+        lock_playdetail:state.player.lockplaydetailstatus
     }
   }
   const mapdistoprops = (dispatch) => {
     return{
-      //open_play_detail:state.player.open_play_detail
       cancelfullscreen(){
             setTimeout(() => {
-                const action = openplaydetail(false,{})
+                const action = closeplaydetail()
                 dispatch(action)
             },150)
       }

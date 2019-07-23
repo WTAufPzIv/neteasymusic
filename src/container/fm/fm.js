@@ -3,6 +3,7 @@ import './fs.css'
 import { connect } from 'react-redux'
 import { askdaysong } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
+// import nologin from './img/undraw_compose_music_ovo2.svg'
 class Fm extends React.Component{
     constructor(props){
         super(props)
@@ -64,6 +65,9 @@ class Fm extends React.Component{
                     ):(
                         <div className = 'day_nologin'>
                             <img src = {require('./img/undraw_compose_music_ovo2.svg')}></img>
+                            {/* <svg viewBox="${nologinviewBox}">
+                                <use xlinkhref="#${nologin.id}" />
+                            </svg>`; */}
                             <div>您还没有登录，右上角立即登录</div>
                         </div>
                     )

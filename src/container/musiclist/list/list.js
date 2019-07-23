@@ -28,7 +28,7 @@ class List extends React.Component{
         // this.props.play_musiclist(0,2,this.props.playlistdetaildata.data.playlist.trackIds)
         const action1 = canchangeplaystatus()
         store.dispatch(action1)
-        const action = play_netmusic(index,this.props.play_list_detail_data.data.playlist.trackIds)
+        const action = play_netmusic(index,this.props.play_list_detail_data.data.playlist.trackIds,true)
         store.dispatch(action)
     }
     render(){

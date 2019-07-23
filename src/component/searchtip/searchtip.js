@@ -80,7 +80,6 @@ class Searchtip extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
     return{
         get_hot_search:state.search.gethotsearch,
         hot_search_data:state.search.hotsearchdata,

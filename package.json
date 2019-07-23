@@ -2,7 +2,8 @@
   "name": "neteasecloudmusic",
   "version": "0.1.0",
   "private": true,
-  "main": "./public/main.js",
+  "main": "main.js",
+  "homepage": ".",
   "dependencies": {
     "antd": "^3.20.1",
     "axios": "^0.19.0",
@@ -33,6 +34,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",
+    "svg-sprite-loader": "^4.1.6",
+    "svg-url-loader": "^3.0.0",
     "uuid": "^3.3.2"
   },
   "scripts": {

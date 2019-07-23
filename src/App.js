@@ -97,27 +97,27 @@ resize = () => {
               </div>
                 <LeftMenu />
                 <Switch>
-                  <Route path = '/Recommend' component = { Recommend }  match='match' exact></Route>
-                  <Route path = '/Recommend' component = { Recommend }></Route>
-                  <Route path = '/Fm' component = { Fm } exact></Route>
-                  <Route path = '/video' component = { Video } exact></Route>
-                  <Route path = '/friend' component = { Friend } exact ></Route>
-                  <Route path = '/localmusic' component = { Localmusic } exact keep-alive></Route>
-                  <Route path = '/download' component = { Download } exact></Route>
-                  <Route path = '/Like' component = { Like }  match='match' exact></Route>
+                  <Route path = '/Recommend' component = { Recommend } ></Route>
+                  {/* <Route path = '/Recommend' component = { Recommend }></Route> */}
+                  <Route path = '/Fm' component = { Fm } ></Route>
+                  <Route path = '/video' component = { Video }></Route>
+                  <Route path = '/friend' component = { Friend }   ></Route>
+                  <Route path = '/localmusic' component = { Localmusic }  ></Route>
+                  <Route path = '/download' component = { Download }  ></Route>
+                  {/* <Route path = '/Like' component = { Like }  match='match'  ></Route> */}
                   <Route path = '/Like' component = { Like } ></Route>
                   <Route path = '/yunpan' component = { Yunpan } ></Route>
                   <Route path = '/musiclist' component = { Musiclist } ></Route>
-                  <Route path = '/musiclist' component = { Musiclist } match = 'match' exact></Route>
+                  {/* <Route path = '/musiclist' component = { Musiclist } match = 'match'  ></Route> */}
                   <Route path = '/artist' component = { Artist } ></Route>
-                  <Route path = '/artist' component = { Artist } match = 'match' exact></Route>
+                  {/* <Route path = '/artist' component = { Artist } match = 'match'  ></Route> */}
                   <Route path = '/album' component = { Album } ></Route>
-                  <Route path = '/album' component = { Album } match = 'match' exact></Route>
+                  {/* <Route path = '/album' component = { Album } match = 'match'  ></Route> */}
                   <Route path = '/mv' component = { Mv }></Route>
-                  <Route path = '/mv' component = { Mv } match = 'match' exact></Route>
+                  {/* <Route path = '/mv' component = { Mv } match = 'match'  ></Route> */}
                   <Route path = '/search' component = { Search }></Route>
-                  <Route path = '/search' component = { Search } match = 'match' exact></Route>
-                  <Redirect to = '/Recommend'></Redirect>
+                  {/* <Route path = '/search' component = { Search } match = 'match'  ></Route> */}
+                  <Redirect to = '/Fm'></Redirect>
                 </Switch>
               </div>
             </BrowserRouter>

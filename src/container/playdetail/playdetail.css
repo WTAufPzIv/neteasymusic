@@ -77,7 +77,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    animation:haha1 10s linear infinite;
+    animation:haha1 20s linear infinite;
     overflow: hidden;
 }
 .play_detail_title_albumImg > img{
@@ -94,7 +94,7 @@
     height: 180px;
     z-index: 10000;
     transform-origin: top left;
-    transition: all 5s;
+    transition: all 0.3s;
 }
 .play_detail_title_musicinfo_container{
     width: 50%;

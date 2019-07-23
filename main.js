@@ -1,7 +1,7 @@
 const {app, BrowserWindow,ipcMain,dialog  } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
-const DataStore = require('./MusicDataStore')//引入自定义的添加音乐封装模块
+const DataStore = require('./MusicDataStore')//引入自定义的添加音乐封装模块 
 const myStore = new DataStore({'name':'MusicData'})
 var jsmediatags = require("jsmediatags");
 const store = new Store()
@@ -26,7 +26,7 @@ class AppWindow extends BrowserWindow{//自定义创建窗口的封装类，继�
     const finalConfig1 = Object.assign(basicConfig, config)//将传入的对象和原来的对象合并
     const finalConfig = { ...basicConfig, ...config}//也可以这样写(ES6语法)
     super(finalConfig)//调用父类的constructor
-    //this.loadFile(fileLocation)//调用当前类
+    // this.loadFile(fileLocation)//调用当前类
     this.loadURL("http://localhost:3000")
     //不懂的去看super和this的区别
     this.once('ready-to-show', ()=>{
@@ -38,7 +38,7 @@ class AppWindow extends BrowserWindow{//自定义创建窗口的封装类，继�
 let mainWindow
 function createWindow () {
   
-  mainWindow = new AppWindow({}, './renderer/index.html')
+  mainWindow = new AppWindow({}, './build/index.html')
   ipcMain.on('minWindow', (event) => {
     mainWindow.minimize()
   })

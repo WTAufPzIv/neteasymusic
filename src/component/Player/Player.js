@@ -2,7 +2,7 @@ import  React  from 'react'
 import { Component } from 'react'
 import './Player.css'
 import store from '../../store/index'
-import { canntchangeplaystatus,openplaydetail,playstatus } from '../../store/actionCreators'
+import { canntchangeplaystatus,sendplaydetail,playstatus,canchangeplaystatus,play_netmusic, asklrc, openplaydetail, lockplatdetail, unlockplatdetail } from '../../store/actionCreators'
 import { connect } from 'react-redux'
 import { PLAY_LOCALMUSIC,CAN_CHANGE_PLAY_STATUS,CANNT_CHANGE_PLAY_STATUS,OPEN_PLAY_DETAIL,PLAY_STATUS } from "../../store/actionType";
 import axios from 'axios';
@@ -13,7 +13,6 @@ const { ipcRenderer } = window.require('electron');
 class Player extends Component{
     constructor(props){
         super(props);
-        // console.log(this.props)
         this.state = {
             play_type:1,//播放来源
             list_local:[],//本地播放列表
@@ -39,52 +38,17 @@ class Player extends Component{
             voicenum:0,//音量大小
             ids:[],//在线播放音乐id列表
             item_net:{},//在线播放元素
-            // list:[],
-            // status:'play',
-            // index:0,
-            // title:'',
-            // artist:'',
-            // albumImg:'./img/album.png',
-            // current_time:'',
-            // current_time_m:'',
-            // current_time_s:'',
-            // time:'',
-            // time_m:'',
-            // time_s:'',
-            // progress_line_left:'',
-            // progress_line_right:'',
-            // voiceprogress_line_left_num:0,
-            // voiceprogress_line_left:'0%',
-            // voiceprogress_line_right:'100%',
-            // voicenum:0,
-            // MinWindow:'./img/min_window_g.png',
-            // MinOrMaxWindow:'./img/max_window_g.png',
-            // CloseWindow:'./img/close_window_g.png',
-            // searchBtn:'./img/search_g.png',
-            // PlayOrder:1,//1：顺序播放 2：单曲循环 3：随机播放,
-            // play_order:'order',
-            // voice:'yes',
-            // play_type:1
         };
-        store.subscribe(this.get_play_message);
-        // this.changeMinBtn = this.changeMinBtn.bind(this)
-        // this.changeMinOrMaxBtn = this.changeMinOrMaxBtn.bind(this)
-        // this.changeCloseBtn = this.changeCloseBtn.bind(this)
-        // this.clickMinOrMaxBtn = this.clickMinOrMaxBtn.bind(this)
-        // this.changeSearchBtn = this.changeSearchBtn.bind(this)
+        store.subscribe(this.get_play_message)
         audio.addEventListener('ended',() => {
-            console.log('end')
-            //发送下一首播放请求
             this.next_music()
         })
     }
     componentDidMount(){
-        // console.log('组件已渲染')
-        var that = this
+        let that = this
         // //从缓存中获取用户上一次使用程序时候播放器的播放音量，播放列表，播放索引的数据，并加载对应音频
         ipcRenderer.send('getvoice')
         ipcRenderer.on('getvoiceData',(event,num) => {
-            console.log('音量：'+num)
             that.setState({
                 voicenum:num,
                 voiceprogress_line_left:num*100+'%',
@@ -104,11 +68,6 @@ class Player extends Component{
         })
         ipcRenderer.send('getlastplaylist')
         ipcRenderer.on('lastplaylistdata',(event,data,num,type) => {
-            that.setState({
-                list:data || [],
-                index:num || 0,
-                play_type:type || 0
-            })
             if(type === 1){
                 if(data.length > 0){
                     that.setState({
@@ -123,6 +82,12 @@ class Player extends Component{
                     audio.load()
                 }
             }
+            else if(type === 2){
+                const action1 = canchangeplaystatus()
+                store.dispatch(action1)
+                const action = play_netmusic(num,data,false)
+                store.dispatch(action)
+            }
         })
         audio.addEventListener('timeupdate', () => {
             //更新播放器状态
@@ -130,22 +95,7 @@ class Player extends Component{
         })
         
     }
-    open_play_detail = () => {
-        console.log('我草啊')
-        if(this.props.play_type === 1){
-            const action = openplaydetail(true,this.state.item_local)
-            store.dispatch(action)
-            console.log('你妹啊')
-        }
-        else if(this.props.play_type === 2){
-            // const action = openplaydetail(true,this.state.item_net)
-            // store.dispatch(action)
-            console.log('为什么')
-            console.log(this.state.item_net)
-        }
-    }
     updataProgressHTML = (currentTime) => {
-        // console.log(currentTime)
         var that = this
         this.setState({
             current_time:currentTime,
@@ -163,9 +113,10 @@ class Player extends Component{
     }
     get_play_message = () => {
         setTimeout(() => {
-            console.log(this.props)
             if(this.props.canchangeplaystatus === true){
                 if(this.props.play_type === 1){
+                    const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
+                    store.dispatch(action)
                     ipcRenderer.send('saveplaylist',this.props.play_local_list,this.props.play_Index,this.props.play_type)
                     let that = this
                     this.setState({
@@ -175,6 +126,11 @@ class Player extends Component{
                         title:that.props.play_local_item.title,
                         album_name:that.props.play_local_item.album,
                         artist_name:that.props.play_local_item.artist
+                    },() => {
+                        const action = unlockplatdetail()
+                        store.dispatch(action)
+                        const action1 = sendplaydetail(that.state.item_local)
+                        store.dispatch(action1)
                     })
                     audio.src = that.props.play_local_item.path
                     audio.load()
@@ -187,15 +143,14 @@ class Player extends Component{
                             albumImg:'./img/album.png'
                         })
                         audio.play() 
-                        const action = canntchangeplaystatus()//锁定播放状态不受store更改的影响
-                        store.dispatch(action)
                         const play = playstatus(true)
                         store.dispatch(play)
                     }
                 }
                 else if(this.props.play_type === 2){
-                    console.log('播放在线')
-                    console.log(this.props)
+                    const action = canntchangeplaystatus()
+                    store.dispatch(action)
+                    ipcRenderer.send('saveplaylist',this.props.trackids,this.props.play_Index,this.props.play_type)
                     let that = this
                     this.setState({
                         play_type:2,
@@ -214,13 +169,6 @@ class Player extends Component{
                                         album_name:resss.data.songs[0].al.name,
                                         artist_name:resss.data.songs[0].ar[0].name,
                                         albumImg:resss.data.songs[0].al.picUrl,
-                                        item_net:{
-                                            album:resss.data.songs[0].al.name,
-                                            artist:resss.data.songs[0].ar[0].name,
-                                            title:resss.data.songs[0].name,
-                                            path:ress.data.data[0].url,
-                                            albumImg:resss.data.songs[0].al.picUrl,
-                                        }
                                     })
                                     audio.src = ress.data.data[0].url
                                     audio.load()
@@ -232,12 +180,37 @@ class Player extends Component{
                                             time_long_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
                                             status:'pause', 
                                         })
-                                        audio.play()
-                                        console.log(that.state)
-                                        const action = canntchangeplaystatus()
-                                        store.dispatch(action)
+                                        if(that.props.net_auto_play){
+                                            audio.play()
+                                        }
+                                        else{
+                                            this.setState({
+                                                status:'play'
+                                            })
+                                        }
                                         const play = playstatus(true)
                                         store.dispatch(play)
+                                        axios.post('http://localhost:9093/lyric?id='+that.props.trackids[this.props.play_Index].id)
+                                    .then(ressss => {
+                                        console.log(ressss)
+                                        that.setState({
+                                            item_net:{
+                                                album:resss.data.songs[0].al.name,
+                                                artist:resss.data.songs[0].ar[0].name,
+                                                title:resss.data.songs[0].name,
+                                                path:ress.data.data[0].url,
+                                                albumImg:resss.data.songs[0].al.picUrl,
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                            }
+                                        },() => {
+                                            const action = unlockplatdetail()
+                                            store.dispatch(action)
+                                            const action1 = sendplaydetail(that.state.item_net)
+                                            store.dispatch(action1)
+                                            // const action2 = lockplatdetail()
+                                            // store.dispatch(action2)
+                                        }) 
+                                    })
                                     }
                                 })
                             })
@@ -276,7 +249,6 @@ class Player extends Component{
     }
     
     OnmouseDown = (e) => {
-        console.log(this.refs.OnmouseDown.offsetWidth)
         let wid = this.refs.OnmouseDown.offsetWidth
         e = e || window.e;
         var that = this
@@ -284,7 +256,6 @@ class Player extends Component{
         var disx=e.pageX
         var disy=e.pageY
         document.onmousemove=function(ev){
-            console.log(ev.pageX)
             audio.currentTime = (ev.pageX-275)/wid*that.state.time_long
         }
         document.onmouseup=function(){
@@ -345,8 +316,10 @@ class Player extends Component{
         }
     }
     next_music = () => {
+        const action = canntchangeplaystatus()
+        store.dispatch(action)
         if(this.props.play_type === 1){
-            let that = this
+            var that = this
             if(this.state.play_order === 'order' && audio.src){
                 var flag = this.state.play_index
                 flag = (flag === this.state.list_local.length-1) ? 0 : flag + 1
@@ -355,7 +328,14 @@ class Player extends Component{
                     item_local:that.state.list_local[flag],
                     title:that.state.list_local[flag].title,
                     album_name:that.state.list_local[flag].album,
-                    artist_name:that.state.list_local[flag].artist
+                    artist_name:that.state.list_local[flag].artist,
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -368,11 +348,7 @@ class Player extends Component{
                         status:'pause',
                     })
                     audio.play()
-                    const action = canntchangeplaystatus()
-                    store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
             else if(this.state.play_order === 'loop' && audio.src){
@@ -383,6 +359,13 @@ class Player extends Component{
                     title:that.state.list_local[flag].title,
                     album_name:that.state.list_local[flag].album,
                     artist_name:that.state.list_local[flag].artist
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -398,14 +381,11 @@ class Player extends Component{
                     const action = canntchangeplaystatus()
                     store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
             else if(this.state.play_order === 'random' && audio.src){
                 parseInt(Math.random()*(this.state.list_local.length+1),10);
                 var i = Math.floor(Math.random()*(this.state.list_local.length+1));
-                // console.log(i)
                 flag = i;
                 this.setState({
                     play_index:flag,
@@ -413,6 +393,13 @@ class Player extends Component{
                     title:that.state.list_local[flag].title || '',
                     album_name:that.state.list_local[flag].album || '',
                     artist_name:that.state.list_local[flag].artist ||''
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -428,8 +415,6 @@ class Player extends Component{
                     const action = canntchangeplaystatus()
                     store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
         }
@@ -438,13 +423,14 @@ class Player extends Component{
 
 
         //在线播放的逻辑
-        else if(this.props.play_type === 2){
-            let that = this
+        else if(this.props.play_type === 2){ 
+            const action = canntchangeplaystatus()
+            store.dispatch(action)      
             if(this.state.play_order === 'order' && audio.src){
                 flag = this.state.play_index
                 flag = (flag === this.state.ids.length-1) ? 0 : flag + 1
                 ipcRenderer.send('saveindex',flag)
-                    let that = this
+                    var that = this
                     this.setState({
                         play_type:2,
                         play_index:flag,
@@ -456,21 +442,32 @@ class Player extends Component{
                             .then(ress => {
                                 axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
+                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    .then(ressss => {
+                                        console.log(ressss)
+                                        that.setState({
+                                            item_net:{
+                                                album:resss.data.songs[0].al.name,
+                                                artist:resss.data.songs[0].ar[0].name,
+                                                title:resss.data.songs[0].name,
+                                                path:ress.data.data[0].url,
+                                                albumImg:resss.data.songs[0].al.picUrl,
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                            }
+                                        },() => {
+                                            const action = unlockplatdetail()
+                                            store.dispatch(action)
+                                            const action1 = sendplaydetail(that.state.item_net)
+                                            store.dispatch(action1)
+                                            // const action2 = lockplatdetail()
+                                            // store.dispatch(action2)
+                                        })   
+                                    })
                                     that.setState({
                                         title:resss.data.songs[0].name,
                                         album_name:resss.data.songs[0].al.name,
                                         artist_name:resss.data.songs[0].ar[0].name,
                                         albumImg:resss.data.songs[0].al.picUrl,
-                                        item_net:{
-                                            album:resss.data.songs[0].al.name,
-                                            artist:resss.data.songs[0].ar[0].name,
-                                            title:resss.data.songs[0].name,
-                                            path:ress.data.data[0].url,
-                                            albumImg:resss.data.songs[0].al.picUrl,
-                                        }
-                                    },() => {
-                                        const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,that.state.item_net)
-                                        store.dispatch(action1)
                                     })
                                     audio.src = ress.data.data[0].url
                                     audio.load()
@@ -483,9 +480,6 @@ class Player extends Component{
                                             status:'pause', 
                                         })
                                         audio.play()
-                                        console.log(that.state)
-                                        const action = canntchangeplaystatus()
-                                        store.dispatch(action)
                                         const play = playstatus(true)
                                         store.dispatch(play)
                                     }
@@ -513,21 +507,32 @@ class Player extends Component{
                             .then(ress => {
                                 axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
+                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    .then(ressss => {
+                                        console.log(ressss)
+                                        that.setState({
+                                            item_net:{
+                                                album:resss.data.songs[0].al.name,
+                                                artist:resss.data.songs[0].ar[0].name,
+                                                title:resss.data.songs[0].name,
+                                                path:ress.data.data[0].url,
+                                                albumImg:resss.data.songs[0].al.picUrl,
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                            }
+                                        },() => {
+                                            const action = unlockplatdetail()
+                                            store.dispatch(action)
+                                            const action1 = sendplaydetail(that.state.item_net)
+                                            store.dispatch(action1)
+                                            // const action2 = lockplatdetail()
+                                            // store.dispatch(action2)
+                                        })   
+                                    })
                                     that.setState({
                                         title:resss.data.songs[0].name,
                                         album_name:resss.data.songs[0].al.name,
                                         artist_name:resss.data.songs[0].ar[0].name,
                                         albumImg:resss.data.songs[0].al.picUrl,
-                                        item_net:{
-                                            album:resss.data.songs[0].al.name,
-                                            artist:resss.data.songs[0].ar[0].name,
-                                            title:resss.data.songs[0].name,
-                                            path:ress.data.data[0].url,
-                                            albumImg:resss.data.songs[0].al.picUrl,
-                                        }
-                                    },() => {
-                                        const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,that.state.item_net)
-                                        store.dispatch(action1)
                                     })
                                     audio.src = ress.data.data[0].url
                                     audio.load()
@@ -540,9 +545,6 @@ class Player extends Component{
                                             status:'pause', 
                                         })
                                         audio.play()
-                                        console.log(that.state)
-                                        const action = canntchangeplaystatus()
-                                        store.dispatch(action)
                                         const play = playstatus(true)
                                         store.dispatch(play)
                                     }
@@ -553,14 +555,11 @@ class Player extends Component{
                             message.error('您不是会员或网易没有版权')
                         }
                     })
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.item_net)
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
             else if(this.state.play_order === 'random' && audio.src){
                 parseInt(Math.random()*(this.state.ids.length+1),10);
                 i = Math.floor(Math.random()*(this.state.ids.length+1));
-                // console.log(i)
                 flag = i;
                 ipcRenderer.send('saveindex',flag)
                     let that = this
@@ -575,21 +574,32 @@ class Player extends Component{
                             .then(ress => {
                                 axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
+                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    .then(ressss => {
+                                        console.log(ressss)
+                                        that.setState({
+                                            item_net:{
+                                                album:resss.data.songs[0].al.name,
+                                                artist:resss.data.songs[0].ar[0].name,
+                                                title:resss.data.songs[0].name,
+                                                path:ress.data.data[0].url,
+                                                albumImg:resss.data.songs[0].al.picUrl,
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                            }
+                                        },() => {
+                                            const action = unlockplatdetail()
+                                            store.dispatch(action)
+                                            const action1 = sendplaydetail(that.state.item_net)
+                                            store.dispatch(action1)
+                                            // const action2 = lockplatdetail()
+                                            // store.dispatch(action2)
+                                        })   
+                                    })
                                     that.setState({
                                         title:resss.data.songs[0].name,
                                         album_name:resss.data.songs[0].al.name,
                                         artist_name:resss.data.songs[0].ar[0].name,
                                         albumImg:resss.data.songs[0].al.picUrl,
-                                        item_net:{
-                                            album:resss.data.songs[0].al.name,
-                                            artist:resss.data.songs[0].ar[0].name,
-                                            title:resss.data.songs[0].name,
-                                            path:ress.data.data[0].url,
-                                            albumImg:resss.data.songs[0].al.picUrl,
-                                        }
-                                    },() => {
-                                        const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,that.state.item_net)
-                                        store.dispatch(action1)
                                     })
                                     audio.src = ress.data.data[0].url
                                     audio.load()
@@ -602,9 +612,6 @@ class Player extends Component{
                                             status:'pause', 
                                         })
                                         audio.play()
-                                        console.log(that.state)
-                                        const action = canntchangeplaystatus()
-                                        store.dispatch(action)
                                         const play = playstatus(true)
                                         store.dispatch(play)
                                     }
@@ -615,17 +622,18 @@ class Player extends Component{
                             message.error('您不是会员或网易没有版权')
                         }
                     })
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.item_net)
+                const action1 = sendplaydetail(store.getState().player.open_play_detail?true:false,this.state.item_net)
                 store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
         }
     }
     pre_music = () => {
+        const action = canntchangeplaystatus()
+        store.dispatch(action)
         if(this.props.play_type === 1){
             let that = this
             if(this.state.play_order === 'order' && audio.src){
-                console.log('顺序播放')
                 var flag = this.state.play_index
                 flag = (flag === 0) ? this.state.list_local.length-1 : flag - 1
                 this.setState({
@@ -634,6 +642,13 @@ class Player extends Component{
                     title:that.state.list_local[flag].title,
                     album_name:that.state.list_local[flag].album,
                     artist_name:that.state.list_local[flag].artist
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -646,15 +661,10 @@ class Player extends Component{
                         status:'pause',
                     })
                     audio.play()
-                    const action = canntchangeplaystatus()
-                    store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
             else if(this.state.play_order === 'loop' && audio.src){
-                console.log('单曲循环')
                 flag = this.state.play_index
                 this.setState({
                     play_index:flag,
@@ -662,6 +672,13 @@ class Player extends Component{
                     title:that.state.list_local[flag].title,
                     album_name:that.state.list_local[flag].album,
                     artist_name:that.state.list_local[flag].artist
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -677,15 +694,13 @@ class Player extends Component{
                     const action = canntchangeplaystatus()
                     store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
             else if(this.state.play_order === 'random' && audio.src){
-                console.log('随机播放')
+
                 parseInt(Math.random()*(this.state.list_local.length+1),10);
                 var i = Math.floor(Math.random()*(this.state.list_local.length+1));
-                // console.log(i)
+
                 flag = i;
                 this.setState({
                     play_index:flag,
@@ -693,6 +708,13 @@ class Player extends Component{
                     title:that.state.list_local[flag].title,
                     album_name:that.state.list_local[flag].album,
                     artist_name:that.state.list_local[flag].artist
+                },() => {
+                    const action = unlockplatdetail()
+                    store.dispatch(action)
+                    const action1 = sendplaydetail(that.state.item_local)
+                    store.dispatch(action1)
+                    // const action2 = lockplatdetail()
+                    // store.dispatch(action2)
                 })
                 ipcRenderer.send('saveindex',flag)
                 audio.src = this.state.list_local[flag].path
@@ -704,16 +726,198 @@ class Player extends Component{
                         time_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
                         status:'pause',
                     })
-                    console.log('为什么不放啊')
                     audio.play()
                     const action = canntchangeplaystatus()
                     store.dispatch(action)
                 }
-                const action1 = openplaydetail(store.getState().player.open_play_detail?true:false,this.state.list_local[flag])
-                store.dispatch(action1)
                 ipcRenderer.send('saveplaylist',this.props.play_local_list,flag,this.props.play_type)
             }
         }   
+
+
+
+
+        //在线播放
+        else if(this.props.play_type === 2){
+            let that = this
+            if(this.state.play_order === 'order' && audio.src){
+                flag = this.state.play_index
+                flag = (flag === this.state.ids.length-1) ? 0 : flag - 1
+                ipcRenderer.send('saveindex',flag)
+                    let that = this
+                    this.setState({
+                        play_type:2,
+                        play_index:flag,
+                    })
+                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    .then(res => {
+                        if(res.data.success === true){
+                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            .then(ress => {
+                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                .then(resss => {
+                                    that.setState({
+                                        title:resss.data.songs[0].name,
+                                        album_name:resss.data.songs[0].al.name,
+                                        artist_name:resss.data.songs[0].ar[0].name,
+                                        albumImg:resss.data.songs[0].al.picUrl,
+                                        item_net:{
+                                            album:resss.data.songs[0].al.name,
+                                            artist:resss.data.songs[0].ar[0].name,
+                                            title:resss.data.songs[0].name,
+                                            path:ress.data.data[0].url,
+                                            albumImg:resss.data.songs[0].al.picUrl,
+                                        }
+                                    },() => {
+                                        const action = unlockplatdetail()
+                                        store.dispatch(action)
+                                        const action1 = sendplaydetail(that.state.item_net)
+                                        store.dispatch(action1)
+                                        // const action2 = lockplatdetail()
+                                        // store.dispatch(action2)
+                                    })
+                                    audio.src = ress.data.data[0].url
+                                    audio.load()
+                                    // let thatt = that
+                                    audio.oncanplay = () => {
+                                        that.setState({
+                                            time_long:audio.duration,
+                                            time_long_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                                            time_long_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                                            status:'pause', 
+                                        })
+                                        audio.play()
+                                        const play = playstatus(true)
+                                        store.dispatch(play)
+                                    }
+                                })
+                            })
+                        }
+                        else{
+                            message.error('您不是会员或网易没有版权')
+                        }
+                    })
+                ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
+            }
+            else if(this.state.play_order === 'loop' && audio.src){
+                flag = this.state.play_index
+                ipcRenderer.send('saveindex',flag)
+                    let that = this
+                    this.setState({
+                        play_type:2,
+                        play_index:flag,
+                    })
+                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    .then(res => {
+                        if(res.data.success === true){
+                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            .then(ress => {
+                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                .then(resss => {
+                                    that.setState({
+                                        title:resss.data.songs[0].name,
+                                        album_name:resss.data.songs[0].al.name,
+                                        artist_name:resss.data.songs[0].ar[0].name,
+                                        albumImg:resss.data.songs[0].al.picUrl,
+                                        item_net:{
+                                            album:resss.data.songs[0].al.name,
+                                            artist:resss.data.songs[0].ar[0].name,
+                                            title:resss.data.songs[0].name,
+                                            path:ress.data.data[0].url,
+                                            albumImg:resss.data.songs[0].al.picUrl,
+                                        }
+                                    },() => {
+                                        const action = unlockplatdetail()
+                                        store.dispatch(action)
+                                        const action1 = sendplaydetail(that.state.item_net)
+                                        store.dispatch(action1)
+                                        // const action2 = lockplatdetail()
+                                        // store.dispatch(action2)
+                                    })
+                                    audio.src = ress.data.data[0].url
+                                    audio.load()
+                                    // let thatt = that
+                                    audio.oncanplay = () => {
+                                        that.setState({
+                                            time_long:audio.duration,
+                                            time_long_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                                            time_long_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                                            status:'pause', 
+                                        })
+                                        audio.play()
+                                        const play = playstatus(true)
+                                        store.dispatch(play)
+                                    }
+                                })
+                            })
+                        }
+                        else{
+                            message.error('您不是会员或网易没有版权')
+                        }
+                    })
+                ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
+            }
+            else if(this.state.play_order === 'random' && audio.src){
+                parseInt(Math.random()*(this.state.ids.length+1),10);
+                i = Math.floor(Math.random()*(this.state.ids.length+1));
+                flag = i;
+                ipcRenderer.send('saveindex',flag)
+                    let that = this
+                    this.setState({
+                        play_type:2,
+                        play_index:flag,
+                    })
+                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    .then(res => {
+                        if(res.data.success === true){
+                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            .then(ress => {
+                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                .then(resss => {
+                                    that.setState({
+                                        title:resss.data.songs[0].name,
+                                        album_name:resss.data.songs[0].al.name,
+                                        artist_name:resss.data.songs[0].ar[0].name,
+                                        albumImg:resss.data.songs[0].al.picUrl,
+                                        item_net:{
+                                            album:resss.data.songs[0].al.name,
+                                            artist:resss.data.songs[0].ar[0].name,
+                                            title:resss.data.songs[0].name,
+                                            path:ress.data.data[0].url,
+                                            albumImg:resss.data.songs[0].al.picUrl,
+                                        }
+                                    },() => {
+                                        const action = unlockplatdetail()
+                                        store.dispatch(action)
+                                        const action1 = sendplaydetail(that.state.item_net)
+                                        store.dispatch(action1)
+                                        // const action2 = lockplatdetail()
+                                        // store.dispatch(action2)
+                                    })
+                                    audio.src = ress.data.data[0].url
+                                    audio.load()
+                                    // let thatt = that
+                                    audio.oncanplay = () => {
+                                        that.setState({
+                                            time_long:audio.duration,
+                                            time_long_m:Math.floor(audio.duration/60) >= 10? Math.floor(audio.duration/60):'0'+Math.floor(audio.duration/60),
+                                            time_long_s:Math.floor(audio.duration-Math.floor(audio.duration/60)*60) >= 10?Math.floor(audio.duration-Math.floor(audio.duration/60)*60):'0'+Math.floor(audio.duration-Math.floor(audio.duration/60)*60),
+                                            status:'pause', 
+                                        })
+                                        audio.play()
+                                        const play = playstatus(true)
+                                        store.dispatch(play)
+                                    }
+                                })
+                            })
+                        }
+                        else{
+                            message.error('您不是会员或网易没有版权')
+                        }
+                    })
+                ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
+            }
+        }
     }
     mute = () => {
         if(this.state.voicenum !== 0){
@@ -813,15 +1017,13 @@ const mapstatetoprops = (state) => {
         play_Index:state.player.playIndex,
         play_local_list:state.player.playlist_local,
         play_local_item:state.player.playdata_local,
-        trackids:state.player.ids_net
+        trackids:state.player.ids_net,
+        net_auto_play:state.player.netautoplay
     }
   }
   const mapdistoprops = (dispatch) => {
     return{
-      open_play_detail  (data)  {
-            const action = openplaydetail(true,data)
-            dispatch(action)
-      }
+      open_play_detail : () => dispatch(openplaydetail())
     }
   }
 export default connect(mapstatetoprops,mapdistoprops)(Player)
