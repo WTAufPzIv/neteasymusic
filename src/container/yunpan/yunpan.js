@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import './yunpan.css'
 import { ProgressCircle } from 'react-desktop/windows';
+import store from '../../store/index'
+import { canchangeplaystatus,play_netmusic   } from '../../store/actionCreators'
 class Yunpan extends React.Component{
     constructor(props){
         super(props)
@@ -15,6 +17,18 @@ class Yunpan extends React.Component{
         if(this.props.login_status){
             this.props.ask_yunpan()
         }
+    }
+    play = (data,index) => {
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.songId
+            })
+        })
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
     }
     render(){
         return(
@@ -44,7 +58,7 @@ class Yunpan extends React.Component{
                             {
                                 this.props.get_yunpan === true?this.props.yunpan_data.data.data.map((item,index) => {
                                     return (
-                                        <div className = 'yunpan_item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}}>
+                                        <div className = 'yunpan_item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(this.props.yunpan_data.data.data,index)}>
                                             <div className = 'yunpan_item_index'>{index+1}</div>
                                             <div className = 'yunpan_item_name'>{item.songName}</div>
                                             <div className = 'yunpan_item_artist'>{item.artist}</div>
@@ -63,8 +77,8 @@ class Yunpan extends React.Component{
                         </div>
                     ):(
                         <div className = 'yunpan_nologin'>
-                            <img src = {require('./img/undraw_going_up_ttm5.svg')}></img>
-                            <span>右上角登录后使用音乐云盘</span>
+                            <img src = {require('./img/MBE风格多色图标-云盘.png')}></img>
+                            <span>登录后使用音乐云盘</span>
                         </div>
                     )
                 }

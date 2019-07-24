@@ -9,6 +9,8 @@ import Comments from './comment/comment'
 import Des from './des/des'
 import './album.css'
 import moment from 'moment'
+import store from '../../store/index'
+import { canchangeplaystatus,play_netmusic   } from '../../store/actionCreators'
 class Album extends React.Component{
     constructor(props){
         super(props)
@@ -75,6 +77,18 @@ class Album extends React.Component{
     share = () => {
         this.props.share(this.state.id)
     }
+    play = (data,index) => {
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
+    }
     render = () => {
         return (
             <div className = 'album_body' onScroll = { () => this.scrool()} ref = 'album_body'>
@@ -97,7 +111,7 @@ class Album extends React.Component{
                                     <p>发行时间：{moment(parseInt(this.props.album_detail_data.album.publishTime)).format("YYYY年MM月DD日")}</p>
                                 </div>
                                 <div className = 'album_action'>
-                                    <div className = 'album_action_play'>播放全部</div>
+                                    <div className = 'album_action_play' onClick = {() => this.play(this.props.album_detail_data.songs,0)}>播放全部</div>
                                     <div className = 'album_action_collect' onClick = {() => this.collect(this.props.album_dynamic_data.isSub)}>{this.props.album_dynamic_data.isSub?('已收藏:'+this.props.album_dynamic_data.subCount):('收藏:'+this.props.album_dynamic_data.subCount)}</div>
                                     <div className = 'album_action_download'>下载全部</div>
                                 </div>

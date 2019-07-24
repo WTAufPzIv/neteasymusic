@@ -2,6 +2,8 @@ import React from 'react'
 import './music.css'
 import { connect } from 'react-redux'
 import { ProgressCircle } from 'react-desktop/windows';
+import store from '../../../store/index'
+import { canchangeplaystatus,play_netmusic   } from '../../../store/actionCreators'
 class Music extends React.Component{
     constructor(props){
         super(props)
@@ -12,6 +14,18 @@ class Music extends React.Component{
     }
     componentWillMount(){
 
+    }
+    play = (data,index) => {
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
     }
     render(){
         return (
@@ -26,7 +40,7 @@ class Music extends React.Component{
                 {
                     this.props.get_artist_music && this.props.get_user_like_music?this.props.artist_music_data.hotSongs.map((item,index) => {
                         return (
-                            <div className = 'artist_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}}>
+                            <div className = 'artist_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(this.props.artist_music_data.hotSongs,index)}>
                                 <div className = 'artist_music_list__item_index'>{index+1}</div>
                                 <div className = 'artist_music_list__item_index'><img src = {this.props.user_like_music_data.data.ids.indexOf(item.id) === -1?require('./img/喜欢.png'):require('./img/喜欢 (1).png')}></img></div>
                                 <div className = 'artist_music_list__item_index'><img src = {require('./img/下载.png')}></img></div>

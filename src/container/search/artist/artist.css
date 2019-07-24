@@ -5,11 +5,11 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-    
+    margin:0 auto;
 }
 .search_res_artist_list > div{
-    width: 150px;
-    height: 180px;;
+    width: 225px;
+    height: 250px;;
     /* background-color: blue; */
     margin-top: 10px;
     color: white;
@@ -17,8 +17,8 @@
     margin-left: 15px;
 }
 .search_res_artist_list > div > img{
-    width: 150px;
-    height: 150px;
+    width: 225px;
+    height: 225px;
 }
 .search_res_artist_page{
     width: 200px;

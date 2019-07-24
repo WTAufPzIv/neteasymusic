@@ -47,8 +47,8 @@ class Like extends React.Component{
                         </div>
                     ):(
                         <div className = 'like_nologin'>
-                            <img src = {require('./img/undraw_collection_u2np.svg')}></img>
-                            <span>右上角登录后查看收藏</span>
+                            <img src = {require('./img/收藏的课程.png')}></img>
+                            <span>登录后查看收藏</span>
                         </div>
                     )
                 }

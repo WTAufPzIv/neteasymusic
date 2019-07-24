@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { asknewmusic,asknewalbum, pushstack, goalbumdetail } from '../../store/actionCreators'
 import { Radio } from 'antd';
 import { ProgressCircle } from 'react-desktop/windows';
+import store from '../../store/index'
+import { canchangeplaystatus,play_netmusic  } from '../../store/actionCreators'
 class New extends React.Component{
     constructor(props){
         super(props)
@@ -26,6 +28,18 @@ class New extends React.Component{
         this.props.history.push('/album', {id:id})
         this.props.go_album()
     }
+    play = (data,index) => {
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
+    }
     render(){
         return(
            <div className = 'newmusic_body'>
@@ -42,18 +56,18 @@ class New extends React.Component{
                    {
                         this.props.get_newmusic?this.props.newmusic_data.data.data.map((item,index) => {
                             return (
-                                <div className = 'newmusic_list_item_body' style = {{'backgroundColor':index%2 === 0?'rgb(35,35,35)':'null'}}>
+                                <div className = 'newmusic_list_item_body' style = {{'backgroundColor':index%2 === 0?'rgb(35,35,35)':'null'}} onDoubleClick = {() => this.play(this.props.newmusic_data.data.data,index)}>
                                     <p>{index+1}</p>
                                     <img src = {item.album.blurPicUrl + '?param=60y60'}></img>
                                     <div className = 'newmusic_list_item_name' style={{"WebkitBoxOrient": "vertical"}}>{item.name}</div>
-                                    <div className = 'newmusic_list_item_artist'>{item.artists.slice(0,2).map((itemm) =>{
+                                    <div className = 'newmusic_list_item_artist' style = {{'userSelect':'text'}}>{item.artists.slice(0,2).map((itemm) =>{
                                         return (
                                             <p style={{"WebkitBoxOrient": "vertical"}}>{itemm.name}{'\u00a0'}</p>
                                         )
                                     })}
                                     {item.artists.length >=3 ? '...':''}
                                     </div>
-                                    <div className = 'newmusic_list_item_album' style={{"WebkitBoxOrient": "vertical"}}>{item.album.name}</div>
+                                    <div className = 'newmusic_list_item_album' style={{"WebkitBoxOrient": "vertical",'cursor':'pointer'}} onClick = {() => this.goalbumdetail(item.album.id)}>{item.album.name}</div>
                                 </div>
                             )
                         }):(

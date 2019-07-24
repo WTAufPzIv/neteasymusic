@@ -57,7 +57,7 @@ class search_res_artist extends React.Component{
                         this.props.get_search_res_artist?this.props.search_res_artist_data.result.artists.map((item) => {
                             return (
                                 <div onClick = { () => this.go_artist(item.id)}>
-                                        <img src = {item.picUrl+ '?param=150y150'}></img>
+                                        <img src = {item.picUrl+ '?param=250y250'}></img>
                                         <div>{item.name}</div>
                                 </div>
                             )

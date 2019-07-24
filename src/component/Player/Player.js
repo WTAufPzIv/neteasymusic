@@ -2,9 +2,8 @@ import  React  from 'react'
 import { Component } from 'react'
 import './Player.css'
 import store from '../../store/index'
-import { canntchangeplaystatus,sendplaydetail,playstatus,canchangeplaystatus,play_netmusic, asklrc, openplaydetail, lockplatdetail, unlockplatdetail } from '../../store/actionCreators'
+import { canntchangeplaystatus,sendplaydetail,playstatus,canchangeplaystatus,play_netmusic, playlrc, openplaydetail, unlockplatdetail, current, havedrag } from '../../store/actionCreators'
 import { connect } from 'react-redux'
-import { PLAY_LOCALMUSIC,CAN_CHANGE_PLAY_STATUS,CANNT_CHANGE_PLAY_STATUS,OPEN_PLAY_DETAIL,PLAY_STATUS } from "../../store/actionType";
 import axios from 'axios';
 import { message } from 'antd';
 const audio = new Audio()
@@ -96,6 +95,7 @@ class Player extends Component{
         
     }
     updataProgressHTML = (currentTime) => {
+        // console.log(Math.floor(currentTime*60*60))
         var that = this
         this.setState({
             current_time:currentTime,
@@ -182,14 +182,19 @@ class Player extends Component{
                                         })
                                         if(that.props.net_auto_play){
                                             audio.play()
+                                            const play = playstatus(true)
+                                            store.dispatch(play)
+                                            console.log('你妈的')
                                         }
                                         else{
                                             this.setState({
                                                 status:'play'
                                             })
+                                            const play = playstatus(false)
+                                            store.dispatch(play)
+                                            console.log('为什么')
                                         }
-                                        const play = playstatus(true)
-                                        store.dispatch(play)
+                                       
                                         axios.post('http://localhost:9093/lyric?id='+that.props.trackids[this.props.play_Index].id)
                                     .then(ressss => {
                                         console.log(ressss)
@@ -200,7 +205,8 @@ class Player extends Component{
                                                 title:resss.data.songs[0].name,
                                                 path:ress.data.data[0].url,
                                                 albumImg:resss.data.songs[0].al.picUrl,
-                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : '',
+                                                id:resss.data.songs[0].id
                                             }
                                         },() => {
                                             const action = unlockplatdetail()
@@ -219,12 +225,16 @@ class Player extends Component{
                             message.error('您不是会员或网易没有版权')
                         }
                     })
+                    .catch(err =>{
+                        message.error('播放错误,请检查网络或确保已登录，也可能由于网易没有版权')
+                    })
                 }
             }
         },100)
     }
 
     pauseandplay = () => {
+        console.log('你妈的什么情况')
         if(this.state.status === 'play'){
             if(audio.src){
                 audio.play()
@@ -233,6 +243,8 @@ class Player extends Component{
                 })
                 const play = playstatus(true)
                 store.dispatch(play)
+                const play1 = playlrc()
+                store.dispatch(play1)
             }
             else{
                 alert('播放列表为空')
@@ -243,8 +255,10 @@ class Player extends Component{
             this.setState({
                 status:'play'
             })
-            const play = playstatus(false)
-            store.dispatch(play)
+            const play3 = playstatus(false)
+            store.dispatch(play3)
+            const play4 = playlrc()
+            store.dispatch(play4)
         }
     }
     
@@ -261,6 +275,12 @@ class Player extends Component{
         document.onmouseup=function(){
             document.onmousemove=null
             document.onmousedown=null
+            if(that.props.play_type === 2){
+                console.log('手动调节了进度条')
+                const action = havedrag(true)
+                store.dispatch(action)
+            }
+            
         }
     }
     clickAdjustProgress = (e) => {
@@ -268,6 +288,11 @@ class Player extends Component{
         let wid = this.refs.OnmouseDown.offsetWidth
         var disx=e.pageX
         audio.currentTime = (disx-275)/wid*that.state.time_long
+        if(that.props.play_type === 2){
+            console.log('手动调节了进度条')
+            const action = havedrag(true)
+            store.dispatch(action)
+        }
     }
     clickVoiceProgress = (e) => {
 
@@ -452,7 +477,8 @@ class Player extends Component{
                                                 title:resss.data.songs[0].name,
                                                 path:ress.data.data[0].url,
                                                 albumImg:resss.data.songs[0].al.picUrl,
-                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : '',
+                                                id:resss.data.songs[0].id
                                             }
                                         },() => {
                                             const action = unlockplatdetail()
@@ -489,6 +515,9 @@ class Player extends Component{
                         else{
                             message.error('您不是会员或网易没有版权')
                         }
+                    })
+                    .catch(err =>{
+                        message.error('播放错误,可能由于网易没有版权')
                     })
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
@@ -517,7 +546,8 @@ class Player extends Component{
                                                 title:resss.data.songs[0].name,
                                                 path:ress.data.data[0].url,
                                                 albumImg:resss.data.songs[0].al.picUrl,
-                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : '',
+                                                id:resss.data.songs[0].id
                                             }
                                         },() => {
                                             const action = unlockplatdetail()
@@ -554,6 +584,9 @@ class Player extends Component{
                         else{
                             message.error('您不是会员或网易没有版权')
                         }
+                    })
+                    .catch(err =>{
+                        message.error('播放错误,可能由于网易没有版权')
                     })
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
@@ -584,7 +617,8 @@ class Player extends Component{
                                                 title:resss.data.songs[0].name,
                                                 path:ress.data.data[0].url,
                                                 albumImg:resss.data.songs[0].al.picUrl,
-                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : ''
+                                                lrc:ressss.data.lrc?ressss.data.lrc.lyric : '',
+                                                id:resss.data.songs[0].id
                                             }
                                         },() => {
                                             const action = unlockplatdetail()
@@ -621,6 +655,9 @@ class Player extends Component{
                         else{
                             message.error('您不是会员或网易没有版权')
                         }
+                    })
+                    .catch(err =>{
+                        message.error('播放错误,可能由于网易没有版权')
                     })
                 const action1 = sendplaydetail(store.getState().player.open_play_detail?true:false,this.state.item_net)
                 store.dispatch(action1)
@@ -767,6 +804,7 @@ class Player extends Component{
                                             title:resss.data.songs[0].name,
                                             path:ress.data.data[0].url,
                                             albumImg:resss.data.songs[0].al.picUrl,
+                                            id:resss.data.songs[0].id
                                         }
                                     },() => {
                                         const action = unlockplatdetail()
@@ -825,6 +863,7 @@ class Player extends Component{
                                             title:resss.data.songs[0].name,
                                             path:ress.data.data[0].url,
                                             albumImg:resss.data.songs[0].al.picUrl,
+                                            id:resss.data.songs[0].id
                                         }
                                     },() => {
                                         const action = unlockplatdetail()
@@ -854,6 +893,9 @@ class Player extends Component{
                         else{
                             message.error('您不是会员或网易没有版权')
                         }
+                    })
+                    .catch(err =>{
+                        message.error('播放错误,可能由于网易没有版权')
                     })
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
@@ -885,6 +927,7 @@ class Player extends Component{
                                             title:resss.data.songs[0].name,
                                             path:ress.data.data[0].url,
                                             albumImg:resss.data.songs[0].al.picUrl,
+                                            id:resss.data.songs[0].id
                                         }
                                     },() => {
                                         const action = unlockplatdetail()
@@ -914,6 +957,9 @@ class Player extends Component{
                         else{
                             message.error('您不是会员或网易没有版权')
                         }
+                    })
+                    .catch(err =>{
+                        message.error('播放错误,可能由于网易没有版权')
                     })
                 ipcRenderer.send('saveplaylist',this.state.ids,flag,this.props.play_type)
             }
@@ -963,7 +1009,7 @@ class Player extends Component{
             <div>
                 
                 <div className = 'play_body'>
-                    <div className = 'play_img' onClick = {() => this.props.open_play_detail(this.props.play_type === 1?this.state.item_local:this.state.item_net)}>
+                    <div className = 'play_img' onClick = {() => this.props.open_play_detail()}>
                         <img src = {this.props.play_type === 1?require('./img/album.png'):this.state.albumImg+'?param=50y50'} />
                     </div>
                     <div className = 'base_Btn'>

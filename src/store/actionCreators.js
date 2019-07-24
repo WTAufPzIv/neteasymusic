@@ -7,6 +7,7 @@ import {
     SEND_PLAY_DETAIL,
     PLAY_STATUS,
     LOGIN_STATUS,
+    DRAG,
     OPEN_USER,
     LOGIN_STATUS_CODE,
     LOGIN_SUCCESS,
@@ -78,11 +79,18 @@ import {
     CLEAR_SEARCH_TIME,
     DBCLICK_PLAY_NETMUSIC,
     LOCK_PLAYDETAIL,
-    UNLOCK_PLAYDETAIL
+    UNLOCK_PLAYDETAIL,
+    PLAY_LRC,
+    STOP_LRC,
+    CURRENT,
+    GET_MUSIC_COMMEND,
+    CLEAR_MUSIC_COMMENT
 } from "./actionType";
 import axios from 'axios'
 import { message  } from 'antd'
 import moment from 'moment'
+
+
 export const play_localmusic = (index,files) => ({
     type:DBCLICK_PLAY_LOCALMUSIC,
     index:index,
@@ -100,6 +108,28 @@ export const canchangeplaystatus = () => ({
 export const canntchangeplaystatus = () => ({
     type:CANNT_CHANGE_PLAY_STATUS,
 })
+export const playlrc = () => {
+    return{
+        type:PLAY_LRC
+    }
+}
+export const havedrag = (bool) => {
+    return{
+        type:DRAG,
+        is_drag:bool
+    }
+}
+export const stoplrc = () => {
+    return{
+        type:STOP_LRC
+    }
+}
+export const current = (time) => {
+    return {
+        type:CURRENT,
+        time:time
+    }
+}
 export const sendplaydetail = (musicdata) => {
     return (dispatch) => {
         dispatch({
@@ -1098,6 +1128,27 @@ export const releascommentvedio = (e,id) => {
         })
     }
 }
+export const releascommentmusic = (e,id) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment?t=1&type=0&id='+id+'&content='+e)
+        .then(res => {
+            message.success('评论成功')
+            dispatch({
+                type:CLEAR_MUSIC_COMMENT
+            })
+            axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            .then(ress => {
+                dispatch({
+                    type:GET_MUSIC_COMMEND,
+                    get_music_comment:true,
+                    music_comment_data:ress.data,
+                    music_comment_data_all:ress.data.comments,
+                    music_comment_data_hot:ress.data.hotComments
+                })
+            })
+        })
+    }
+}
 export const votecommentmv = (id,cid,type) => {
     return dispatch => {
         axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=1')
@@ -1110,6 +1161,14 @@ export const votecommentmv = (id,cid,type) => {
 export const votecommentvedio = (id,cid,type) => {
     return dispatch => {
         axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=5')
+        .then(res => {
+            message.success('操作成功(可能延迟展示)')
+        })
+    }
+}
+export const votecommentmusic = (id,cid,type) => {
+    return dispatch => {
+        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=0')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -1234,8 +1293,34 @@ export const clearsearchtime = () => {
         type:CLEAR_SEARCH_TIME
     }
 }
-// export const playmusiclist = (indx,type,data) => {
-//     return {
-//         type:
-//     }
-// }
+export const askmusiccommend = (id) => {
+    return  dispatch => {
+        dispatch({
+            type:CLEAR_MUSIC_COMMENT
+        })
+        axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before=0')
+        .then(res => {
+            dispatch({
+                type:GET_MUSIC_COMMEND,
+                get_music_comment:true,
+                music_comment_data:res.data,
+                music_comment_data_all:res.data.comments,
+                music_comment_data_hot:res.data.hotComments
+            })
+        })
+    }
+}
+export const askmoremusiccommend = (id,page) => {
+    return  dispatch => {
+        axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before='+page)
+        .then(res => {
+            dispatch({
+                type:GET_MUSIC_COMMEND,
+                get_music_comment:true,
+                music_comment_data:res.data,
+                music_comment_data_all:res.data.comments,
+                music_comment_data_hot:[]
+            })
+        })
+    }
+}

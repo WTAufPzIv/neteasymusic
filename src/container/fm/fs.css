@@ -19,8 +19,9 @@
     align-items: center;
 }
 .day_nologin > img{
-    width: 300px;
-    height: 250px;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
 }
 .day_nologin > div{
     font-size: 20px;

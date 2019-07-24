@@ -117,7 +117,7 @@ resize = () => {
                   {/* <Route path = '/mv' component = { Mv } match = 'match'  ></Route> */}
                   <Route path = '/search' component = { Search }></Route>
                   {/* <Route path = '/search' component = { Search } match = 'match'  ></Route> */}
-                  <Redirect to = '/Fm'></Redirect>
+                  <Redirect to = '/Recommend'></Redirect>
                 </Switch>
               </div>
             </BrowserRouter>

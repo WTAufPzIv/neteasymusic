@@ -5,7 +5,8 @@ import './music.css'
 import { ProgressCircle } from 'react-desktop/windows';
 import { withRouter } from 'react-router-dom'
 import { pushstack, goartistdetail, goalbumdetail, asksearchres } from '../../../store/actionCreators';
-// import { } from '../../store/actionCreators';
+import store from '../../../store/index'
+import { canchangeplaystatus,play_netmusic   } from '../../../store/actionCreators'
 class Music extends React.Component{
     constructor(props){
         super(props)
@@ -54,6 +55,18 @@ class Music extends React.Component{
             }
         }
     }
+    play = (data,index) => {
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
+    }
     render = () => {
         return (
             <div className = 'search_res_music_list_body'>
@@ -65,9 +78,31 @@ class Music extends React.Component{
                     {/* <div className = 'search_res_music_list__tr_time'>时长</div> */}
                 </div>
                 {
-                    this.props.get_search_res_music === true && this.props.get_user_like_music === true ?this.props.search_res_music_data.result.songs.map((item,index) => {
+                    // this.props.get_search_res_music === true && this.props.get_user_like_music === true ?this.props.search_res_music_data.result.songs.map((item,index) => {
+                    //     return (
+                    //         <div className = 'search_res_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(this.props.search_res_music_data.result.songs,index)}>
+                    //             <div className = 'search_res_music_list__item_index'>{index+1}</div>
+                    //             <div className = 'search_res_music_list__item_index'><img src = {this.props.user_like_music_data.data.ids.indexOf(item.id) === -1?require('./img/喜欢.png'):require('./img/喜欢 (1).png')}></img></div>
+                    //             <div className = 'search_res_music_list__item_index'><img src = {require('./img/下载.png')}></img></div>
+                    //             <div className = 'search_res_music_list__item_name' style={{"WebkitBoxOrient": "vertical"}}>{item.name}</div>
+                    //             <div className = 'search_res_music_list__item_artist'>{item.artists.slice(0,2).map((itemm) => {
+                    //                 return (
+                    //                     <p style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goartistdetail(itemm.id)}>{itemm.name}{'\u00a0'}</p>
+                    //                 )
+                    //             })}</div>
+                    //             <div className = 'search_res_music_list__item_search_res_music' style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goalbum(item.album.id)}>{item.album.name}</div>
+                    //         </div>
+                    //     )
+                    // }):(
+                    //     <div><ProgressCircle
+                    //     color='white'
+                    //     size={100}
+                    //     /></div>
+                    // )
+                    this.props.get_user_like_music === true ?(
+                        this.props.get_search_res_music === true?this.props.search_res_music_data.result.songs.map((item,index) => {
                         return (
-                            <div className = 'search_res_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}}>
+                            <div className = 'search_res_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(this.props.search_res_music_data.result.songs,index)}>
                                 <div className = 'search_res_music_list__item_index'>{index+1}</div>
                                 <div className = 'search_res_music_list__item_index'><img src = {this.props.user_like_music_data.data.ids.indexOf(item.id) === -1?require('./img/喜欢.png'):require('./img/喜欢 (1).png')}></img></div>
                                 <div className = 'search_res_music_list__item_index'><img src = {require('./img/下载.png')}></img></div>
@@ -85,6 +120,30 @@ class Music extends React.Component{
                         color='white'
                         size={100}
                         /></div>
+                    )
+                    ):
+                    (
+                        this.props.get_search_res_music === true?this.props.search_res_music_data.result.songs.map((item,index) => {
+                            return (
+                                <div className = 'search_res_music_list__item' style = {{'backgroundColor':index%2!==0?'rgb(33,33,33)':''}} onDoubleClick = {() => this.play(this.props.search_res_music_data.result.songs,index)}>
+                                    <div className = 'search_res_music_list__item_index'>{index+1}</div>
+                                    <div className = 'search_res_music_list__item_index'><img src = {require('./img/喜欢.png')}></img></div>
+                                    <div className = 'search_res_music_list__item_index'><img src = {require('./img/下载.png')}></img></div>
+                                    <div className = 'search_res_music_list__item_name' style={{"WebkitBoxOrient": "vertical"}}>{item.name}</div>
+                                    <div className = 'search_res_music_list__item_artist'>{item.artists.slice(0,2).map((itemm) => {
+                                        return (
+                                            <p style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goartistdetail(itemm.id)}>{itemm.name}{'\u00a0'}</p>
+                                        )
+                                    })}</div>
+                                    <div className = 'search_res_music_list__item_search_res_music' style={{"WebkitBoxOrient": "vertical"}} onClick = {() => this.goalbum(item.album.id)}>{item.album.name}</div>
+                                </div>
+                            )
+                        }):(
+                            <div><ProgressCircle
+                            color='white'
+                            size={100}
+                            /></div>
+                        )
                     )
                 }
                 {

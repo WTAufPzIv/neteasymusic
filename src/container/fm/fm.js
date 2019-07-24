@@ -3,6 +3,8 @@ import './fs.css'
 import { connect } from 'react-redux'
 import { askdaysong } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
+import store from '../../store/index'
+import { canchangeplaystatus,play_netmusic   } from '../../store/actionCreators'
 // import nologin from './img/undraw_compose_music_ovo2.svg'
 class Fm extends React.Component{
     constructor(props){
@@ -16,6 +18,18 @@ class Fm extends React.Component{
             this.props.ask_daysong()
         }
     }
+    play = (data,index) => {
+        var arr = []
+        data.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
+    }
     render(){
         return(
             <div className = 'fm_body'>
@@ -23,7 +37,7 @@ class Fm extends React.Component{
                     this.props.login_status?(
                         <div className = 'day_login'>
                             <div className = 'day_list_head'>
-                            <img src = {require('./img/undraw_compose_music_ovo2.svg')}></img>
+                            <img src = {require('./img/QQ截图20190724160150.png')}></img>
                                 <div>
                                     <p>每日歌曲推荐</p>
                                     <p style = {{'fontSize':'15px'}}>每日6点更新</p>
@@ -31,11 +45,11 @@ class Fm extends React.Component{
                                 
                             </div>
                             <div className = 'day_list_body'>
-                                <div className = 'day_list_tr'><img  src = {require('./img/play.png')} />播放全部</div>
+                                <div className = 'day_list_tr'><img  src = {require('./img/play.png')} onClick = {() => this.play(this.props.daysong_data.data.recommend,0)}/>播放全部</div>
                                 {
                                      this.props.get_daysong?this.props.daysong_data.data.recommend.map((item,index) => {
                                          return (
-                                             <div className = 'day_list_item' style = {{'backgroundColor':index%2===0?'rgb(37,37,37)':''}}>
+                                             <div className = 'day_list_item' style = {{'backgroundColor':index%2===0?'rgb(37,37,37)':''}} onDoubleClick = {() => this.play(this.props.daysong_data.data.recommend,index)}>
                                                  <div>
                                                      <img src = {require('./img/like.png')}></img>
                                                      <span>{index+1}</span>
@@ -64,11 +78,11 @@ class Fm extends React.Component{
                         </div>
                     ):(
                         <div className = 'day_nologin'>
-                            <img src = {require('./img/undraw_compose_music_ovo2.svg')}></img>
+                            <img src = {require('./img/音乐.png')}></img>
                             {/* <svg viewBox="${nologinviewBox}">
                                 <use xlinkhref="#${nologin.id}" />
                             </svg>`; */}
-                            <div>您还没有登录，右上角立即登录</div>
+                            <div>登录后开启每日推荐</div>
                         </div>
                     )
                 }

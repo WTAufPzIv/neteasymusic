@@ -20,7 +20,7 @@ class Musiclist extends React.Component{
             commentdata:[],
             id:0,
             type:'mine',
-            position:'left'
+            position:'right'
         }
         
         this.props.history.listen(() => this.next())
@@ -37,7 +37,7 @@ class Musiclist extends React.Component{
                 page:0,
                 id:that.props.location.state.id,
                 type:this.props.location.state.type,
-                position:this.props.location.state.position,
+                position:this.props.location.state.position || 'right',
             })
         }
     }

@@ -2,6 +2,7 @@
     width: 100%;
     /* background-color: yellow; */
     height: 500px;;
+    user-select: none;
 }
 .newmusic_head{
     width: 100%;

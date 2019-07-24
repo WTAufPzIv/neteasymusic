@@ -1,5 +1,6 @@
 .search_res_music_list_body{
     width: 100%;
+    user-select: none;
 }
 
 .search_res_music_list__tr{

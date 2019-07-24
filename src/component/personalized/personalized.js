@@ -3,9 +3,10 @@ import './personalized.css'
 import { Carousel } from 'antd';
 import 'antd/dist/antd.css'; 
 import { connect } from 'react-redux'
-import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail, pushstack,gomvdetail } from '../../store/actionCreators'
+import { askbannerdata,askpersonalizedplaylistdata,askpersonalizednewsongdata,askpersonalizedmvdata,gomusiclistdeail, pushstack,gomvdetail,canchangeplaystatus,play_netmusic } from '../../store/actionCreators'
 import { ProgressCircle } from 'react-desktop/windows';
 import { NavLink,withRouter } from 'react-router-dom'
+import store from '../../store/index'
 class Personalized extends React.Component{
     constructor(props){
         super(props)
@@ -41,6 +42,18 @@ class Personalized extends React.Component{
         this.props.go_mv_detail()
         this.props.push_stack()
         this.props.history.push('/mv', {id:id,type:0})
+    }
+    playnewmusic = (index) => {
+        const action1 = canchangeplaystatus()
+        store.dispatch(action1)
+        var arr = []
+        this.props.personalized_newsong_data.data.result.map((item) => {
+            arr.push({
+                id:item.id
+            })
+        })
+        const action = play_netmusic(index,arr,true)
+        store.dispatch(action)
     }
     render(){
         return(
@@ -91,9 +104,9 @@ class Personalized extends React.Component{
                    <div className = 'personalized_newsong_hr'></div>
                    <div className = 'personalized_newsong_body'>
                        {
-                           this.props.get_personalized_newsong?this.props.personalized_newsong_data.data.result.map((item) => {
+                           this.props.get_personalized_newsong?this.props.personalized_newsong_data.data.result.map((item,index) => {
                                return (
-                                   <div className = 'personalized_newsong_item'>
+                                   <div className = 'personalized_newsong_item' onClick = {() => this.playnewmusic(index)}>
                                        <img src = {item.song.album.blurPicUrl+ '?param=90y90'}></img>
                                        <div>
                                            <p>{item.name}</p>
