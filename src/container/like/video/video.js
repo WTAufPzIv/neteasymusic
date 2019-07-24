@@ -86,7 +86,7 @@ class Video extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-   console.log(state)
+//    console.log(state)
     return{
         get_like_video:state.like.getlikevideo,
         like_video_data:state.like.likevideodata,

@@ -55,11 +55,11 @@ class Album extends React.Component{
         this.props.new_top()
     }
     scrool = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.album_body.scrollTop)+' '+this.refs.album_body.scrollHeight+' '+this.refs.album_body.offsetHeight) 
+        // console.log(document.body.clientHeight+' '+(this.refs.album_body.scrollTop)+' '+this.refs.album_body.scrollHeight+' '+this.refs.album_body.offsetHeight) 
         if(this.refs.album_body.scrollHeight === (this.refs.album_body.scrollTop+this.refs.album_body.offsetHeight) && this.state.router === 'comment'){   
             if(this.props.get_album_comment){
                 if(this.props.album_comment_data.more){
-                    console.log('加载')
+                    // console.log('加载')
                     this.setState({
                         page:this.props.album_comment_data_all[this.props.album_comment_data_all.length-1].time
                     })
@@ -145,7 +145,7 @@ class Album extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_album_detail:state.album.getalbumdetail,
         album_detail_data:state.album.albumdetaildata,

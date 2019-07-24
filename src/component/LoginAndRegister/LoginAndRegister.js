@@ -23,7 +23,7 @@ class LoginAndRegister extends React.Component{
         this.props.close_user(false)
     }
     phoneinput = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         this.setState({
             phone:e.target.value
         })

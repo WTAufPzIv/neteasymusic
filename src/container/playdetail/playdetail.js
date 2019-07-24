@@ -53,7 +53,7 @@ class PlayDetail extends React.Component{
        
     }
     componentWillUnmount(){
-        console.log('卸载')
+        // console.log('卸载')
     }
     input = (e) => {
         this.setState({
@@ -82,7 +82,7 @@ class PlayDetail extends React.Component{
     
         // console.log(this.state.text)
         if(this.props.login_status){
-            console.log(doo)
+            // console.log(doo)
              this.setState({
                  voteid:doo===true?0:cid
              })
@@ -111,73 +111,31 @@ class PlayDetail extends React.Component{
 
             if( this.props.playingdata && !this.props.lock_playdetail){
                 // remove(this.hand)
-                console.log('执行了加载数据函数')
+                // console.log('执行了加载数据函数')
                 const action2 = lockplatdetail()
                 store.dispatch(action2)
                 this.setState({
                     musicinfo:this.props.playingdata
                 })
                 if(this.props.play_type === 2){
-                    console.log(this.props.playingdata)
+                    // console.log(this.props.playingdata)
                     this.props.ask_music_commend(this.props.playingdata.id)
-                    var flag = new Lyric(this.props.playingdata.lrc, ({lineNum, txt}) => {
-                        console.log(lineNum, txt)
-                    })
-                    console.log(flag)
-                    var arr = []
-                    flag.lines.map((item) => {
-                        var t = item.txt
-                        var tt = Math.floor(item.time/10/100)*60*60+(item.time/10%100)
-                        arr.push({
-                            time:tt,
-                            txt:t
-                        })
-                    })
                     this.setState({
                         lyric:that.props.playingdata.lrc.replace(/\n/g,'<br />'),
                         index:0
                     })
-                    console.log(this.state.lyric)
                 }
             }
 
 
             if(this.props.play_status){
-                // console.log(this.props)
                 this.setState({
                     cdtransform:'haha1 3s linear infinite;',
                     sticktrans:'rotate(0deg)'
                 })
-                // if(this.props.play_type === 2){
-                //     if(this.state.lyric.length !== 0){
-                //         if(this.props.is_drag){
-                //             console.log('开始修正')
-                //             for(var i = 0;i < this.state.lyric.length; i++){
-                //                 if(this.props.current_time >= this.state.lyric[i].time - 8000){
-                //                     that.setState({
-                //                         index:i
-                //                     })
-                //                     break
-                //                 }
-                //             }
-                //             const action = havedrag(false)
-                //             store.dispatch(action)
-                //         }
-                //         else{
-                //             // console.log('正常滚动')
-                //             if(this.props.current_time >= this.state.lyric[this.state.index].time-8000){
-                //                 console.log(this.state.lyric[this.state.index].txt)
-                //                 if(this.state.index < this.state.lyric.length - 1)
-                //                 this.setState({
-                //                     index:that.state.index + 1
-                //                 })
-                //             }
-                //         }
-                //     }
-                // }
+               
             }
             else{
-                // console.log(this.props)
                 this.setState({
                     cdtransform:'',
                     sticktrans:'rotate(-30deg)'
@@ -193,11 +151,11 @@ class PlayDetail extends React.Component{
              setTimeout(this.props.cancelfullscreen(),150)    
     }
     scrool = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.playdetail_body.scrollTop)+' '+this.refs.playdetail_body.scrollHeight+' '+this.refs.playdetail_body.offsetHeight) 
+        
         if(this.refs.playdetail_body.scrollHeight === (this.refs.playdetail_body.scrollTop+this.refs.playdetail_body.offsetHeight)){   
             if(this.props.get_music_comment){
                 if(this.props.music_comment_data.more){
-                    console.log('加载')
+
                     this.setState({
                         page:this.props.music_comment_data_all[this.props.music_comment_data_all.length-1].time
                     })
@@ -248,7 +206,7 @@ class PlayDetail extends React.Component{
                             </div>
                         </div>
                     </div>
-                    <div className = 'playdetail_view_comment'>
+                    <div className = 'playdetail_view_comment' style = {{'display':this.props.play_type === 2?'flex':'none'}}>
                                 <div className = 'music_comment_body'>
                                     <div className = 'music_comment_head'>
                                         <textarea onChange = {(e) => this.input(e)} value = {this.state.text}></textarea>
@@ -327,7 +285,7 @@ class PlayDetail extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+
     return{
         play_status:state.player.play_status,
         open_play_detail:state.player.open_play_detail,

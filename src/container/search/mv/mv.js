@@ -85,7 +85,7 @@ class Mv extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_search_res_mv:       state.search.getsearchresmv,
         search_res_mv_data:      state.search.searchresmvdata,

@@ -85,7 +85,7 @@ class search_res_artist extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_search_res_artist:      state.search.getsearchresartist,
         search_res_artist_data:     state.search.searchresartistdata,

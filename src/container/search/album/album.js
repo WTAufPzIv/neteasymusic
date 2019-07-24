@@ -92,7 +92,7 @@ class Album extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_search_res_album:       state.search.getsearchresalbum,
         search_res_album_data:      state.search.searchresalbumdata,

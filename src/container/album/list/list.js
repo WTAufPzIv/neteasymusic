@@ -102,7 +102,7 @@ class List extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_album_detail:state.album.getalbumdetail,
         album_detail_data:state.album.albumdetaildata,

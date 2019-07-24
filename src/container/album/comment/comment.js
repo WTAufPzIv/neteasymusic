@@ -40,7 +40,7 @@ class Comment extends React.Component{
     
         // console.log(this.state.text)
         if(this.props.login_status){
-            console.log(doo)
+            // console.log(doo)
              this.setState({
                  voteid:doo===true?0:cid
              })

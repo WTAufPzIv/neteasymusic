@@ -168,7 +168,7 @@ export const playstatus = (Bool) => ({
 })
 export const getloginstatus = () => {
     return (dispatch) => {
-        return axios.post('http://localhost:9093/login/status')
+        return axios.post('http://localhost:9093/login/status?timestamp='+moment(Date().now).valueOf())
         .then(res => {
             // console.log(666666)
             // console.log(res)
@@ -177,12 +177,28 @@ export const getloginstatus = () => {
                 login_status:true,
                 userinfo:res
             })
-            axios.post('http://localhost:9093/user/detail',{uid:res.data.profile.userId})
+            axios.post('http://localhost:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
             .then(ress => {
                 dispatch({
                     type:GET_USER_DETAIL_INFO,
                     user_detail_info:ress,
                     user_detail_info_success:true
+                })
+            })
+            axios.post('http://localhost:9093/user/playlist?uid='+res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
+            .then(resss => {
+                dispatch({
+                    type:GET_USER_PLAYLIST,
+                    get_user_playlist:true,
+                    user_playlist_data:resss
+                })
+            })
+            axios.post('http://localhost:9093/likelist?uid=' + res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
+            .then(ressss => {
+                dispatch({
+                    type:GET_USER_LIKE_MUSIC,
+                    get_user_like_music:true,
+                    user_like_music_data:ressss
                 })
             })
         })
@@ -210,6 +226,22 @@ export const login = (phone, psw) => {
             dispatch({
                 type:OPEN_USER,
                 open_user:false
+            })
+            axios.post('http://localhost:9093/user/playlist?uid='+res.data.profile.userId)
+            .then(resss => {
+                dispatch({
+                    type:GET_USER_PLAYLIST,
+                    get_user_playlist:true,
+                    user_playlist_data:resss
+                })
+            })
+            axios.post('http://localhost:9093/likelist?uid=' + res.data.profile.userId)
+            .then(ressss => {
+                dispatch({
+                    type:GET_USER_LIKE_MUSIC,
+                    get_user_like_music:true,
+                    user_like_music_data:ressss
+                })
             })
             axios.post('http://localhost:9093/login/status')
             .then(ress => {
@@ -244,9 +276,9 @@ export const login = (phone, psw) => {
                 login_status:false,
                 userinfo:{}
             })
-            console.log(err.response.status)
+            // console.log(err.response.status)
             if(err.response.status === 501){
-                console.log('需要注册')
+                // console.log('需要注册')
                 dispatch({
                     type:LOGIN_STATUS_CODE,
                     code:err.response.status,
@@ -254,7 +286,7 @@ export const login = (phone, psw) => {
                 message.error('该手机号还没有注册');
             }
             else if(err.response.status === 502){
-                console.log('密码错误')
+                // console.log('密码错误')
                 dispatch({
                     type:LOGIN_STATUS_CODE,
                     code:err.response.status,
@@ -262,7 +294,7 @@ export const login = (phone, psw) => {
                 message.error('密码输入错误');
             }
             else if(err.response.status === 509){
-                console.log('密码错误次数达到限制')
+                // console.log('密码错误次数达到限制')
                 dispatch({
                     type:LOGIN_STATUS_CODE,
                     code:err.response.status,
@@ -285,7 +317,7 @@ export const openuserdetail = (Bool) => {
 }
 export const getuserdetailinfo = (uid) => {
     return dispatch => {
-        axios.post('http://localhost:9093/user/detail',{uid:uid})
+        axios.post('http://localhost:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:uid})
         .then(res => {
             dispatch({
                 type:GET_USER_DETAIL_INFO,
@@ -329,7 +361,7 @@ export const logout = () => {
             })
         })
         .catch(err => {
-            console.log('退出登录炸了')
+            // console.log('退出登录炸了')
         })
     }
 }
@@ -711,7 +743,7 @@ export const askmoreplaylistcomment = (id,page) => {
     }
 }
 export const deletedata = () => {
-    console.log('删除缓存')
+    // console.log('删除缓存')
     return {
         type:DELETE_DATA
     }
@@ -849,7 +881,7 @@ export const askalbumdynamic = (id) => {
     return dispatch => {
         axios.post('http://localhost:9093/album/detail/dynamic?id=' +id)
         .then(res => {
-            console.log(res)
+            // console.log(res)
             dispatch({
                 type:GET_ALBUM_DYNAMIC,
                 get_album_dynamic:true,
@@ -863,7 +895,7 @@ export const askalbumcomment = (id, page) => {
     return dispatch => {
         axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30')
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             dispatch({
                 type:GET_ALBUM_COMMENT,
                 get_album_comment:true,
@@ -990,7 +1022,7 @@ export const askmvurl = (id) => {
 }
 export const deletemvdata = () => {
     return dispatch => {
-        console.log('删除mv页面数据')
+        // console.log('删除mv页面数据')
         dispatch({
             type:GET_MV_DETAIL,
             get_mv_detail:false,

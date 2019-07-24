@@ -27,9 +27,9 @@ class Musiclist extends React.Component{
     }
     next = () => {
         if(this.props.location.state && this.props.Path === 'musiclist'){
-            console.log(this.props.location.state)
+            // console.log(this.props.location.state)
             this.props.delete_data()
-            console.log(this.props.location.state.id)
+            // console.log(this.props.location.state.id)
             this.props.ask_playlist_detail(this.props.location.state.id)
             this.props.ask_playlist_comment(this.props.location.state.id,this.state.page)
             var that = this
@@ -60,11 +60,11 @@ class Musiclist extends React.Component{
         this.props.new_top()
     }
     scrool = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.musiclist_body.scrollTop)+' '+this.refs.musiclist_body.scrollHeight+' '+this.refs.musiclist_body.offsetHeight) 
+        // console.log(document.body.clientHeight+' '+(this.refs.musiclist_body.scrollTop)+' '+this.refs.musiclist_body.scrollHeight+' '+this.refs.musiclist_body.offsetHeight) 
         if(this.refs.musiclist_body.scrollHeight === (this.refs.musiclist_body.scrollTop+this.refs.musiclist_body.offsetHeight) && this.state.router === 'comment'){   
             if(this.props.get_musiclist_comment){
                 if(this.props.musiclist_comment_data.data.more){
-                    console.log('加载')
+                    // console.log('加载')
                     this.setState({
                         page:this.props.musiclist_comment_data_all[this.props.musiclist_comment_data_all.length-1].time
                     })

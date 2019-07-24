@@ -25,7 +25,7 @@ class Search extends React.Component{
     }
     next = () => {
         if(this.props.location.state && this.props.Path === 'search'){
-            console.log(this.props.location.state)
+            // console.log(this.props.location.state)
             this.setState({
                 word:this.props.location.state.word
             })
@@ -86,7 +86,7 @@ class Search extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         Path:state.router.path,
         pop_data:state.router.stack,

@@ -22,7 +22,7 @@ class Localmusic extends React.Component{
                 that.setState({
                     files:files || []
                 },() => {
-                    console.log(that.state)
+                    // console.log(that.state)
                     that.setState({
                         isLoad:true
                     })
@@ -48,17 +48,17 @@ class Localmusic extends React.Component{
         ipcRenderer.send('addlocalmusic')
     }
    nge(e){
-        console.log(e.target)
+        // console.log(e.target)
     }
     dbclick_play = (index) =>   {
-        console.log('点')
+        // console.log('点')
         const action1 = canchangeplaystatus()
         store.dispatch(action1)
         const action = play_localmusic(index,this.state.files)
         store.dispatch(action)//发送播放信息,代号为1，表示播放本地音乐
     }
     contextmenu = (event) => {
-       console.log(event.target.id)
+    //    console.log(event.target.id)
        this.setState({
            musicNum:event.target.id
        })
@@ -67,8 +67,6 @@ class Localmusic extends React.Component{
        event.preventDefault();
        const clickX = event.clientX;
        const clickY = event.clientY;
-       console.log(clickX,clickY)
-       console.log(event.target.className)
        if(event.target.className === 'localmusic_list-td' || event.target.className === 'localmusic_list-td1' || event.target.className === 'localmusic_list-td2' || event.target.className === 'localmusic_list-td3'  || event.target.className === 'localmusic_list-td4'){
             if(clickX-270 <= bodyWidth/2){
                 this.setState({
@@ -95,7 +93,7 @@ class Localmusic extends React.Component{
        })
     }
     play = () => {
-        console.log('点')
+        // console.log('点')
         const action1 = canchangeplaystatus()
         store.dispatch(action1)
         const action = play_localmusic(this.state.musicNum,1)

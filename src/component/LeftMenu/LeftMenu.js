@@ -45,8 +45,8 @@ class LeftMenu extends Component{
        
     }
     componentDidMount(){
-         this.props.ask_user_playlist(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
-         this.props.ask_user_like_music(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
+        //  this.props.ask_user_playlist(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
+        //  this.props.ask_user_like_music(this.props.login_status?this.props.user_info.data.profile.userId:'431437071')
         // this.props.ask_user_playlist('431437071')
         var that = this
         ipcRenderer.on('windowHeight', (event, height) => {
@@ -101,11 +101,11 @@ class LeftMenu extends Component{
         this.props.go_musiclist_detail()
     }
     test = (e) => {
-        console.log(e)
+        // console.log(e)
     }
     clickleft = () => {
         this.props.clear_stack()
-        console.log('点击了左边')
+        // console.log('点击了左边')
     }
     render(){
         return(

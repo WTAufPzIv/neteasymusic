@@ -162,7 +162,7 @@ class Music extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         get_search_res_music:       state.search.getsearchresmusic,
         search_res_music_data:      state.search.searchresmusicdata,

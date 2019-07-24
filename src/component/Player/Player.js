@@ -184,7 +184,6 @@ class Player extends Component{
                                             audio.play()
                                             const play = playstatus(true)
                                             store.dispatch(play)
-                                            console.log('你妈的')
                                         }
                                         else{
                                             this.setState({
@@ -192,7 +191,6 @@ class Player extends Component{
                                             })
                                             const play = playstatus(false)
                                             store.dispatch(play)
-                                            console.log('为什么')
                                         }
                                        
                                         axios.post('http://localhost:9093/lyric?id='+that.props.trackids[this.props.play_Index].id)
@@ -234,7 +232,6 @@ class Player extends Component{
     }
 
     pauseandplay = () => {
-        console.log('你妈的什么情况')
         if(this.state.status === 'play'){
             if(audio.src){
                 audio.play()
@@ -276,7 +273,6 @@ class Player extends Component{
             document.onmousemove=null
             document.onmousedown=null
             if(that.props.play_type === 2){
-                console.log('手动调节了进度条')
                 const action = havedrag(true)
                 store.dispatch(action)
             }
@@ -289,7 +285,6 @@ class Player extends Component{
         var disx=e.pageX
         audio.currentTime = (disx-275)/wid*that.state.time_long
         if(that.props.play_type === 2){
-            console.log('手动调节了进度条')
             const action = havedrag(true)
             store.dispatch(action)
         }
@@ -469,7 +464,6 @@ class Player extends Component{
                                 .then(resss => {
                                     axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
-                                        console.log(ressss)
                                         that.setState({
                                             item_net:{
                                                 album:resss.data.songs[0].al.name,
@@ -538,7 +532,6 @@ class Player extends Component{
                                 .then(resss => {
                                     axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
-                                        console.log(ressss)
                                         that.setState({
                                             item_net:{
                                                 album:resss.data.songs[0].al.name,
@@ -609,7 +602,6 @@ class Player extends Component{
                                 .then(resss => {
                                     axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
-                                        console.log(ressss)
                                         that.setState({
                                             item_net:{
                                                 album:resss.data.songs[0].al.name,

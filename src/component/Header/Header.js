@@ -118,18 +118,18 @@ class Header extends Component{
     }
     openusercontainer = () => {
         if(this.props.login_status){
-            console.log('打开用户信息界面')
+            // console.log('打开用户信息界面')
             this.props.open_userdetail(true)
         }
         else{
-            console.log('打开登录注册界面')
+            // console.log('打开登录注册界面')
             this.props.open_user(true)
         }
     }
     openmsgcontainer = () => {
         if(this.props.login_status){
             this.props.open_msg_container(true)
-            console.log('打开消息面板')
+            // console.log('打开消息面板')
            
         }
         else{
@@ -137,11 +137,11 @@ class Header extends Component{
         }
     }
     opensearchtip = () => {
-        console.log('打开搜索提示')
+        // console.log('打开搜索提示')
         this.props.open_search_tip(true)
     }
     closesearch = () => {
-        console.log('关闭搜索提示')
+        // console.log('关闭搜索提示')
         var that = this
         setTimeout(() => {
             that.props.open_search_tip(false)

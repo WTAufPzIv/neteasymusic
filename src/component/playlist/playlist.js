@@ -19,14 +19,14 @@ class Playlist extends React.Component{
         this.props.ask_playlist(this.state.classname,1,30)
     }
     handleChange = (e) => {
-        console.log(e)
+        // console.log(e)
         this.setState({
             classname:e
         })
         this.props.ask_playlist(e,1,30)
     }
     changepage = (e) => {
-        console.log(e)
+        // console.log(e)
         this.props.ask_playlist(this.state.classname,e,30)
     }
     gotoplaylist = (id) => {

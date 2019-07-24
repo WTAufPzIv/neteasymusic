@@ -132,7 +132,7 @@ class Comments extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
         login_status:state.user.loginstatus,
         get_musiclist_comment:state.playlist.getmusiclistcomment,

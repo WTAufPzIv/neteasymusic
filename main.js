@@ -77,7 +77,7 @@ function createWindow () {
     mainWindow.send('getvoiceData',flag)
   })
   ipcMain.on('deleteItem', (event,num) => {
-    console.log(num)
+    // console.log(num)
     const updataedTrack = myStore.deleteTrack(num)//链式调用    
     //mainWindow.send('getlocalmusic', updataedTrack)//渲染列表
   })
@@ -109,7 +109,7 @@ function createWindow () {
             (function(i){
             jsmediatags.read(files[i], {
               onSuccess: function(tag) {
-                console.log(tag.tags.artist)
+                // console.log(tag.tags.artist)
                 file.push(files[i])
                 title.push(tag.tags.title || '未知')
                 artist.push(tag.tags.artist || '未知')
@@ -117,13 +117,13 @@ function createWindow () {
                 type.push(tag.type || '未知')
               },
               onError: function(error) {
-                console.log(':(', error.type, error.info);
+                // console.log(':(', error.type, error.info);
               }
             });
             }(i))
           }
           setTimeout(() => {
-            console.log(artist)
+            // console.log(artist)
             var num = files.length
             myStore.addTracks(file,title,artist,album,type,num)
             const updataedTrack = myStore.getTrack()//链式调用    
@@ -144,7 +144,7 @@ function createWindow () {
     mainWindow.send('smallWindowOk')
   })
   mainWindow.on('resize', ( event ) => {
-    console.log(mainWindow.getSize()[1])
+    // console.log(mainWindow.getSize()[1])
     mainWindow.send('windowHeight', mainWindow.getSize()[1])
   })
   mainWindow.openDevTools()

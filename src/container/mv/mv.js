@@ -24,7 +24,7 @@ class Mv extends React.Component{
         if(this.props.location.state && this.props.Path === 'mv'){
             if(this.props.location.state.type === 0){//类型为mv
                 var that = this
-                console.log(this.props.location.state.type)
+                // console.log(this.props.location.state.type)
                 this.props.delete_mv_data()
                 this.props.ask_mv_detail(this.props.location.state.id)
                 this.props.ask_mv_url(this.props.location.state.id)
@@ -41,7 +41,7 @@ class Mv extends React.Component{
             }
             else{//类型为视频
                 that = this
-                console.log(this.props.location.state.type)
+                // console.log(this.props.location.state.type)
                 this.props.delete_mv_data()
                 this.props.ask_vedio_detail(this.props.location.state.id)
                 this.props.ask_vedio_url(this.props.location.state.id)
@@ -119,12 +119,12 @@ class Mv extends React.Component{
         this.props.history.go(i)
     }
     scroll = () => {
-        console.log(document.body.clientHeight+' '+(this.refs.mv_detail_body.scrollTop+687)+' '+this.refs.mv_detail_body.scrollHeight+' '+(this.refs.mv_detail_body.offsetHeight)) 
+        // console.log(document.body.clientHeight+' '+(this.refs.mv_detail_body.scrollTop+687)+' '+this.refs.mv_detail_body.scrollHeight+' '+(this.refs.mv_detail_body.offsetHeight)) 
         if(this.refs.mv_detail_body.scrollTop === this.refs.mv_detail_body.scrollHeight - (this.refs.mv_detail_body.offsetHeight)){
             if(this.props.get_mv_comment){
                 if(this.state.type === 0){
                     if(this.props.mv_comment_data.more){
-                        console.log('加载')
+                        // console.log('加载')
                         this.setState({
                             page:this.props.mv_comment_data_all[this.props.mv_comment_data_all.length-1].time
                         })
@@ -136,7 +136,7 @@ class Mv extends React.Component{
                 }
                 else{
                     if(this.props.mv_comment_data.more){
-                        console.log('加载')
+                        // console.log('加载')
                         this.setState({
                             page:this.props.mv_comment_data_all[this.props.mv_comment_data_all.length-1].time
                         })
@@ -258,7 +258,7 @@ class Mv extends React.Component{
     }
 }
 const mapstatetoprops = (state) => {
-    console.log(state)
+    // console.log(state)
     return{
       get_mv_detail:state.mv.getmvdetail,
       mv_detail_data:state.mv.mvdetaildata,
