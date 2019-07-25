@@ -157,12 +157,12 @@ class Player extends Component{
                         play_index:that.props.play_Index,
                         ids:that.props.trackids,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[this.props.play_Index].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[this.props.play_Index].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[this.props.play_Index].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[this.props.play_Index].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[this.props.play_Index].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[this.props.play_Index].id)
                                 .then(resss => {
                                     that.setState({
                                         title:resss.data.songs[0].name,
@@ -193,7 +193,7 @@ class Player extends Component{
                                             store.dispatch(play)
                                         }
                                        
-                                        axios.post('http://localhost:9093/lyric?id='+that.props.trackids[this.props.play_Index].id)
+                                        axios.post('http://47.107.157.11:9093/lyric?id='+that.props.trackids[this.props.play_Index].id)
                                     .then(ressss => {
                                         console.log(ressss)
                                         that.setState({
@@ -455,14 +455,14 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
-                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    axios.post('http://47.107.157.11:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
                                         that.setState({
                                             item_net:{
@@ -523,14 +523,14 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
-                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    axios.post('http://47.107.157.11:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
                                         that.setState({
                                             item_net:{
@@ -593,14 +593,14 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
-                                    axios.post('http://localhost:9093/lyric?id='+that.props.trackids[flag].id)
+                                    axios.post('http://47.107.157.11:9093/lyric?id='+that.props.trackids[flag].id)
                                     .then(ressss => {
                                         that.setState({
                                             item_net:{
@@ -778,12 +778,12 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
                                     that.setState({
                                         title:resss.data.songs[0].name,
@@ -837,12 +837,12 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
                                     that.setState({
                                         title:resss.data.songs[0].name,
@@ -901,12 +901,12 @@ class Player extends Component{
                         play_type:2,
                         play_index:flag,
                     })
-                    axios.post('http://localhost:9093/check/music?id='+this.props.trackids[flag].id)
+                    axios.post('http://47.107.157.11:9093/check/music?id='+this.props.trackids[flag].id)
                     .then(res => {
                         if(res.data.success === true){
-                            axios.post('http://localhost:9093/song/url?id='+that.props.trackids[flag].id)
+                            axios.post('http://47.107.157.11:9093/song/url?id='+that.props.trackids[flag].id)
                             .then(ress => {
-                                axios.post('http://localhost:9093/song/detail?ids='+that.props.trackids[flag].id)
+                                axios.post('http://47.107.157.11:9093/song/detail?ids='+that.props.trackids[flag].id)
                                 .then(resss => {
                                     that.setState({
                                         title:resss.data.songs[0].name,

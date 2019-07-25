@@ -168,7 +168,7 @@ export const playstatus = (Bool) => ({
 })
 export const getloginstatus = () => {
     return (dispatch) => {
-        return axios.post('http://localhost:9093/login/status?timestamp='+moment(Date().now).valueOf())
+        return axios.post('http://47.107.157.11:9093/login/status?timestamp='+moment(Date().now).valueOf())
         .then(res => {
             // console.log(666666)
             // console.log(res)
@@ -177,7 +177,7 @@ export const getloginstatus = () => {
                 login_status:true,
                 userinfo:res
             })
-            axios.post('http://localhost:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
+            axios.post('http://47.107.157.11:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
             .then(ress => {
                 dispatch({
                     type:GET_USER_DETAIL_INFO,
@@ -185,7 +185,7 @@ export const getloginstatus = () => {
                     user_detail_info_success:true
                 })
             })
-            axios.post('http://localhost:9093/user/playlist?uid='+res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
+            axios.post('http://47.107.157.11:9093/user/playlist?uid='+res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
             .then(resss => {
                 dispatch({
                     type:GET_USER_PLAYLIST,
@@ -193,7 +193,7 @@ export const getloginstatus = () => {
                     user_playlist_data:resss
                 })
             })
-            axios.post('http://localhost:9093/likelist?uid=' + res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
+            axios.post('http://47.107.157.11:9093/likelist?uid=' + res.data.profile.userId+'&timestamp='+moment(Date().now).valueOf(),{uid:res.data.profile.userId})
             .then(ressss => {
                 dispatch({
                     type:GET_USER_LIKE_MUSIC,
@@ -220,14 +220,14 @@ export const openuser = (Bool) => {
 export const login = (phone, psw) => {
     return (dispatch) => {
         let time = Date.parse(new Date())
-        axios.post('http://localhost:9093/login/cellphone',{phone:phone,password:psw,timestamp:time})
+        axios.post('http://47.107.157.11:9093/login/cellphone',{phone:phone,password:psw,timestamp:time})
         .then(res => {
             message.success('登陆成功');
             dispatch({
                 type:OPEN_USER,
                 open_user:false
             })
-            axios.post('http://localhost:9093/user/playlist?uid='+res.data.profile.userId)
+            axios.post('http://47.107.157.11:9093/user/playlist?uid='+res.data.profile.userId)
             .then(resss => {
                 dispatch({
                     type:GET_USER_PLAYLIST,
@@ -235,7 +235,7 @@ export const login = (phone, psw) => {
                     user_playlist_data:resss
                 })
             })
-            axios.post('http://localhost:9093/likelist?uid=' + res.data.profile.userId)
+            axios.post('http://47.107.157.11:9093/likelist?uid=' + res.data.profile.userId)
             .then(ressss => {
                 dispatch({
                     type:GET_USER_LIKE_MUSIC,
@@ -243,7 +243,7 @@ export const login = (phone, psw) => {
                     user_like_music_data:ressss
                 })
             })
-            axios.post('http://localhost:9093/login/status')
+            axios.post('http://47.107.157.11:9093/login/status')
             .then(ress => {
                 dispatch({
                     type:LOGIN_STATUS,
@@ -251,7 +251,7 @@ export const login = (phone, psw) => {
                     userinfo:ress
                 })
                 // console.log(ress)
-                axios.post('http://localhost:9093/user/detail',{uid:ress.data.profile.userId})
+                axios.post('http://47.107.157.11:9093/user/detail',{uid:ress.data.profile.userId})
                 .then(resss => {
                     dispatch({
                         type:GET_USER_DETAIL_INFO,
@@ -317,7 +317,7 @@ export const openuserdetail = (Bool) => {
 }
 export const getuserdetailinfo = (uid) => {
     return dispatch => {
-        axios.post('http://localhost:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:uid})
+        axios.post('http://47.107.157.11:9093/user/detail?timestamp='+moment(Date().now).valueOf(),{uid:uid})
         .then(res => {
             dispatch({
                 type:GET_USER_DETAIL_INFO,
@@ -339,7 +339,7 @@ export const openmascontainer = (Bool) => {
 }
 export const logout = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/logout')
+        axios.post('http://47.107.157.11:9093/logout')
         .then(res => {
             dispatch({
                 type:LOGIN_STATUS,
@@ -367,7 +367,7 @@ export const logout = () => {
 }
 export const askbannerdata = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/banner')
+        axios.post('http://47.107.157.11:9093/banner')
         .then(res => {
             dispatch({
                 type:GET_BANNER_DATA,
@@ -386,8 +386,8 @@ export const askbannerdata = () => {
 }
 export const askpersonalizedplaylistdata = () => {
     return dispatch => {
-        // axios.post('http://localhost:9093/personalized?timestamp='+moment(Date().now).valueOf())
-        axios.post('http://localhost:9093/personalized')
+        // axios.post('http://47.107.157.11:9093/personalized?timestamp='+moment(Date().now).valueOf())
+        axios.post('http://47.107.157.11:9093/personalized')
         .then(res => {
             dispatch({
                 type:GET_PERSONALIZED_PLAYLIAT,
@@ -406,7 +406,7 @@ export const askpersonalizedplaylistdata = () => {
 }
 export const askpersonalizednewsongdata = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/personalized/newsong')
+        axios.post('http://47.107.157.11:9093/personalized/newsong')
         .then(res => {
             dispatch({
                 type:GET_PERSONALIZED_NEWSONG,
@@ -425,7 +425,7 @@ export const askpersonalizednewsongdata = () => {
 }
 export const askpersonalizedmvdata = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/personalized/mv')
+        axios.post('http://47.107.157.11:9093/personalized/mv')
         .then(res => {
             dispatch({
                 type:GET_PERSONALIZED_MV,
@@ -444,7 +444,7 @@ export const askpersonalizedmvdata = () => {
 }
 export const askplaylist = (classname,page,num) => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/playlist?limit='+num+'&cat='+classname+'&offset='+num*page)
+        axios.post('http://47.107.157.11:9093/top/playlist?limit='+num+'&cat='+classname+'&offset='+num*page)
         .then(res => {
             dispatch({
                 type:GET_PLAYLIST,
@@ -456,7 +456,7 @@ export const askplaylist = (classname,page,num) => {
 }
 export const asktopdata1 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/list?idx=3')
+        axios.post('http://47.107.157.11:9093/top/list?idx=3')
         .then(res => {
             dispatch({
                 type:GET_TOP1,
@@ -468,7 +468,7 @@ export const asktopdata1 = () => {
 }
 export const asktopdata2 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/list?idx=0')
+        axios.post('http://47.107.157.11:9093/top/list?idx=0')
         .then(res => {
             dispatch({
                 type:GET_TOP2,
@@ -480,7 +480,7 @@ export const asktopdata2 = () => {
 }
 export const asktopdata3 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/list?idx=2')
+        axios.post('http://47.107.157.11:9093/top/list?idx=2')
         .then(res => {
             dispatch({
                 type:GET_TOP3,
@@ -492,7 +492,7 @@ export const asktopdata3 = () => {
 }
 export const asktopdata4 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/list?idx=1')
+        axios.post('http://47.107.157.11:9093/top/list?idx=1')
         .then(res => {
             dispatch({
                 type:GET_TOP4,
@@ -504,7 +504,7 @@ export const asktopdata4 = () => {
 }
 export const asktopdata5 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/playlist/detail?id=2809513713')
+        axios.post('http://47.107.157.11:9093/playlist/detail?id=2809513713')
         .then(res => {
             dispatch({
                 type:GET_TOP5,
@@ -516,7 +516,7 @@ export const asktopdata5 = () => {
 }
 export const asktopdata6 = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/toplist/artist')
+        axios.post('http://47.107.157.11:9093/toplist/artist')
         .then(res => {
             dispatch({
                 type:GET_TOP6,
@@ -528,7 +528,7 @@ export const asktopdata6 = () => {
 }
 export const askartistdata = (type,num,page,letter) => {
     return dispatch => {
-        axios.post('http://localhost:9093/artist/list?cat='+type+'&limit='+num+'&offset='+page+'&initial='+(letter !== ''?letter:''))
+        axios.post('http://47.107.157.11:9093/artist/list?cat='+type+'&limit='+num+'&offset='+page+'&initial='+(letter !== ''?letter:''))
         .then(res => {
             dispatch({
                 type:GET_ARTIST,
@@ -540,7 +540,7 @@ export const askartistdata = (type,num,page,letter) => {
 }
 export const asknewmusic = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/top/song?type=0')
+        axios.post('http://47.107.157.11:9093/top/song?type=0')
         .then(res => {
             dispatch({
                 type:GET_NEWMUSIC,
@@ -552,7 +552,7 @@ export const asknewmusic = () => {
 }
 export const asknewalbum = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/album/newest')
+        axios.post('http://47.107.157.11:9093/album/newest')
         .then(res => {
             dispatch({
                 type:GET_NEWALBUM,
@@ -564,7 +564,7 @@ export const asknewalbum = () => {
 }
 export const askdaysong = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/recommend/songs')
+        axios.post('http://47.107.157.11:9093/recommend/songs')
         .then(res => {
             dispatch({
                 type:GET_DAYSONG,
@@ -576,7 +576,7 @@ export const askdaysong = () => {
 }
 export const askmv = (type,page,order) => {
     return dispatch => {
-        axios.post('http://localhost:9093/mv/all?area=' + type + '&limit=30&offset='+page+'&order='+order)
+        axios.post('http://47.107.157.11:9093/mv/all?area=' + type + '&limit=30&offset='+page+'&order='+order)
         .then(res => {
             dispatch({
                 type:GET_MV,
@@ -588,7 +588,7 @@ export const askmv = (type,page,order) => {
 }
 export const askyunpan = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/user/cloud')
+        axios.post('http://47.107.157.11:9093/user/cloud')
         .then(res => {
             dispatch({
                 type:GET_YUNPAN,
@@ -600,7 +600,7 @@ export const askyunpan = () => {
 }
 export const asklikealbum = (page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/album/sublist?limit=30&offset='+page*30)
+        axios.post('http://47.107.157.11:9093/album/sublist?limit=30&offset='+page*30)
         .then(res => {
             dispatch({
                 type:GET_LIKE_ALBUM,
@@ -612,7 +612,7 @@ export const asklikealbum = (page) => {
 }
 export const asklikeartist = (page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/artist/sublist?limit=30&offset='+page*30)
+        axios.post('http://47.107.157.11:9093/artist/sublist?limit=30&offset='+page*30)
         .then(res => {
             dispatch({
                 type:GET_LIKE_ARTIST,
@@ -624,7 +624,7 @@ export const asklikeartist = (page) => {
 }
 export const asklikevideo = (page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/mv/sublist?limit=30&offset='+page*30)
+        axios.post('http://47.107.157.11:9093/mv/sublist?limit=30&offset='+page*30)
         .then(res => {
             dispatch({
                 type:GET_LIKE_VIDEO,
@@ -636,7 +636,7 @@ export const asklikevideo = (page) => {
 }
 export const askbuyalbum = (page) =>{
     return dispatch => {
-        axios.post('http://localhost:9093/digitalAlbum/purchased?limit=30&offset='+page*30)
+        axios.post('http://47.107.157.11:9093/digitalAlbum/purchased?limit=30&offset='+page*30)
         .then(res => {
             dispatch({
                 type:GET_BUY_ALBUM,
@@ -649,7 +649,7 @@ export const askbuyalbum = (page) =>{
 export const askuserplaylist = (uid) => {
     return dispatch => {
        
-        axios.post('http://localhost:9093/user/playlist?uid='+uid)
+        axios.post('http://47.107.157.11:9093/user/playlist?uid='+uid)
         .then(res => {
        
             dispatch({
@@ -662,7 +662,7 @@ export const askuserplaylist = (uid) => {
 }
 export const askplaylistdetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/playlist/detail?id='+id)
+        axios.post('http://47.107.157.11:9093/playlist/detail?id='+id)
         .then(res => {
             dispatch({
                 type:GET_PLAYLIST_DETAIL,
@@ -679,7 +679,7 @@ export const askplaylistdetail = (id) => {
 }
 export const askuserlikemusic = (uid) => {
     return dispatch => {
-        axios.post('http://localhost:9093/likelist?uid=' + uid)
+        axios.post('http://47.107.157.11:9093/likelist?uid=' + uid)
         .then(res => {
             dispatch({
                 type:GET_USER_LIKE_MUSIC,
@@ -716,7 +716,7 @@ export const gosearch = () => {
 }
 export const askplaylistcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/playlist?id='+id+'&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MUSICLIST_COMMENT,
@@ -730,7 +730,7 @@ export const askplaylistcomment = (id,page) => {
 }
 export const askmoreplaylistcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/playlist?id='+id+'&before='+page+'&limit=20')
+        axios.post('http://47.107.157.11:9093/comment/playlist?id='+id+'&before='+page+'&limit=20')
         .then(res => {
             dispatch({
                 type:GET_MUSICLIST_COMMENT,
@@ -750,14 +750,14 @@ export const deletedata = () => {
 }
 export const releascomment = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=2&id='+id+'&content='+e)
+        axios.post('http://47.107.157.11:9093/comment?t=1&type=2&id='+id+'&content='+e)
         .then(res => {
             message.success('评论成功')
             dispatch({
                 type:DELETE_DATA
             })
             let d = dispatch
-            axios.post('http://localhost:9093/comment/playlist?id='+id+'&before=0&limit=20&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/comment/playlist?id='+id+'&before=0&limit=20&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_MUSICLIST_COMMENT,
@@ -772,7 +772,7 @@ export const releascomment = (e,id) => {
 }
 export const votecomment = (id,cid,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=2')
+        axios.post('http://47.107.157.11:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=2')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -780,10 +780,10 @@ export const votecomment = (id,cid,type) => {
 }
 export const coll = (id,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/playlist/subscribe?t='+type+'&id='+id)
+        axios.post('http://47.107.157.11:9093/playlist/subscribe?t='+type+'&id='+id)
         .then(res => {
             message.success('操作成功')
-            axios.post('http://localhost:9093/playlist/detail?id='+id+'&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/playlist/detail?id='+id+'&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_PLAYLIST_DETAIL,
@@ -801,7 +801,7 @@ export const coll = (id,type) => {
 }
 export const sharemusiclist = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/share/resource?id='+id+'&type=playlist')
+        axios.post('http://47.107.157.11:9093/share/resource?id='+id+'&type=playlist')
         .then(res => {
             message.success('操作成功')
         })
@@ -819,7 +819,7 @@ export const askartistmusic = (id) => {
             get_artist_music:false,
             artist_music_data:{}
         })
-        axios.post('http://localhost:9093/artists?id='+id)
+        axios.post('http://47.107.157.11:9093/artists?id='+id)
         .then(res => {
             dispatch({
                 type:GET_ARTIST_MUSIC,
@@ -831,7 +831,7 @@ export const askartistmusic = (id) => {
 }
 export const askartistmv = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/artist/mv?limit=30&id='+id+'&offset='+page*30)
+        axios.post('http://47.107.157.11:9093/artist/mv?limit=30&id='+id+'&offset='+page*30)
         .then(res => {
             dispatch({
                 type:GET_ARTIST_MV,
@@ -843,7 +843,7 @@ export const askartistmv = (id,page) => {
 }
 export const askartistalbum = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/artist/album?id='+id+'&offset=' + page*50)
+        axios.post('http://47.107.157.11:9093/artist/album?id='+id+'&offset=' + page*50)
         .then(res => {
             dispatch({
                 type:GET_ARTIST_ALBUM,
@@ -855,7 +855,7 @@ export const askartistalbum = (id,page) => {
 }
 export const askartistdescribe = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/artist/desc?id=' + id)
+        axios.post('http://47.107.157.11:9093/artist/desc?id=' + id)
         .then(res => {
             dispatch({
                 type:GET_ARTIST_DES,
@@ -867,7 +867,7 @@ export const askartistdescribe = (id) => {
 }
 export const askalbumdetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/album?id=' +id)
+        axios.post('http://47.107.157.11:9093/album?id=' +id)
         .then(res => {
             dispatch({
                 type:GET_ALBUM_DETAIL,
@@ -879,7 +879,7 @@ export const askalbumdetail = (id) => {
 }
 export const askalbumdynamic = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/album/detail/dynamic?id=' +id)
+        axios.post('http://47.107.157.11:9093/album/detail/dynamic?id=' +id)
         .then(res => {
             // console.log(res)
             dispatch({
@@ -893,7 +893,7 @@ export const askalbumdynamic = (id) => {
 }
 export const askalbumcomment = (id, page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30')
+        axios.post('http://47.107.157.11:9093/comment/album?id='+id+'&before='+page+'&limit=30')
         .then(res => {
             // console.log(res.data)
             dispatch({
@@ -908,7 +908,7 @@ export const askalbumcomment = (id, page) => {
 }
 export const askmorealbumcomment = (id, page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/album?id='+id+'&before='+page+'&limit=30')
+        axios.post('http://47.107.157.11:9093/comment/album?id='+id+'&before='+page+'&limit=30')
         .then(res => {
             dispatch({
                 type:GET_ALBUM_COMMENT,
@@ -927,7 +927,7 @@ export const deletalbumedata = () => {
 }
 export const collalbum = (id,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/album/sub?t='+type+'&id='+id+'&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://47.107.157.11:9093/album/sub?t='+type+'&id='+id+'&timestamp='+moment(Date().now).valueOf())
         .then(res => {
             message.success('操作成功(可能延迟展示)')
             dispatch({
@@ -935,7 +935,7 @@ export const collalbum = (id,type) => {
                 get_album_dynamic:false,
                 album_dynamic_data:{}
             })
-            axios.post('http://localhost:9093/album/detail/dynamic?id='+id+'&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/album/detail/dynamic?id='+id+'&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_ALBUM_DYNAMIC,
@@ -949,13 +949,13 @@ export const collalbum = (id,type) => {
 
 export const releascommentalbum = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=3&id='+id+'&content='+e+'&timestamp='+moment(Date().now).valueOf())
+        axios.post('http://47.107.157.11:9093/comment?t=1&type=3&id='+id+'&content='+e+'&timestamp='+moment(Date().now).valueOf())
         .then(res => {
             message.success("评论成功")
             dispatch({
                 type:DELETE_ALBUM_DATA
             })
-            axios.post('http://localhost:9093/comment/album?id='+id+'&before=0&limit=30&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/comment/album?id='+id+'&before=0&limit=30&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_ALBUM_COMMENT,
@@ -970,7 +970,7 @@ export const releascommentalbum = (e,id) => {
 }
 export const votecommentalbum = (id,cid,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=3')
+        axios.post('http://47.107.157.11:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=3')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -998,7 +998,7 @@ export const clearstack = () => {
 }
 export const askmvdetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/mv/detail?mvid='+id)
+        axios.post('http://47.107.157.11:9093/mv/detail?mvid='+id)
         .then(res => {
             dispatch({
                 type:GET_MV_DETAIL,
@@ -1010,7 +1010,7 @@ export const askmvdetail = (id) => {
 }
 export const askmvurl = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/mv/url?id='+id)
+        axios.post('http://47.107.157.11:9093/mv/url?id='+id)
         .then(res => {
             dispatch({
                 type:GET_MV_URL,
@@ -1040,7 +1040,7 @@ export const deletemvdata = () => {
 }
 export const askvediodetail = (id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/video/detail?id='+id)
+        axios.post('http://47.107.157.11:9093/video/detail?id='+id)
         .then(res => {
             dispatch({
                 type:GET_MV_DETAIL,
@@ -1052,7 +1052,7 @@ export const askvediodetail = (id) => {
 }
 export const askvediourl = (id) => {
     return dispatch =>{
-        axios.post('http://localhost:9093/video/url?id='+id)
+        axios.post('http://47.107.157.11:9093/video/url?id='+id)
         .then(res => {
             dispatch({
                 type:GET_MV_URL,
@@ -1064,7 +1064,7 @@ export const askvediourl = (id) => {
 }
 export const askvediocomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/video?id='+id+'&limit=30&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MV_COMMENT,
@@ -1078,7 +1078,7 @@ export const askvediocomment = (id,page) => {
 }
 export const askmvcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/mv?id='+id+'&limit=30&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MV_COMMENT,
@@ -1092,7 +1092,7 @@ export const askmvcomment = (id,page) => {
 }
 export const askmorevediocomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/video?id='+id+'&limit=30&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MV_COMMENT,
@@ -1106,7 +1106,7 @@ export const askmorevediocomment = (id,page) => {
 }
 export const askmroemvcomment = (id,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/mv?id='+id+'&limit=30&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MV_COMMENT,
@@ -1120,13 +1120,13 @@ export const askmroemvcomment = (id,page) => {
 }
 export const releascommentmv = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=1&id='+id+'&content='+e)
+        axios.post('http://47.107.157.11:9093/comment?t=1&type=1&id='+id+'&content='+e)
         .then(res => {
             message.success('评论成功')
             dispatch({
                 type:DELETE_MV_COMMENT
             })
-            axios.post('http://localhost:9093/comment/mv?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/comment/mv?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_MV_COMMENT,
@@ -1141,13 +1141,13 @@ export const releascommentmv = (e,id) => {
 }
 export const releascommentvedio = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=5&id='+id+'&content='+e)
+        axios.post('http://47.107.157.11:9093/comment?t=1&type=5&id='+id+'&content='+e)
         .then(res => {
             message.success('评论成功')
             dispatch({
                 type:DELETE_MV_COMMENT
             })
-            axios.post('http://localhost:9093/comment/video?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/comment/video?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_MV_COMMENT,
@@ -1162,13 +1162,13 @@ export const releascommentvedio = (e,id) => {
 }
 export const releascommentmusic = (e,id) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment?t=1&type=0&id='+id+'&content='+e)
+        axios.post('http://47.107.157.11:9093/comment?t=1&type=0&id='+id+'&content='+e)
         .then(res => {
             message.success('评论成功')
             dispatch({
                 type:CLEAR_MUSIC_COMMENT
             })
-            axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
+            axios.post('http://47.107.157.11:9093/comment/music?id='+id+'&limit=30&before=0&timestamp='+moment(Date().now).valueOf())
             .then(ress => {
                 dispatch({
                     type:GET_MUSIC_COMMEND,
@@ -1183,7 +1183,7 @@ export const releascommentmusic = (e,id) => {
 }
 export const votecommentmv = (id,cid,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=1')
+        axios.post('http://47.107.157.11:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=1')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -1192,7 +1192,7 @@ export const votecommentmv = (id,cid,type) => {
 
 export const votecommentvedio = (id,cid,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=5')
+        axios.post('http://47.107.157.11:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=5')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -1200,7 +1200,7 @@ export const votecommentvedio = (id,cid,type) => {
 }
 export const votecommentmusic = (id,cid,type) => {
     return dispatch => {
-        axios.post('http://localhost:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=0')
+        axios.post('http://47.107.157.11:9093/comment/like?id='+id+'&cid='+cid+'&t='+type+'&type=0')
         .then(res => {
             message.success('操作成功(可能延迟展示)')
         })
@@ -1214,7 +1214,7 @@ export const actsearchtip = (bool) => {
 }
 export const askhotsearch = () => {
     return dispatch => {
-        axios.post('http://localhost:9093/search/hot/detail')
+        axios.post('http://47.107.157.11:9093/search/hot/detail')
         .then(res => {
             dispatch({
                 type:GET_HOT_SEARCH,
@@ -1236,7 +1236,7 @@ export const inputsearch = (e) => {
             search_suggest_data:{}
         })
         if(e !== ''){
-            axios.post('http://localhost:9093/search/suggest?keywords='+ e)
+            axios.post('http://47.107.157.11:9093/search/suggest?keywords='+ e)
             .then(res => {
                 dispatch({
                     type:GET_SEARCH_SUGGEST,
@@ -1256,7 +1256,7 @@ export const inputsearch = (e) => {
 }
 export const asksearchres = (e,type,page) => {
     return dispatch => {
-        axios.post('http://localhost:9093/search?keywords='+e+'&type='+type+'&limit=50&offset='+page*50)
+        axios.post('http://47.107.157.11:9093/search?keywords='+e+'&type='+type+'&limit=50&offset='+page*50)
         .then(res => {
             if(type === 1){
                 dispatch({
@@ -1330,7 +1330,7 @@ export const askmusiccommend = (id) => {
         dispatch({
             type:CLEAR_MUSIC_COMMENT
         })
-        axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before=0')
+        axios.post('http://47.107.157.11:9093/comment/music?id='+id+'&limit=30&before=0')
         .then(res => {
             dispatch({
                 type:GET_MUSIC_COMMEND,
@@ -1344,7 +1344,7 @@ export const askmusiccommend = (id) => {
 }
 export const askmoremusiccommend = (id,page) => {
     return  dispatch => {
-        axios.post('http://localhost:9093/comment/music?id='+id+'&limit=30&before='+page)
+        axios.post('http://47.107.157.11:9093/comment/music?id='+id+'&limit=30&before='+page)
         .then(res => {
             dispatch({
                 type:GET_MUSIC_COMMEND,
